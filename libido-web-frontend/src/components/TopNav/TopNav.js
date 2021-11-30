@@ -1,37 +1,82 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import SearchBar from "../common/SearchBar";
+import Button from "../common/Button";
 
 const TopNav = () => {
   return (
     <Container>
       <TopNavHeader>
-        <LogoContainer />
-        {/* <SearchBar /> */}
+        <LogoContainer>
+          <LogoImg />
+          <LogoName />
+        </LogoContainer>
+        <SearchBar topNav placeholder="search here..." />
         <RightSubMenu>
           <MessageContainer>
             <MessageLogo />
-            <MessageLink />
+            <MessageLink to="/">Messages</MessageLink>
           </MessageContainer>
-          {/* <Button /> */}
+          <Button main>로그인</Button>
         </RightSubMenu>
       </TopNavHeader>
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-width: 1350px;
+  padding: 25px 0 25px;
+  border: none;
+  border-radius: 30px;
+  float: right;
+  background-color: red;
+`;
 
-const TopNavHeader = styled.header``;
+const TopNavHeader = styled.header`
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+`;
 
-const LogoContainer = styled.div``;
+const LogoContainer = styled.div`
+  // 차후 에셋에 따라 수정
+  width: 200px;
+  height: 50px;
+  margin: 0 90px 0 18px;
+  background-color: orange;
+`;
 
-const RightSubMenu = styled.div``;
+const LogoImg = styled.img``;
 
-const MessageContainer = styled.div``;
+const LogoName = styled.img``;
 
-const MessageLogo = styled.img``;
+const RightSubMenu = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
 
-const MessageLink = styled(Link)``;
+const MessageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 120px;
+  margin: 0 10px 0 90px;
+  background-color: green;
+`;
+
+const MessageLogo = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  background-color: cyan;
+`;
+
+const MessageLink = styled(Link)`
+  text-decoration: none;
+  color: #707070;
+  letter-spacing: 0.5px;
+`;
 
 export default TopNav;
