@@ -30,17 +30,18 @@ const TopNav = () => {
 
 const Container = styled.div`
   max-width: 1330px;
+  position: fixed;
+  top: 0;
+  right: 0;
   padding: 25px 0 25px;
   border: none;
   border-radius: 30px;
-  float: right;
   background-color: red;
 `;
 
 const TopNavHeader = styled.header`
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
 `;
 
 const LogoContainer = styled.div`
