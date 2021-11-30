@@ -11,11 +11,16 @@ const StyledSearchBar = styled.input`
     outline: none;
   }
 
+  &::placeholder {
+    color: #d3d1d1;
+  }
+
   ${props =>
     props.topNav &&
     css`
       width: 600px;
       height: 50px;
+      padding: 0 30px;
     `}
 `;
 
