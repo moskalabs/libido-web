@@ -12,7 +12,10 @@ const TopNav = () => {
           <LogoImg />
           <LogoName />
         </LogoContainer>
-        <SearchBar topNav placeholder="search here..." />
+        <SearchBarContainer>
+          <SearchBar topNav placeholder="search here..." />
+          <div className="searchIcon">Icon</div>
+        </SearchBarContainer>
         <RightSubMenu>
           <MessageContainer>
             <MessageLogo />
@@ -46,6 +49,24 @@ const LogoContainer = styled.div`
   height: 50px;
   margin: 0 90px 0 18px;
   background-color: orange;
+`;
+
+const SearchBarContainer = styled.div`
+  position: relative;
+  background-color: aquamarine;
+
+  .searchIcon {
+    //추후 에셋 변경
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: blanchedalmond;
+  }
 `;
 
 const LogoImg = styled.img``;
