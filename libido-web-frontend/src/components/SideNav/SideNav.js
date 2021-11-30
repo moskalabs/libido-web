@@ -36,6 +36,8 @@ const Container = styled.div`
   max-width: 46px;
   height: 100%;
   padding: 0 46px 0;
+  border: none;
+  border-radius: 30px;
   float: left;
   background-color: blueviolet;
 `;
