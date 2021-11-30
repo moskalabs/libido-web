@@ -38,7 +38,6 @@ const Container = styled.div`
   padding: 0 46px 0;
   border: none;
   border-radius: 30px;
-  float: left;
   background-color: blueviolet;
 `;
 
