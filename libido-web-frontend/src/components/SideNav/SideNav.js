@@ -30,7 +30,7 @@ const SideNav = () => {
 };
 
 const Container = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   max-width: 46px;
@@ -38,7 +38,7 @@ const Container = styled.div`
   padding: 0 46px 0;
   border: none;
   border-radius: 30px;
-  background-color: blueviolet;
+  background-color: #fff;
 `;
 
 const SideNavHeader = styled.div`

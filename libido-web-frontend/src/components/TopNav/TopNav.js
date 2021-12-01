@@ -29,14 +29,14 @@ const TopNav = () => {
 };
 
 const Container = styled.div`
-  max-width: 1330px;
-  position: fixed;
+  max-width: 1328px;
+  position: absolute;
   top: 0;
-  right: 0;
+  left: 92px;
   padding: 25px 0 25px;
   border: none;
   border-radius: 30px;
-  background-color: red;
+  background-color: #fff;
 `;
 
 const TopNavHeader = styled.header`

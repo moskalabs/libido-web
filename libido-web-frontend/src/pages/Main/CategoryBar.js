@@ -15,6 +15,7 @@ const CategoryBar = () => {
 };
 
 const Container = styled.div`
+  position: fixed;
   min-width: 1330px;
   padding: 15px 400px;
   border: 1px solid #979797;
