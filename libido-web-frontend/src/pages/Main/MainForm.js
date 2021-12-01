@@ -1,35 +1,35 @@
 import React from "react";
 import styled from "styled-components";
-import MainFeed from "./MainFeed";
+import MainContent from "./MainContent";
 
 const MainForm = () => {
   return (
     <Container>
       <CategoryBox>
-        <CategoryName>맞춤형 추천 영상</CategoryName>
-        <CategoryList>
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-        </CategoryList>
+        <Name>맞춤형 추천 영상</Name>
+        <ContentList>
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+        </ContentList>
       </CategoryBox>
       <CategoryBox>
-        <CategoryName>개인별 맞춤 영상</CategoryName>
-        <CategoryList>
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-          <MainFeed />
-        </CategoryList>
+        <Name>개인별 맞춤 영상</Name>
+        <ContentList>
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+          <MainContent />
+        </ContentList>
       </CategoryBox>
     </Container>
   );
@@ -41,14 +41,14 @@ const CategoryBox = styled.div`
   margin-bottom: 10px;
 `;
 
-const CategoryName = styled.div`
+const Name = styled.div`
   margin-bottom: 20px;
   font-size: 25px;
   font-weight: 500;
   color: #707070;
 `;
 
-const CategoryList = styled.div`
+const ContentList = styled.div`
   display: flex;
   justify-content: space-between;
   flex-flow: row wrap;
