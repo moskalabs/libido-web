@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
  * {
    box-sizing: border-box;
  }
+ body {
+   max-width: 1400px;
+   background-color: #E4E4E4;
+ }
 `;
 
 export default GlobalStyle;
