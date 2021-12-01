@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import TopNav from "../../components/TopNav/TopNav";
 import SideNav from "../../components/SideNav/SideNav";
-import CategoryBar from "./CategoryBar";
+import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
 import MainForm from "./MainForm";
 
@@ -13,9 +13,9 @@ const MainPage = () => {
         <TopNav />
         <SideNav />
       </NavContainer>
-      <CategoryBarContainer>
-        <CategoryBar />
-      </CategoryBarContainer>
+      <CategoryBarWrapper>
+        <CategoryBarContainer />
+      </CategoryBarWrapper>
       <MainContainer>
         <MainTemplate>
           <MainForm />
@@ -39,7 +39,7 @@ const NavContainer = styled.div`
   z-index: 10;
 `;
 
-const CategoryBarContainer = styled.div`
+const CategoryBarWrapper = styled.div`
   position: absolute;
   top: 100px;
   left: 92px;

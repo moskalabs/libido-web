@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
-const CategoryBar = () => {
+const CategoryBar = ({ syncCategoryPath }) => {
   return (
     <Container>
-      <CategoryList>
-        <MoveCategoryButton>LIBIDO</MoveCategoryButton>
-        <MoveCategoryButton className="noActive">TRENDING</MoveCategoryButton>
-        <MoveCategoryButton className="noActive">FRIENDS</MoveCategoryButton>
+      <CategoryList onClick={syncCategoryPath}>
+        <MoveCategoryButton data-category="libido">LIBIDO</MoveCategoryButton>
+        <MoveCategoryButton data-category="trending" className="noActive">
+          TRENDING
+        </MoveCategoryButton>
+        <MoveCategoryButton data-category="friends" className="noActive">
+          FRIENDS
+        </MoveCategoryButton>
       </CategoryList>
     </Container>
   );
