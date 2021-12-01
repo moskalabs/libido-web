@@ -10,11 +10,10 @@ const TopNav = () => {
       <TopNavHeader>
         <LogoContainer>
           <LogoImg />
-          <LogoName />
         </LogoContainer>
         <SearchBarContainer>
           <SearchBar topNav placeholder="search here..." />
-          <div className="searchIcon">Icon</div>
+          <div className="searchIcon" />
         </SearchBarContainer>
         <RightSubMenu>
           <MessageContainer>
@@ -49,15 +48,12 @@ const LogoContainer = styled.div`
   width: 200px;
   height: 50px;
   margin: 0 90px 0 18px;
-  background-color: orange;
 `;
 
 const SearchBarContainer = styled.div`
   position: relative;
-  background-color: aquamarine;
 
   .searchIcon {
-    //추후 에셋 변경
     position: absolute;
     display: flex;
     justify-content: center;
@@ -66,13 +62,19 @@ const SearchBarContainer = styled.div`
     right: 20px;
     width: 30px;
     height: 30px;
-    background-color: blanchedalmond;
+    background: url(./images/search.svg) no-repeat;
+    background-size: 25px 25px;
+    background-position: center center;
   }
 `;
 
-const LogoImg = styled.img``;
-
-const LogoName = styled.img``;
+const LogoImg = styled.div`
+  width: 160px;
+  height: 50px;
+  background: url(./images/logo.png) no-repeat;
+  background-position: center center;
+  background-size: 650px 650px;
+`;
 
 const RightSubMenu = styled.div`
   display: flex;
@@ -85,14 +87,15 @@ const MessageContainer = styled.div`
   align-items: center;
   width: 120px;
   margin: 0 10px 0 90px;
-  background-color: green;
 `;
 
 const MessageLogo = styled.div`
   width: 30px;
   height: 30px;
   margin-right: 8px;
-  background-color: cyan;
+  background: url(./images/message.svg) no-repeat;
+  background-position: center center;
+  background-size: 20px 20px;
 `;
 
 const MessageLink = styled(Link)`
