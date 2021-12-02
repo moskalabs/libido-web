@@ -1,15 +1,30 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const CategoryBar = ({ syncCategoryPath }) => {
+const CategoryBar = ({ curCategory, syncCategoryPath }) => {
+  const checkActive = category => {
+    return category === curCategory;
+  };
+
   return (
     <Container>
       <CategoryList onClick={syncCategoryPath}>
-        <MoveCategoryButton data-category="libido">LIBIDO</MoveCategoryButton>
-        <MoveCategoryButton data-category="trending" className="noActive">
+        <MoveCategoryButton
+          active={checkActive("libido")}
+          data-category="libido"
+        >
+          LIBIDO
+        </MoveCategoryButton>
+        <MoveCategoryButton
+          active={checkActive("trending")}
+          data-category="trending"
+        >
           TRENDING
         </MoveCategoryButton>
-        <MoveCategoryButton data-category="friends" className="noActive">
+        <MoveCategoryButton
+          active={checkActive("friends")}
+          data-category="friends"
+        >
           FRIENDS
         </MoveCategoryButton>
       </CategoryList>
@@ -37,13 +52,16 @@ const MoveCategoryButton = styled.button`
   background: none;
   font-size: 16px;
   font-weight: 600;
-  color: #4dbce9;
+  color: #606770;
   cursor: pointer;
 
-  &.noActive {
-    //추후 동적 스타일 생성
-    color: #606770;
-  }
+  ${({ active }) =>
+    active &&
+    css`
+      font-weight: 700;
+      border-bottom: 3px solid #4dbce9;
+      color: #4dbce9;
+    `}
 `;
 
 export default CategoryBar;
