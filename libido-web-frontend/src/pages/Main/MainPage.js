@@ -4,7 +4,7 @@ import TopNav from "../../components/TopNav/TopNav";
 import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
-import MainForm from "./MainForm";
+import MainFormContainer from "../../containers/MainFormContainer";
 
 const MainPage = () => {
   return (
@@ -18,7 +18,7 @@ const MainPage = () => {
       </CategoryBarWrapper>
       <MainContainer>
         <MainTemplate>
-          <MainForm />
+          <MainFormContainer />
         </MainTemplate>
       </MainContainer>
     </Container>
