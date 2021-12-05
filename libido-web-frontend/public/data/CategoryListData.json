@@ -14,12 +14,10 @@
     },
     {
       "id": 4,
-      "thumbnail_url": ""
     },
-    {
-      "id": 5,
-      "thumbnail_url": ""
-    },
+    {},
+ ;   "thumbnail_url": ""
+   },
     {
       "id": 6,
       "thumbnail_url": ""
