@@ -15,13 +15,9 @@ const [ROOMS, ROOMS_SUCCESS, ROOMS_FAILURE] =
 
 export const initializeMainForm = createAction(INITIALIZE_MAINFORM);
 
-export const content = createAction(CONTENT, ({ categorySort }) => ({
-  categorySort,
-}));
+export const content = createAction(CONTENT, sort => sort);
 
-export const rooms = createAction(ROOMS, ({ categorySort }) => ({
-  categorySort,
-}));
+export const rooms = createAction(ROOMS, sort => sort);
 
 const contentSaga = createRequestSaga(CONTENT, mainFormAPI.content);
 const roomsSaga = createRequestSaga(ROOMS, mainFormAPI.rooms);
@@ -39,16 +35,16 @@ const initialState = {
 const mainForm = handleActions(
   {
     [INITIALIZE_MAINFORM]: state => initialState,
-    [CONTENT_SUCCESS]: ({ contents }, { payload: result }) => ({
-      contents: contents.concat(result),
+    [CONTENT_SUCCESS]: ({ contents }, { payload: { message } }) => ({
+      contents: contents.concat(message),
       contentsError: null,
     }),
     [CONTENT_FAILURE]: (state, { payload: error }) => ({
       ...state,
       contentsError: error,
     }),
-    [ROOMS_SUCCESS]: ({ contents }, { payload: result }) => ({
-      contents: contents.concat(result),
+    [ROOMS_SUCCESS]: ({ contents }, { payload: { message } }) => ({
+      contents: contents.concat(message),
       contentsError: null,
     }),
     [ROOMS_FAILURE]: (state, { payload: error }) => ({

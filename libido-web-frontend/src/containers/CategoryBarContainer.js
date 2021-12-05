@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { changeCategory, initializeCategory } from "../modules/category";
+import { changeCategory } from "../modules/category";
 import CategoryBar from "../pages/Main/CategoryBar";
 
 const CategoryBarContainer = () => {
@@ -27,10 +27,6 @@ const CategoryBarContainer = () => {
 
     navigate(`/?category=${curCategory}`);
   };
-
-  useEffect(() => {
-    dispatch(initializeCategory("libido"));
-  }, [dispatch]);
 
   return <CategoryBar curCategory={sort} syncCategoryPath={syncCategoryPath} />;
 };

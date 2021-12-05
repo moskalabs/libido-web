@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const MainContent = () => {
+const MainContent = ({ content }) => {
+  const { image_url } = content;
+
   return (
     <Container>
-      <Thumbnail />
+      <Thumbnail url={image_url} />
     </Container>
   );
 };
@@ -16,7 +18,11 @@ const Container = styled.div`
 const Thumbnail = styled.div`
   width: 280px;
   height: 200px;
-  background-color: beige;
+  background-image: url(${props => props.url && props.url});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
 `;
 
 export default MainContent;

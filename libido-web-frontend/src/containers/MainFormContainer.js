@@ -1,11 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeMainForm, content, rooms } from "../modules/mainForm";
 import MainForm from "../pages/Main/MainForm";
 
+const bindingCategoryToContents = (categorySort, curContents) => {
+  const firstCategoryName =
+    categorySort === "libido" ? "맞춤형 추천 영상" : "인기영상";
+  const secondeCategoryName =
+    categorySort === "libido" ? "맞춤 스트리밍" : "인기 STREAMING";
+  const firstContents = {
+    category: firstCategoryName,
+    contents: curContents.slice(0, 8),
+  };
+  const secondContents = {
+    category: secondeCategoryName,
+    contents: curContents.slice(8, 16),
+  };
+
+  const joinContents = [firstContents, secondContents];
+  return joinContents;
+};
+
+const scrollTop = () => {
+  window.scrollTo(0, 0);
+};
+
 const MainFormContainer = () => {
   const dispatch = useDispatch();
-  // const [prevCategoryState, setPrevCategoryState] = useState("libido");
 
   const { sort, contents, contentsError } = useSelector(
     ({ category, mainForm }) => ({
@@ -15,20 +36,22 @@ const MainFormContainer = () => {
     })
   );
 
-  console.log(contents, contentsError);
-
   useEffect(() => {
     dispatch(initializeMainForm());
     dispatch(content(sort));
     dispatch(rooms(sort));
+
+    scrollTop();
   }, [dispatch, sort]);
 
-  useEffect(() => {
-    dispatch(content("libido"));
-    dispatch(rooms("libido"));
-  }, [dispatch]);
+  const curContentsNum = contents.length;
+  const completeContentsNum = 16;
 
-  return <MainForm />;
+  if (curContentsNum === completeContentsNum) {
+    const completeContents = bindingCategoryToContents(sort, contents);
+
+    return <MainForm completeContents={completeContents} />;
+  } else return null;
 };
 
 export default MainFormContainer;

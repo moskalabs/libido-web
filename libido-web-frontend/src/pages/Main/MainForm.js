@@ -2,35 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import MainContent from "./MainContent";
 
-const MainForm = () => {
+const MainForm = ({ completeContents }) => {
   return (
     <Container>
-      <CategoryBox>
-        <Name>맞춤형 추천 영상</Name>
-        <ContentList>
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-        </ContentList>
-      </CategoryBox>
-      <CategoryBox>
-        <Name>개인별 맞춤 영상</Name>
-        <ContentList>
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-          <MainContent />
-        </ContentList>
-      </CategoryBox>
+      {completeContents.map(({ category, contents }, index) => {
+        return (
+          <CategoryBox key={index}>
+            <Name>{category}</Name>
+            <ContentList>
+              {contents.map((content, index) => {
+                return <MainContent key={index} content={content} />;
+              })}
+            </ContentList>
+          </CategoryBox>
+        );
+      })}
     </Container>
   );
 };
