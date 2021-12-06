@@ -14,6 +14,7 @@ const StyledAuthForm = styled.div`
     font-size: 0.8rem;
     margin-top: 10px;
     margin-bottom: 10px;
+    text-align: center;
   }
 `;
 
@@ -21,74 +22,119 @@ const LoginContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
-  width: 170px;
+  width: 140px;
   height: 40px;
-  background: tomato;
+  margin: 0 auto;
 `;
 
-const AuthForm = () => {
-  //   const { naver } = window;
+const StyledInput = styled.input`
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+`;
 
-  //   const Login = () => {
-  //     Naver();
-  //     UserProfile();
-  //   };
+const Footer = styled.div`
+  display: flex;
 
-  //   useEffect(Login, []);
+  input {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 5px 40px;
+    border-radius: 10px;
+    background: #5fc8e8;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+  }
+`;
 
-  //   const Naver = () => {
-  //     const naverLogin = new naver.LoginWithNaverId({
-  //       clientId: "D6LeoiC8EqM1qxbMl3rP",
-  //       callbackUrl: "http://localhost:3000",
-  //       isPopup: false,
-  //       callbackHandle: true,
-  //     });
-  //     naverLogin.init();
-  //   };
+const textMap = {
+  login: "로그인",
+  register: "회원가입",
+};
 
-  //   const UserProfile = () => {
-  //     window.location.href.includes("access_token") && GetUser();
-  //     function GetUser() {
-  //       const location = window.location.href.split("=")[1];
-  //       const token = location.split("&")[0];
-  //       console.log("token: ", token);
-  //       fetch(`${API}/account/sign-in`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-type": "application/json",
-  //           Authorization: token,
-  //         },
-  //       })
-  //         .then(res => res.json())
-  //         .then(res => {
-  //           localStorage.setItem("access_token", res.token);
-  //           setUserData({
-  //             nickname: res.nickname,
-  //             image: res.image,
-  //           });
-  //         })
-  //         .catch(err => console.log("err : ", err));
-  //     }
-  //   };
+const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
+  const text = textMap[type];
+
   return (
     <StyledAuthForm>
-      <h3>로그인</h3>
-      <form>
-        <input autoComplete="on" placeholder="이메일" />
-        <div className="forgetPassword">비밀번호 잊어버리셨나용?</div>
-        <LoginContainer>
-          <img
-            alt="google"
-            src="https://img.icons8.com/color/48/000000/google-logo.png"
-          />
+      <h3>{text}</h3>
+      <form onSubmit={onSubmit}>
+        <StyledInput
+          autoComplete="email"
+          name="email"
+          placeholder="이메일"
+          onChange={onChange}
+          value={form.email}
+        />
+        <StyledInput
+          autoComplete="new-password"
+          name="password"
+          placeholder="패스워드"
+          type="password"
+          onChange={onChange}
+          value={form.password}
+        />
+        {type === "register" && (
+          <>
+            <StyledInput
+              autoComplete="new-password"
+              name="re_password"
+              placeholder="패스워드 확인"
+              type="password"
+              onChange={onChange}
+              value={form.re_password}
+            />
+            <StyledInput
+              autoComplete="tel"
+              name="phone_number"
+              placeholder="휴대폰"
+              type="tel"
+              onChange={onChange}
+              value={form.phone_number}
+            />
+            <StyledInput
+              name="verificationCode"
+              placeholder="인증번호"
+              onChange={onChange}
+              value={form.verificationCode}
+            />
+          </>
+        )}
+        {type === "login" ? (
+          <>
+            <div className="forgetPassword">비밀번호 잊어버리셨나용?</div>
 
-          <img
-            id="naverIdLogin_loginButton"
-            alt="naver"
-            src="http://vonpat01.cafe24.com/wp-content/uploads/2020/08/naver.png"
-          />
-        </LoginContainer>
+            <LoginContainer>
+              <img
+                alt="google"
+                src="https://img.icons8.com/color/48/000000/google-logo.png"
+              />
+
+              <img
+                id="naverIdLogin_loginButton"
+                alt="naver"
+                src="http://vonpat01.cafe24.com/wp-content/uploads/2020/08/naver.png"
+              />
+            </LoginContainer>
+          </>
+        ) : (
+          <div />
+        )}
       </form>
+      <Footer>
+        {type === "login" ? (
+          <>
+            <input type="button" value="계정만들기" />
+            <input type="button" value="로그인" />
+          </>
+        ) : (
+          <>
+            <input type="button" value="확인하기" onClick={submitPhoneNumber} />
+            <input type="button" value="다음" />
+          </>
+        )}
+      </Footer>
     </StyledAuthForm>
   );
 };
