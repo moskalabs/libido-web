@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import SearchBar from "../common/SearchBar";
+import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
@@ -12,7 +12,7 @@ const TopNav = () => {
           <LogoImg />
         </LogoContainer>
         <SearchBarContainer>
-          <SearchBar topNav placeholder="search here..." />
+          <SearchContainer topNav placeholder="search here..." />
           <div className="searchIcon" />
         </SearchBarContainer>
         <RightSubMenu>
