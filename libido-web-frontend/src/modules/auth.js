@@ -15,8 +15,7 @@ const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
   createRequestActionTypes("auth/LOGIN");
 
-const [PHONENUMBER, PHONENUMBER_SUCCESS, PHONENUMBER_FAILURE] =
-  createRequestActionTypes("auth/PHONENUMBER");
+const PHONENUMBER = "auth/PHONE_NUMBER";
 
 export const changeField = createAction(
   CHANGE_FIELD,
@@ -26,12 +25,18 @@ export const changeField = createAction(
     value, //실제 바꾸려는 값
   })
 );
-export const initializeForm = createAction(INITIALIZE_FORM, form => form); // register/login
+export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 
-export const register = createAction(REGISTER, ({ email, password }) => ({
-  email,
-  password,
-}));
+export const register = createAction(
+  REGISTER,
+  ({ email, password, re_password, phone_number, nickname }) => ({
+    email,
+    password,
+    re_password,
+    phone_number,
+    nickname,
+  })
+);
 export const login = createAction(REGISTER, ({ email, password }) => ({
   email,
   password,
@@ -62,10 +67,11 @@ const initialState = {
     email: "",
     password: "",
     re_password: "",
+    nickname: "",
     phone_number: "",
     verificationCode: "",
   },
-  auth: null,
+  message: "",
   authError: null,
 };
 
@@ -81,10 +87,10 @@ const auth = handleActions(
       authError: null, //폼 전환시 회원 인증 에러 초기화..?
     }),
     //회원가입 성공
-    [REGISTER_SUCCESS]: (state, { payload: auth }) => ({
+    [REGISTER_SUCCESS]: (state, { payload: { message } }) => ({
       ...state,
+      message,
       authError: null,
-      auth,
     }),
     //회원가입 실패
     [REGISTER_FAILURE]: (state, { payload: error }) => ({

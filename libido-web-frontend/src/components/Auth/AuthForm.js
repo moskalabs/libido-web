@@ -33,19 +33,23 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
+const TelForm = styled.div`
+  margin-top: 30px;
+  text-align: center;
+`;
+
 const Footer = styled.div`
   display: flex;
-
-  input {
-    margin-top: 20px;
-    margin-right: 10px;
-    padding: 5px 40px;
-    border-radius: 10px;
-    background: #5fc8e8;
-    border-style: none;
-    cursor: pointer;
-    color: white;
-  }
+`;
+const Button = styled.button`
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 5px 40px;
+  border-radius: 10px;
+  background: #5fc8e8;
+  border-style: none;
+  cursor: pointer;
+  color: white;
 `;
 
 const textMap = {
@@ -58,6 +62,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
 
   return (
     <StyledAuthForm>
+      <div>CREATE LIBIDO ID</div>
       <h3>{text}</h3>
       <form onSubmit={onSubmit}>
         <StyledInput
@@ -86,18 +91,12 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
               value={form.re_password}
             />
             <StyledInput
-              autoComplete="tel"
-              name="phone_number"
-              placeholder="휴대폰"
-              type="tel"
+              autoComplete="nickname"
+              name="nickname"
+              placeholder="닉네임"
+              type="text"
               onChange={onChange}
-              value={form.phone_number}
-            />
-            <StyledInput
-              name="verificationCode"
-              placeholder="인증번호"
-              onChange={onChange}
-              value={form.verificationCode}
+              value={form.nickname}
             />
           </>
         )}
@@ -122,17 +121,35 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
           <div />
         )}
       </form>
+      {type === "register" && (
+        <TelForm>
+          <StyledInput
+            id="phoneNumberInput"
+            autoComplete="tel"
+            name="phone_number"
+            placeholder="휴대폰"
+            type="tel"
+            onChange={onChange}
+            value={form.phone_number}
+          />
+          <StyledInput
+            name="verificationCode"
+            placeholder="인증번호"
+            onChange={onChange}
+            value={form.verificationCode}
+          />
+          <Button onClick={submitPhoneNumber}>인증번호</Button>
+          <Button onClick={submitPhoneNumber}>확인하기</Button>
+        </TelForm>
+      )}
       <Footer>
         {type === "login" ? (
           <>
-            <input type="button" value="계정만들기" />
-            <input type="button" value="로그인" />
+            <Button>계정만들기</Button>
+            <Button>로그인</Button>
           </>
         ) : (
-          <>
-            <input type="button" value="확인하기" onClick={submitPhoneNumber} />
-            <input type="button" value="다음" />
-          </>
+          <Button type="submit">다음</Button>
         )}
       </Footer>
     </StyledAuthForm>
@@ -140,3 +157,5 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
 };
 
 export default AuthForm;
+
+//message가 success일때, auth_number와 input창에 내가 입력한 값과 같은지
