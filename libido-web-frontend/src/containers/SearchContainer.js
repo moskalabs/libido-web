@@ -14,16 +14,24 @@ const SearchContainer = props => {
     keyword: search.topNav.keyword,
   }));
 
-  const searchTopNavKeyword = useCallback(
-    event => {
-      const currentKeyDown = event.key;
-      if (currentKeyDown === "Enter") {
-        dispatch(searchTopNavKeyword(keyword));
-        initializeKeyword("topNav");
-      }
-    },
-    [dispatch, keyword]
-  );
+  const searchKeyword = event => {
+    const currentKeyDown = event.key;
+    if (currentKeyDown === "Enter") {
+      const value = keyword;
+      dispatch(searchTopNavKeyword(keyword));
+      initializeKeyword("topNav");
+    }
+  };
+  // const searchTopNavKeyword = useCallback(
+  //   event => {
+  //     const currentKeyDown = event.key;
+  //     if (currentKeyDown === "Enter") {
+  //       dispatch(searchTopNavKeyword(keyword));
+  //       initializeKeyword("topNav");
+  //     }
+  //   },
+  //   [dispatch, keyword]
+  // );
 
   const changeTopNavKeyword = useCallback(
     event => {
@@ -37,7 +45,7 @@ const SearchContainer = props => {
   return (
     <SearchBar
       changeKeyword={changeTopNavKeyword}
-      searchKeyword={searchTopNavKeyword}
+      searchKeyword={searchKeyword}
       {...props}
     />
   );

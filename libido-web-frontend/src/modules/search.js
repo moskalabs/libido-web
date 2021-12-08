@@ -4,7 +4,7 @@ import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, {
   createRequestActionTypes,
 } from "../lib/createRequestSaga";
-// import * as searchAPI from '../lib/api/';
+import * as searchAPI from "../lib/api/search";
 
 const CHANGE_FIELD = "search/CHANGE_FIELD";
 const INITIALIZE_SEARCHSTATE = "search/INITIALIZE_SEARCHSTATE";
@@ -14,7 +14,7 @@ const [
   SEARCH_TOPNAVKEYWORD,
   SEARCH_TOPNAVKEYWORD_SUCCESS,
   SEARCH_TOPNAVKEYWORD_FAILURE,
-] = createRequestActionTypes("search/searchKeyword");
+] = createRequestActionTypes("search/searchTopNavKeyword");
 
 export const initializeSearchState = createAction(INITIALIZE_SEARCHSTATE);
 
@@ -30,7 +30,10 @@ export const searchTopNavKeyword = createAction(
   value => value
 );
 
-const searchTopNavKeywordSaga = createRequestSaga(SEARCH_TOPNAVKEYWORD);
+const searchTopNavKeywordSaga = createRequestSaga(
+  SEARCH_TOPNAVKEYWORD,
+  searchAPI.searchKeyword
+);
 
 export function* searchSaga() {
   yield takeLatest(SEARCH_TOPNAVKEYWORD, searchTopNavKeywordSaga);
