@@ -12,15 +12,23 @@ const TopNav = () => {
           <LogoImg />
         </LogoContainer>
         <SearchBarContainer>
-          <SearchContainer topNav placeholder="search here..." />
+          <SearchContainer
+            topNav
+            placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
+          />
           <div className="searchIcon" />
+          <div className="searchLine" />
         </SearchBarContainer>
         <RightSubMenu>
-          <MessageContainer>
+          {/* 로그인 했을 때 옆에 작게 사이드로 추가_지금은 비로그인 */}
+          {/* <MessageContainer>
             <MessageLogo />
             <MessageLink to="/">Messages</MessageLink>
-          </MessageContainer>
-          <Button main>로그인</Button>
+          </MessageContainer> */}
+          <TopNavButtonContainer>
+            <ButtonMarginTop main>로그인</ButtonMarginTop>
+            <Button main>회원가입</Button>
+          </TopNavButtonContainer>
         </RightSubMenu>
       </TopNavHeader>
     </Container>
@@ -30,15 +38,16 @@ const TopNav = () => {
 const Container = styled.div`
   max-width: 1328px;
   position: absolute;
+  display: flex;
   top: 0;
   left: 92px;
-  padding: 25px 0 25px;
+  padding: 12px 0 12px;
   border: none;
-  border-radius: 30px;
   background-color: #fff;
 `;
 
 const TopNavHeader = styled.header`
+  max-height: 76px;
   display: flex;
   align-items: center;
 `;
@@ -58,13 +67,21 @@ const SearchBarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 10px;
-    right: 20px;
+    top: 8px;
+    right: 150px;
     width: 30px;
     height: 30px;
-    background: url(./images/search.svg) no-repeat;
-    background-size: 25px 25px;
+    background: url(./images/icon_search.png) no-repeat;
+    background-size: 35px 35px;
     background-position: center center;
+  }
+  .searchLine {
+    position: absolute;
+    top: 0;
+    right: 190px;
+    border-left: 1px solid #262f6a;
+    height: 48px;
+    z-index: 10;
   }
 `;
 
@@ -82,26 +99,34 @@ const RightSubMenu = styled.div`
   margin-right: 20px;
 `;
 
-const MessageContainer = styled.div`
+const TopNavButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  width: 120px;
-  margin: 0 10px 0 90px;
+  flex-direction: column;
 `;
 
-const MessageLogo = styled.div`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-  background: url(./images/message.svg) no-repeat;
-  background-position: center center;
-  background-size: 20px 20px;
+const ButtonMarginTop = styled(Button)`
+  margin-bottom: 3px;
 `;
+// const MessageContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   width: 120px;
+//   margin: 0 10px 0 90px;
+// `;
 
-const MessageLink = styled(Link)`
-  text-decoration: none;
-  color: #707070;
-  letter-spacing: 0.5px;
-`;
+// const MessageLogo = styled.div`
+//   width: 30px;
+//   height: 30px;
+//   margin-right: 8px;
+//   background: url(./images/message.svg) no-repeat;
+//   background-position: center center;
+//   background-size: 20px 20px;
+// `;
+
+// const MessageLink = styled(Link)`
+//   text-decoration: none;
+//   color: #707070;
+//   letter-spacing: 0.5px;
+// `;
 
 export default TopNav;

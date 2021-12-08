@@ -30,7 +30,7 @@ const Container = styled.div`
   max-width: 1420px;
   height: 2000px;
   margin: 0 auto;
-  background-color: #e4e4e4;
+  background-color: #f3f3f3;
 `;
 
 const NavContainer = styled.div`

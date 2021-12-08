@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const StyledSearchBar = styled.input`
-  border: 1px solid #4dbce9;
+  border: 1px solid #262f6a;
   border-radius: 100px;
   font-size: 15px;
   font-weight: 500;
@@ -18,8 +18,9 @@ const StyledSearchBar = styled.input`
   ${props =>
     props.topNav &&
     css`
-      width: 600px;
-      height: 50px;
+      width: 650px;
+      height: 48px;
+      margin-right: 130px;
       padding: 0 30px;
     `}
 `;
