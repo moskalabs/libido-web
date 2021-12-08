@@ -17,16 +17,16 @@ import { identifyQuerySort } from "../identifyQuerySort";
 export const content = categorySort => {
   const querySort = identifyQuerySort(categorySort);
 
-  return client
-    .get("http://127.0.0.1:8000/contents?category=popular")
-    .then(res => console.log(res));
-  // return client.get(
-  //   `/data/${
-  //     querySort === "customize"
-  //       ? "contentCustomize.json"
-  //       : "contentPopular.json"
-  //   }`
-  // );
+  // return client
+  //   .get("http://127.0.0.1:8000/contents?category=popular")
+  //   .then(res => console.log(res));
+  return client.get(
+    `/data/${
+      querySort === "customize"
+        ? "contentCustomize.json"
+        : "contentPopular.json"
+    }`
+  );
   // .then(res => {
   //   const {
   //     data: { message },
@@ -39,14 +39,14 @@ export const content = categorySort => {
 export const rooms = categorySort => {
   const querySort = identifyQuerySort(categorySort);
 
-  return client
-    .get("http://127.0.0.1:8000/contents?category=popular")
-    .then(res => console.log(res));
-  // return client.get(
-  //   `/data/${
-  //     querySort === "customize" ? "roomsCustomize.json" : "roomsPopular.json"
-  //   }`
-  // );
+  // return client
+  //   .get("http://127.0.0.1:8000/contents?category=popular")
+  //   .then(res => console.log(res));
+  return client.get(
+    `/data/${
+      querySort === "customize" ? "roomsCustomize.json" : "roomsPopular.json"
+    }`
+  );
   // .then(res => {
   //   const {
   //     data: { message },
