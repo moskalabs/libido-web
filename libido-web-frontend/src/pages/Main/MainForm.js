@@ -21,7 +21,7 @@ const MainForm = ({ completeContents }) => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div``; //flex-direction row wrap으로 전체 수직 정렬(2row)
 
 const CategoryBox = styled.div`
   margin-bottom: 10px;
@@ -35,6 +35,7 @@ const Name = styled.div`
 `;
 
 const ContentList = styled.div`
+  //flex-direction row wrap으로으로 세부 리스트 정렬(2row)
   display: flex;
   justify-content: space-between;
   flex-flow: row wrap;

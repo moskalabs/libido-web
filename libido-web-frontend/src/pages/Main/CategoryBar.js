@@ -34,7 +34,7 @@ const CategoryBar = ({ curCategory, syncCategoryPath }) => {
 
 const Container = styled.div`
   position: fixed;
-  min-width: 1330px;
+  min-width: 1328px;
   max-height: 100px;
   padding: 15px 400px;
   border-top: 1px solid #d9d9d9;

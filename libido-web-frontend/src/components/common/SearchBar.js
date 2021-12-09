@@ -18,7 +18,7 @@ const StyledSearchBar = styled.input`
   ${props =>
     props.topNav &&
     css`
-      width: 650px;
+      width: 660px;
       height: 48px;
       margin-right: 130px;
       padding: 0 30px;

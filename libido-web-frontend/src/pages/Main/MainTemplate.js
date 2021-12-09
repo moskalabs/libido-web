@@ -6,7 +6,7 @@ const MainTemplate = ({ children }) => {
 };
 
 const Container = styled.div`
-  max-width: 1300px;
+  max-width: 1328px;
   margin: 0 auto;
   padding: 20px 0 0 40px;
 `;

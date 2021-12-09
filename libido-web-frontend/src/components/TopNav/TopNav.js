@@ -25,6 +25,7 @@ const TopNav = () => {
             <MessageLogo />
             <MessageLink to="/">Messages</MessageLink>
           </MessageContainer> */}
+          <div className="rightSubMenuLine" />
           <TopNavButtonContainer>
             <ButtonMarginTop main>로그인</ButtonMarginTop>
             <Button main>회원가입</Button>
@@ -81,7 +82,6 @@ const SearchBarContainer = styled.div`
     right: 190px;
     border-left: 1px solid #262f6a;
     height: 48px;
-    z-index: 10;
   }
 `;
 
@@ -94,14 +94,19 @@ const LogoImg = styled.div`
 `;
 
 const RightSubMenu = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
+  .rightSubMenuLine {
+    position: absolute;
+    top: 0;
+    right: 260px;
+    border-left: 1px solid #d9d9d9;
+    height: 100px;
+  }
 `;
 
 const TopNavButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding-right: 10px;
 `;
 
 const ButtonMarginTop = styled(Button)`
