@@ -33,9 +33,8 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 46px;
   height: 100%;
-  padding: 0 46px 0;
+  padding: 0 33px 0;
   border: none;
   background-color: #262f6a;
 `;
@@ -53,14 +52,14 @@ const MenuButton = styled.button`
   border: none;
   cursor: pointer;
   background: url(./images/icon_menu.png) no-repeat;
-  background-size: 35px 35px;
+  background-size: 45px 45px;
   background-position: center center;
 `;
 
 const IconContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 45px;
 `;
 
 const IconBox = styled.div`
@@ -68,7 +67,7 @@ const IconBox = styled.div`
   text-align: center;
 
   p {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 100;
     color: #ffffff;
   }
@@ -81,25 +80,25 @@ const Icon = styled.button`
 
   &.home {
     background: url(./images/icon_home.png) no-repeat;
-    background-size: 35px 35px;
+    background-size: 40px 40px;
     background-position: center center;
   }
 
   &.room {
     background: url(./images/icon_room.png) no-repeat;
-    background-size: 45px 45px;
+    background-size: 50px 50px;
     background-position: center center;
   }
 
   &.live {
     background: url(./images/icon_live.png) no-repeat;
-    background-size: 42px 42px;
+    background-size: 50px 50px;
     background-position: center center;
   }
 
   &.setting {
     background: url(./images/icon_setting.png) no-repeat;
-    background-size: 42px 42px;
+    background-size: 45px 45px;
     background-position: center center;
   }
 `;

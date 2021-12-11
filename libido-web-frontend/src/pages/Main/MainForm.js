@@ -21,21 +21,24 @@ const MainForm = ({ completeContents }) => {
   );
 };
 
-const Container = styled.div``; //flex-direction row wrap으로 전체 수직 정렬(2row)
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const CategoryBox = styled.div`
-  margin-bottom: 10px;
+  min-width: 840px;
+  margin-right: 50px;
 `;
 
 const Name = styled.div`
-  margin-bottom: 20px;
-  font-size: 25px;
-  font-weight: 500;
-  color: #707070;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #262f6a;
 `;
 
 const ContentList = styled.div`
-  //flex-direction row wrap으로으로 세부 리스트 정렬(2row)
   display: flex;
   justify-content: space-between;
   flex-flow: row wrap;

@@ -37,27 +37,33 @@ const TopNav = () => {
 };
 
 const Container = styled.div`
-  max-width: 1328px;
-  position: absolute;
+  width: 100%;
+  position: fixed;
   display: flex;
   top: 0;
-  left: 92px;
-  padding: 12px 0 12px;
-  border: none;
+  left: 116px;
+  padding: 20px 10px;
   background-color: #fff;
+  z-index: 10;
 `;
 
 const TopNavHeader = styled.header`
-  max-height: 76px;
+  min-width: 1820px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
 `;
 
 const LogoContainer = styled.div`
-  // 차후 에셋에 따라 수정
+  margin: 0 170px 0 20px;
+`;
+
+const LogoImg = styled.div`
   width: 200px;
   height: 50px;
-  margin: 0 90px 0 18px;
+  background: url(./images/logo.png) no-repeat;
+  background-position: center center;
+  background-size: 850px 850px;
 `;
 
 const SearchBarContainer = styled.div`
@@ -68,8 +74,8 @@ const SearchBarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 8px;
-    right: 150px;
+    top: 13px;
+    right: 140px;
     width: 30px;
     height: 30px;
     background: url(./images/icon_search.png) no-repeat;
@@ -81,32 +87,26 @@ const SearchBarContainer = styled.div`
     top: 0;
     right: 190px;
     border-left: 1px solid #262f6a;
-    height: 48px;
+    height: 58px;
   }
 `;
-
-const LogoImg = styled.div`
-  width: 160px;
-  height: 50px;
-  background: url(./images/logo.png) no-repeat;
-  background-position: center center;
-  background-size: 650px 650px;
-`;
-
 const RightSubMenu = styled.div`
+  position: relative;
+  margin-left: 85px;
+
   .rightSubMenuLine {
     position: absolute;
-    top: 0;
-    right: 260px;
+    top: -20px;
+    right: 350px;
     border-left: 1px solid #d9d9d9;
-    height: 100px;
+    height: 120px;
   }
 `;
 
 const TopNavButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-right: 10px;
+  margin-right: 80px;
 `;
 
 const ButtonMarginTop = styled(Button)`

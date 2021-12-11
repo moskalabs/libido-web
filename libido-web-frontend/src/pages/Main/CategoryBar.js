@@ -34,9 +34,9 @@ const CategoryBar = ({ curCategory, syncCategoryPath }) => {
 
 const Container = styled.div`
   position: fixed;
-  min-width: 1328px;
-  max-height: 100px;
-  padding: 15px 400px;
+  top: 118px;
+  min-width: 1820px;
+  padding: 20px 400px;
   border-top: 1px solid #d9d9d9;
   border-bottom: 1px solid #d9d9d9;
   background-color: #fff;
@@ -46,13 +46,12 @@ const CategoryList = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  max-height: 30px;
 `;
 
 const MoveCategoryButton = styled.button`
   border: none;
   background: none;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   color: #606770;
   cursor: pointer;

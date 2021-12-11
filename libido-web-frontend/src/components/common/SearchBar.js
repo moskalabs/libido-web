@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const StyledSearchBar = styled.input`
   border: 1px solid #262f6a;
   border-radius: 100px;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 500;
   padding: 0 10px;
   &:focus {
@@ -18,9 +18,9 @@ const StyledSearchBar = styled.input`
   ${props =>
     props.topNav &&
     css`
-      width: 660px;
-      height: 48px;
-      margin-right: 130px;
+      width: 890px;
+      height: 58px;
+      margin-right: 115px;
       padding: 0 30px;
     `}
 `;
