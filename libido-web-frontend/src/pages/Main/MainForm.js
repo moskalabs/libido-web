@@ -6,12 +6,19 @@ const MainForm = ({ completeContents }) => {
   return (
     <Container>
       {completeContents.map(({ category, contents }, index) => {
+        const currentCategory = category;
         return (
           <CategoryBox key={index}>
             <Name>{category}</Name>
             <ContentList>
               {contents.map((content, index) => {
-                return <MainContent key={index} content={content} />;
+                return (
+                  <MainContent
+                    key={index}
+                    currentCategory={currentCategory}
+                    content={content}
+                  />
+                );
               })}
             </ContentList>
           </CategoryBox>

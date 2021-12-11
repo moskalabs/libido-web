@@ -50,6 +50,8 @@ const MainFormContainer = () => {
   if (curContentsNum === completeContentsNum) {
     const completeContents = bindingCategoryToContents(sort, contents);
 
+    console.log(completeContents);
+
     return <MainForm completeContents={completeContents} />;
   } else return null;
 };
