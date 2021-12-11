@@ -11,15 +11,9 @@ const MainContent = ({ content }) => {
       </ContentRunTimeContainer>
       <Thumbnail url={image_url} />
       <ContentInfoContainer>
-        <ChannelFigure />
-        <RightContentInfoContainer>
-          <ContentTitle>농장 경비견으로 키웠는데...</ContentTitle>
-          <SubInfoContainer>
-            <ContentSubInfo>조회수 51만회 ・ 10일전</ContentSubInfo>
-          </SubInfoContainer>
-          <ContentChannelName>포트포크</ContentChannelName>
-        </RightContentInfoContainer>
-        <ContentToggleButton />
+        <ContentTitle>tvN드라마 그냥 사랑하는 사이</ContentTitle>
+        <ContentMedia>YOUTUBE</ContentMedia>
+        <ContentSubInfo>3시간 전 ・ 조회수 24만회</ContentSubInfo>
       </ContentInfoContainer>
     </Container>
   );
@@ -43,41 +37,23 @@ const Thumbnail = styled.div`
 `;
 
 const ContentInfoContainer = styled.div`
-  display: flex;
-  padding: 15px 8px;
+  padding: 15px 40px 45px;
 `;
 
-const ChannelFigure = styled.figure`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: red;
-`;
-
-const RightContentInfoContainer = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  margin: 0 20px 0 40px;
-`;
-
-const ContentTitle = styled.span`
-  margin-bottom: 18px;
+const ContentTitle = styled.div`
+  margin-bottom: 8px;
+  font-size: 20px;
   color: #383838;
 `;
 
-const SubInfoContainer = styled.div`
+const ContentMedia = styled.div`
+  margin-bottom: 8px;
+  font-size: 18px;
   color: #848484;
-  font-size: 14px;
-  margin-bottom: 18px;
 `;
 
-const ContentChannelName = styled.div`
+const ContentSubInfo = styled.div`
   color: #848484;
-  font-size: 14px;
 `;
 
-const ContentSubInfo = styled.span``;
-
-const ContentToggleButton = styled.button``;
 export default MainContent;
