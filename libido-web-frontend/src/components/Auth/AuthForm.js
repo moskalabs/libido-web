@@ -6,6 +6,12 @@ const StyledAuthForm = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .guide {
+    font-family: "Readex Pro", sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
   h3 {
     text-align: center;
     margin-bottom: 1rem;
@@ -16,8 +22,12 @@ const StyledAuthForm = styled.div`
     margin-bottom: 10px;
     text-align: center;
   }
+  .condition {
+    font-size: 0.8rem;
+    color: gray;
+    margin-bottom: 20px;
+  }
 `;
-
 const LoginContainer = styled.div`
   position: relative;
   display: flex;
@@ -28,9 +38,21 @@ const LoginContainer = styled.div`
 `;
 
 const StyledInput = styled.input`
-  font-size: 1rem;
+  padding: 10px 20px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
   outline: none;
-  width: 100%;
+  border: 1px lightgray solid;
+  border-radius: 4px;
+`;
+
+const OverlayButton = styled.button`
+  padding: 10px 10px;
+  background: white;
+  border: #e8eaed solid 1px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px #e8eaed;
 `;
 
 const TelForm = styled.div`
@@ -42,40 +64,77 @@ const Footer = styled.div`
   display: flex;
 `;
 const Button = styled.button`
-  margin-top: 10px;
-  margin-right: 10px;
-  padding: 5px 40px;
-  border-radius: 10px;
-  background: #5fc8e8;
+  padding: 12px 18px;
+  border-radius: 3px;
+  background: #262f6a;
   border-style: none;
   cursor: pointer;
   color: white;
 `;
-
 const textMap = {
   login: "로그인",
   register: "회원가입",
 };
 
-const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
+const AuthForm = ({
+  type,
+  form,
+  inputValueCheck,
+  onChange,
+  onSubmit,
+  submitPhoneNumber,
+  isAvailable,
+}) => {
   const text = textMap[type];
 
   return (
     <StyledAuthForm>
-      <div>CREATE LIBIDO ID</div>
+      <div className="guide">CREATE LIBIDO ID</div>
       <h3>{text}</h3>
       <form onSubmit={onSubmit}>
+        {/* <StyledInput
+          name="userName"
+          placeholder="이름"
+          onChange={onChange}
+          value={form.userName}
+        />
         <StyledInput
-          autoComplete="email"
+          name="birth"
+          placeholder="생년월일(6자리)"
+          onChange={onChange}
+          value={form.birth}
+        /> */}
+
+        <StyledInput
+          name="nickname"
+          placeholder="닉네임"
+          type="text"
+          onChange={onChange}
+          value={form.nickname}
+        />
+        <OverlayButton
+          onClick={inputValueCheck}
+          data-check="nicknameCheckButton"
+        >
+          중복확인
+        </OverlayButton>
+        <StyledInput
           name="email"
-          placeholder="이메일"
+          placeholder="ID"
           onChange={onChange}
           value={form.email}
         />
+        <OverlayButton onClick={inputValueCheck} data-check="idCheckButton">
+          중복확인
+        </OverlayButton>
+        <div className="condition">
+          {isAvailable === "AVAILABLE"
+            ? "사용 가능 합니다!"
+            : "중복되었습니다!"}
+        </div>
         <StyledInput
-          autoComplete="new-password"
           name="password"
-          placeholder="패스워드"
+          placeholder="PASSWORD"
           type="password"
           onChange={onChange}
           value={form.password}
@@ -83,21 +142,15 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
         {type === "register" && (
           <>
             <StyledInput
-              autoComplete="new-password"
               name="re_password"
-              placeholder="패스워드 확인"
+              placeholder="PW CHECK"
               type="password"
               onChange={onChange}
               value={form.re_password}
             />
-            <StyledInput
-              autoComplete="nickname"
-              name="nickname"
-              placeholder="닉네임"
-              type="text"
-              onChange={onChange}
-              value={form.nickname}
-            />
+            <div className="condition">
+              문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+            </div>
           </>
         )}
         {type === "login" ? (
@@ -123,7 +176,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
       </form>
       {type === "register" && (
         <TelForm>
-          <StyledInput
+          {/* <StyledInput
             id="phoneNumberInput"
             autoComplete="tel"
             name="phone_number"
@@ -137,9 +190,9 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
             placeholder="인증번호"
             onChange={onChange}
             value={form.verificationCode}
-          />
-          <Button onClick={submitPhoneNumber}>인증번호</Button>
-          <Button onClick={submitPhoneNumber}>확인하기</Button>
+          /> */}
+          {/* <Button onClick={submitPhoneNumber}>인증번호</Button>
+          <Button onClick={submitPhoneNumber}>확인하기</Button> */}
         </TelForm>
       )}
       <Footer>
@@ -149,7 +202,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
             <Button>로그인</Button>
           </>
         ) : (
-          <Button type="submit">다음</Button>
+          <Button type="submit">NEXT</Button>
         )}
       </Footer>
     </StyledAuthForm>
@@ -157,5 +210,3 @@ const AuthForm = ({ type, form, onChange, onSubmit, submitPhoneNumber }) => {
 };
 
 export default AuthForm;
-
-//message가 success일때, auth_number와 input창에 내가 입력한 값과 같은지

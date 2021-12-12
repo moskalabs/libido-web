@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
-import { takeLatest } from "redux-saga/effects";
+import { takeLatest, takeEvery } from "redux-saga/effects";
 import createRequestSaga, {
   createRequestActionTypes,
 } from "../lib/createRequestSaga";
@@ -15,7 +15,13 @@ const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
   createRequestActionTypes("auth/LOGIN");
 
+const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] =
+  createRequestActionTypes("auth/CHECK");
+
 const PHONENUMBER = "auth/PHONE_NUMBER";
+// const IDCHECK = "auth/IDCHECK";
+
+const INITIALIZE_AVAILABLE = "auth/INITIALIZE_AVAILABLE";
 
 export const changeField = createAction(
   CHANGE_FIELD,
@@ -27,6 +33,8 @@ export const changeField = createAction(
 );
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 
+export const initializeAvailable = createAction(INITIALIZE_AVAILABLE);
+
 export const register = createAction(
   REGISTER,
   ({ email, password, re_password, phone_number, nickname }) => ({
@@ -37,7 +45,7 @@ export const register = createAction(
     nickname,
   })
 );
-export const login = createAction(REGISTER, ({ email, password }) => ({
+export const login = createAction(LOGIN, ({ email, password }) => ({
   email,
   password,
 }));
@@ -47,15 +55,25 @@ export const phoneNumberAction = createAction(
   phoneNumber => phoneNumber
 );
 
+export const checkInputValue = createAction(
+  CHECK,
+  currentCheckInputValue => currentCheckInputValue
+);
+// export const idCheck = createAction(IDCHECK, ({ email }) => ({
+//   email,
+// }));
+
 //사가 생성
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 const phoneNumberSaga = createRequestSaga(PHONENUMBER, authAPI.phoneNumber);
+const checkInputValueSaga = createRequestSaga(CHECK, authAPI.checkInput);
 
 export function* authSaga() {
   yield takeLatest(REGISTER, registerSaga);
   yield takeLatest(LOGIN, loginSaga);
   yield takeLatest(PHONENUMBER, phoneNumberSaga);
+  yield takeEvery(CHECK, checkInputValueSaga);
 }
 
 const initialState = {
@@ -71,8 +89,10 @@ const initialState = {
     phone_number: "",
     verificationCode: "",
   },
+
   message: "",
   authError: null,
+  isCheckSuccess: null,
 };
 
 const auth = handleActions(
@@ -107,6 +127,14 @@ const auth = handleActions(
     [LOGIN_FAILURE]: (state, { payload: error }) => ({
       ...state,
       authError: error,
+    }),
+    [CHECK_SUCCESS]: (state, { payload: { message } }) => ({
+      ...state,
+      isCheckSuccess: message,
+    }),
+    [INITIALIZE_AVAILABLE]: state => ({
+      ...state,
+      isCheckSuccess: null,
     }),
   },
   initialState

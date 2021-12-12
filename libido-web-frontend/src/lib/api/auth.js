@@ -1,3 +1,4 @@
+import { checkInputValue } from "../../modules/auth";
 import client from "./client";
 
 export const login = ({ email, password }) =>
@@ -28,4 +29,22 @@ export const phoneNumber = phoneNumber => {
       phone_number,
     })
     .then(res => console.log(res));
+};
+
+export const checkInput = checkInputValue => {
+  const regExp =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  let checkType;
+  let currentKey;
+  if (regExp.test(checkInputValue)) {
+    checkType = "emailcheck";
+    currentKey = "email";
+  } else {
+    checkType = "nicknamecheck";
+    currentKey = "nickname";
+  }
+
+  return client.post(`http://221.154.228.231:8000/users/${checkType}`, {
+    [currentKey]: checkInputValue,
+  });
 };

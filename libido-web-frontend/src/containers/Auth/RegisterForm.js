@@ -5,20 +5,26 @@ import {
   initializeForm,
   register,
   phoneNumberAction,
+  checkInputValue,
+  initializeAvailable,
 } from "../../modules/auth";
 import AuthForm from "../../components/Auth/AuthForm";
 import { check } from "../../modules/user";
 import { createStore } from "redux";
-
 const RegisterForm = () => {
   const dispatch = useDispatch();
-  const { form, message, phoneNumber } = useSelector(({ auth, user }) => ({
-    form: auth.register,
-    message: auth.message,
-    phoneNumber: auth.register.phone_number,
-    user: user.user,
-  }));
-
+  const { form, message, checkResult, phoneNumber } = useSelector(
+    ({ auth, user }) => ({
+      form: auth.register,
+      message: auth.message,
+      phoneNumber: auth.register.phone_number,
+      checkResult: auth.isCheckSuccess,
+      user: user.user,
+    })
+  );
+  const isAvailable = checkResult && checkResult.split("_")[0];
+  // isAvailable dispatch(initializeAvailable());
+  console.log(isAvailable, checkResult);
   //인풋 변경 이벤트
   const onChange = e => {
     const { value, name } = e.target;
@@ -31,21 +37,47 @@ const RegisterForm = () => {
     );
   };
 
-  // const abc =
-  // const reducer = (state, action) => {
-  //   return state;
-  // };
-  // const store = createStore(() => reducer(abc));
-  // console.log(store.getState());
-
   //폼 등록 이벤트 핸들러
   const onSubmit = e => {
     e.preventDefault();
     const { email, password, re_password, phone_number, nickname } = form;
     if (password !== re_password) return;
     dispatch(
-      register({ email, password, re_password, phone_number, nickname })
+      register({
+        email,
+        password,
+        re_password,
+        phone_number,
+        nickname,
+      })
     );
+  };
+  // const idCheck = e => {
+  //   e.preventDefault();
+  //   const { email } = form;
+  // };
+
+  const sortCheckInputValue = currentCheckButtonType => {
+    let checkInputValue;
+    switch (currentCheckButtonType) {
+      case "nicknameCheckButton":
+        checkInputValue = form.nickname;
+        break;
+      case "idCheckButton":
+        checkInputValue = form.email;
+        break;
+      default:
+        break;
+    }
+    return checkInputValue;
+  };
+
+  const inputValueCheck = e => {
+    const currentCheckButtonType = e.target.dataset.check;
+
+    const currentCheckInputValue = sortCheckInputValue(currentCheckButtonType);
+
+    dispatch(checkInputValue(currentCheckInputValue));
   };
 
   const submitPhoneNumber = e => {
@@ -73,18 +105,12 @@ const RegisterForm = () => {
       // dispatch(check);
     }
   }, [message, dispatch]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log("check API 성공");
-  //     console.log(user);₩
-  //   }
-  // }, [user]);
-
   return (
     <AuthForm
       type="register"
       form={form}
+      inputValueCheck={inputValueCheck}
+      isAvailable={isAvailable}
       onChange={onChange}
       onSubmit={onSubmit}
       submitPhoneNumber={submitPhoneNumber}
