@@ -26,7 +26,7 @@ const scrollTop = () => {
   window.scrollTo(0, 0);
 };
 
-const MainFormContainer = ({ isScrollEnd, resetIsScrollEnd }) => {
+const MainFormContainer = () => {
   const dispatch = useDispatch();
 
   const { sort, contentList, roomList, contentListError, roomsListError } =
@@ -38,13 +38,11 @@ const MainFormContainer = ({ isScrollEnd, resetIsScrollEnd }) => {
       roomListError: mainForm.roomListError,
     }));
 
-  useEffect(() => {
-    if (!isScrollEnd) return;
-    resetIsScrollEnd();
-
+  const getMoreContents = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
     dispatch(content(sort));
     dispatch(rooms(sort));
-  });
+  };
 
   useEffect(() => {
     dispatch(initializeMainForm());
@@ -63,8 +61,13 @@ const MainFormContainer = ({ isScrollEnd, resetIsScrollEnd }) => {
       contentList,
       roomList
     );
-    console.log(completeContents);
-    return <MainForm completeContents={completeContents} />;
+
+    return (
+      <MainForm
+        getMoreContents={getMoreContents}
+        completeContents={completeContents}
+      />
+    );
   } else return null;
 };
 

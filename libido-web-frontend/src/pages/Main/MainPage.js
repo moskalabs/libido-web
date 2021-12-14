@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
@@ -6,28 +6,28 @@ import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
 
 const MainPage = () => {
-  const [isScrollEnd, setIsScrollEnd] = useState(false);
+  // const [isScrollEnd, setIsScrollEnd] = useState(false);
 
-  const checkFetchAddData = event => {
-    const { scrollTop, scrollHeight, clientHeight } =
-      event.target.scrollingElement;
+  // const checkFetchAddData = event => {
+  //   const { scrollTop, scrollHeight, clientHeight } =
+  //     event.target.scrollingElement;
 
-    const targetScrollPos = scrollHeight - parseInt(scrollTop);
+  //   const targetScrollPos = scrollHeight - parseInt(scrollTop);
 
-    if (targetScrollPos === clientHeight) setIsScrollEnd(!isScrollEnd);
-  };
+  //   if (targetScrollPos === clientHeight) setIsScrollEnd(!isScrollEnd);
+  // };
 
-  const resetIsScrollEnd = () => {
-    setIsScrollEnd(false);
-  };
+  // const resetIsScrollEnd = () => {
+  //   setIsScrollEnd(false);
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", checkFetchAddData, true);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", checkFetchAddData, true);
 
-    return () => {
-      window.removeEventListener("scroll", null);
-    };
-  });
+  //   return () => {
+  //     window.removeEventListener("scroll", null);
+  //   };
+  // });
   return (
     <Container>
       <SideNavContainer>
@@ -38,10 +38,7 @@ const MainPage = () => {
           <CategoryBarContainer />
         </CategoryBarWrapper>
         <MainTemplate>
-          <MainFormContainer
-            isScrollEnd={isScrollEnd}
-            resetIsScrollEnd={resetIsScrollEnd}
-          />
+          <MainFormContainer />
         </MainTemplate>
       </Inner>
     </Container>

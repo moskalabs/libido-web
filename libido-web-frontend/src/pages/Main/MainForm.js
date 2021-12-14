@@ -1,34 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Loader from "../../lib/Loader";
 import MainContent from "./MainContent";
 
-const MainForm = ({ isAddData, completeContents }) => {
+const MainForm = ({ getMoreContents, completeContents }) => {
+  const [target, setTarget] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const onIntersect = async ([{ isIntersecting, target }], observer) => {
+    if (isIntersecting && !isLoaded) {
+      observer.unobserve(target);
+      setIsLoaded(true);
+      await getMoreContents();
+      setIsLoaded(false);
+      observer.observe(target);
+    }
+  };
+
+  useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
+
   return (
     <Container>
-      {completeContents.map(({ category, contents }, index) => {
-        const currentCategory = category;
-        return (
-          <CategoryBox key={index}>
-            <Name>{category}</Name>
-            <ContentList>
-              {contents.map((content, index) => {
-                return (
-                  <MainContent
-                    key={index}
-                    currentCategory={currentCategory}
-                    content={content}
-                  />
-                );
-              })}
-            </ContentList>
-          </CategoryBox>
-        );
-      })}
+      <ContentsContainer>
+        {completeContents.map(({ category, contents }, index) => {
+          const currentCategory = category;
+          return (
+            <CategoryBox key={index}>
+              <Name>{category}</Name>
+              <ContentList>
+                {contents.map((content, index) => {
+                  return (
+                    <MainContent
+                      key={index}
+                      currentCategory={currentCategory}
+                      content={content}
+                    />
+                  );
+                })}
+              </ContentList>
+            </CategoryBox>
+          );
+        })}
+      </ContentsContainer>
+      <div ref={setTarget} className="targetElement">
+        {isLoaded && <Loader />}
+      </div>
     </Container>
   );
 };
 
 const Container = styled.div`
+  & .targetElement {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+const ContentsContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
