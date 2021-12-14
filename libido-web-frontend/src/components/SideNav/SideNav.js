@@ -37,6 +37,7 @@ const Container = styled.div`
   padding: 0 33px 0;
   border: none;
   background-color: #262f6a;
+  z-index: 30;
 `;
 
 const SideNavHeader = styled.div`

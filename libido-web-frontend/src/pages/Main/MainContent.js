@@ -14,14 +14,14 @@ const MainContent = ({ currentCategory, content }) => {
         ))}
       <Thumbnail url={image_url} />
       <ContentInfoContainer>
-        {currentCategory === "맞춤 스트리밍" ||
-          (currentCategory === "인기 STREAMING" && (
-            <LiveIcon className="live" />
-          ))}
-        {currentCategory === "맞춤 스트리밍" ||
-          (currentCategory === "인기 STREAMING" && (
-            <LiveIcon className="chat" />
-          ))}
+        {(currentCategory === "맞춤 스트리밍" ||
+          currentCategory === "인기 STREAMING") && (
+          <LiveIcon className="live" />
+        )}
+        {(currentCategory === "맞춤 스트리밍" ||
+          currentCategory === "인기 STREAMING") && (
+          <LiveIcon className="chat" />
+        )}
         <ContentTitle>tvN드라마 그냥 사랑하는 사이</ContentTitle>
         {currentCategory === "맞춤형 추천 영상" ||
         currentCategory === "인기영상" ? (

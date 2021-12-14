@@ -1,5 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { takeEvery } from "redux-saga/effects";
+import { produce } from "immer";
 import createRequestSaga, {
   createRequestActionTypes,
 } from "../lib/createRequestSaga";
@@ -28,28 +29,32 @@ export function* mainFormSaga() {
 }
 
 const initialState = {
-  contents: [],
-  contentsError: null,
+  contentList: [],
+  roomList: [],
+  contentListError: null,
+  roomListError: null,
 };
 
 const mainForm = handleActions(
   {
     [INITIALIZE_MAINFORM]: state => initialState,
-    [CONTENT_SUCCESS]: ({ contents }, { payload: { message } }) => ({
-      contents: contents.concat(message),
-      contentsError: null,
-    }),
+    [CONTENT_SUCCESS]: (state, { payload: { message } }) =>
+      produce(state, draft => {
+        draft.contentList = state.contentList.concat(message);
+        draft.contentListError = null;
+      }),
     [CONTENT_FAILURE]: (state, { payload: error }) => ({
       ...state,
-      contentsError: error,
+      contentListError: error,
     }),
-    [ROOMS_SUCCESS]: ({ contents }, { payload: { message } }) => ({
-      contents: contents.concat(message),
-      contentsError: null,
-    }),
+    [ROOMS_SUCCESS]: (state, { payload: { message } }) =>
+      produce(state, draft => {
+        draft.roomList = state.roomList.concat(message);
+        draft.roomListError = null;
+      }),
     [ROOMS_FAILURE]: (state, { payload: error }) => ({
       ...state,
-      contentsError: error,
+      roomListError: error,
     }),
   },
   initialState

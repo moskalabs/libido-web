@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MainContent from "./MainContent";
 
-const MainForm = ({ completeContents }) => {
+const MainForm = ({ isAddData, completeContents }) => {
   return (
     <Container>
       {completeContents.map(({ category, contents }, index) => {
