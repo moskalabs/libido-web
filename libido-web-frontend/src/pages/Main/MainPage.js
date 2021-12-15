@@ -6,28 +6,6 @@ import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
 
 const MainPage = () => {
-  // const [isScrollEnd, setIsScrollEnd] = useState(false);
-
-  // const checkFetchAddData = event => {
-  //   const { scrollTop, scrollHeight, clientHeight } =
-  //     event.target.scrollingElement;
-
-  //   const targetScrollPos = scrollHeight - parseInt(scrollTop);
-
-  //   if (targetScrollPos === clientHeight) setIsScrollEnd(!isScrollEnd);
-  // };
-
-  // const resetIsScrollEnd = () => {
-  //   setIsScrollEnd(false);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", checkFetchAddData, true);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", null);
-  //   };
-  // });
   return (
     <Container>
       <SideNavContainer>

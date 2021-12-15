@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Loader from "../../lib/Loader";
 import MainContent from "./MainContent";
 
-const MainForm = ({ getMoreContents, completeContents }) => {
-  const [target, setTarget] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+const MainForm = ({ isLoaded, onIntersect, completeContents }) => {
+  // const [target, setTarget] = useState(null);
+  const target = useRef(null);
+  // const [isLoaded, setIsLoaded] = useState(false);
 
-  const onIntersect = async ([{ isIntersecting, target }], observer) => {
-    if (isIntersecting && !isLoaded) {
-      observer.unobserve(target);
-      setIsLoaded(true);
-      await getMoreContents();
-      setIsLoaded(false);
-      observer.observe(target);
-    }
-  };
+  // const onIntersect = async ([{ isIntersecting, target }], observer) => {
+  //   if (isIntersecting && !isLoaded) {
+  //     observer.unobserve(target);
+  //     setIsLoaded(true);
+  //     await getMoreContents();
+  //     setIsLoaded(false);
+  //     observer.observe(target);
+  //   }
+  // };
 
   useEffect(() => {
     let observer;
-    if (target) {
+    if (target.current) {
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0.4,
       });
-      observer.observe(target);
+      observer.observe(target.current);
     }
+
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target.current]);
 
   return (
     <Container>
@@ -51,7 +53,7 @@ const MainForm = ({ getMoreContents, completeContents }) => {
           );
         })}
       </ContentsContainer>
-      <div ref={setTarget} className="targetElement">
+      <div ref={target} className="targetElement">
         {isLoaded && <Loader />}
       </div>
     </Container>

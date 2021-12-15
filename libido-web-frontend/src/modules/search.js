@@ -51,10 +51,10 @@ const initialState = {
 const search = handleActions(
   {
     [INITIALIZE_SEARCHSTATE]: state => initialState,
-    [INITIALIZE_KEYWORD]: (state, { payload: form }) =>
-      produce(state, draft => {
-        draft[form].keyword = "";
-      }),
+    // [INITIALIZE_KEYWORD]: (state, { form }) =>
+    //   produce(state, draft => {
+    //     draft[form].keyword = "";
+    //   }),
     [CHANGE_FIELD]: (state, { payload: { form, value } }) =>
       produce(state, draft => {
         draft[form].keyword = value;

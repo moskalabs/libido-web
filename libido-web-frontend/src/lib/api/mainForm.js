@@ -14,12 +14,20 @@ import { identifyQuerySort } from "../identifyQuerySort";
 //   client.get(`${API.rooms}${querySort}`);
 // };
 
-export const content = categorySort => {
+export const content = ({ categorySort, currentOffset }) => {
   const querySort = identifyQuerySort(categorySort);
 
-  // return client
-  //   .get("http://127.0.0.1:8000/contents?category=popular")
-  //   .then(res => console.log(res));
+  // return client.get(
+  //   `http://172.30.1.44:8000/contents?category=${querySort}&offset=${
+  //     (currentOffset - 1) * 8
+  //   }`,
+  //   {
+  //     headers: {
+  //       Authorization:
+  //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+  //     },
+  //   }
+  // );
   return client.get(
     `/data/${
       querySort === "customize"
@@ -27,31 +35,25 @@ export const content = categorySort => {
         : "contentPopular.json"
     }`
   );
-  // .then(res => {
-  //   const {
-  //     data: { message },
-  //   } = res;
-  //   return message;
-  //   console.log(res);
-  // });
 };
 
-export const rooms = categorySort => {
+export const rooms = ({ categorySort, currentOffset }) => {
   const querySort = identifyQuerySort(categorySort);
 
-  // return client
-  //   .get("http://127.0.0.1:8000/contents?category=popular")
-  //   .then(res => console.log(res));
+  // return client.get(
+  //   `http://172.30.1.44:8000/rooms?category=${querySort}&offset=${
+  //     (currentOffset - 1) * 8
+  //   }`,
+  //   {
+  //     headers: {
+  //       Authorization:
+  //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+  //     },
+  //   }
+  // );
   return client.get(
     `/data/${
       querySort === "customize" ? "roomsCustomize.json" : "roomsPopular.json"
     }`
   );
-  // .then(res => {
-  //   const {
-  //     data: { message },
-  //   } = res;
-  //   return message;
-  //   console.log(res);
-  // });
 };

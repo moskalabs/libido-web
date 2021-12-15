@@ -8,6 +8,8 @@ import * as mainFormAPI from "../lib/api/mainForm";
 
 const INITIALIZE_MAINFORM = "mainForm/INITIALIZE_MAINFORM";
 
+const ISLOADED = "mainForm/ISLOADED";
+
 const [CONTENT, CONTENT_SUCCESS, CONTENT_FAILURE] =
   createRequestActionTypes("mainForm/CONTENT");
 
@@ -16,9 +18,17 @@ const [ROOMS, ROOMS_SUCCESS, ROOMS_FAILURE] =
 
 export const initializeMainForm = createAction(INITIALIZE_MAINFORM);
 
-export const content = createAction(CONTENT, sort => sort);
+export const content = createAction(CONTENT, ({ sort, currentOffset }) => ({
+  sort,
+  currentOffset,
+}));
 
-export const rooms = createAction(ROOMS, sort => sort);
+export const rooms = createAction(ROOMS, ({ sort, currentOffset }) => ({
+  sort,
+  currentOffset,
+}));
+
+export const isLoaded = createAction(ISLOADED);
 
 const contentSaga = createRequestSaga(CONTENT, mainFormAPI.content);
 const roomsSaga = createRequestSaga(ROOMS, mainFormAPI.rooms);
@@ -33,6 +43,8 @@ const initialState = {
   roomList: [],
   contentListError: null,
   roomListError: null,
+  currentOffset: 1,
+  isLoaded: false,
 };
 
 const mainForm = handleActions(
@@ -42,6 +54,7 @@ const mainForm = handleActions(
       produce(state, draft => {
         draft.contentList = state.contentList.concat(message);
         draft.contentListError = null;
+        draft.currentOffset = state.currentOffset + 1;
       }),
     [CONTENT_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -55,6 +68,10 @@ const mainForm = handleActions(
     [ROOMS_FAILURE]: (state, { payload: error }) => ({
       ...state,
       roomListError: error,
+    }),
+    [ISLOADED]: (state, action) => ({
+      ...state,
+      isLoaded: !state.isLoaded,
     }),
   },
   initialState

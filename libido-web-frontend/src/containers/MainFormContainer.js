@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { initializeMainForm, content, rooms } from "../modules/mainForm";
+import { useDispatch, useSelector, batch, shallowEqual } from "react-redux";
+import {
+  initializeMainForm,
+  content,
+  rooms,
+  isLoaded,
+} from "../modules/mainForm";
 import MainForm from "../pages/Main/MainForm";
 
 const bindingCategoryToContents = (categorySort, curContents, curRooms) => {
@@ -29,26 +34,49 @@ const scrollTop = () => {
 const MainFormContainer = () => {
   const dispatch = useDispatch();
 
-  const { sort, contentList, roomList, contentListError, roomsListError } =
-    useSelector(({ category, mainForm }) => ({
-      sort: category.sort,
-      contentList: mainForm.contentList,
-      roomList: mainForm.roomList,
-      contentListError: mainForm.contentListError,
-      roomListError: mainForm.roomListError,
-    }));
+  const {
+    sort,
+    contentList,
+    roomList,
+    contentListError,
+    roomsListError,
+    currentOffset,
+    currentIsLoaded,
+  } = useSelector(({ category, mainForm }) => ({
+    sort: category.sort,
+    contentList: mainForm.contentList,
+    roomList: mainForm.roomList,
+    contentListError: mainForm.contentListError,
+    roomListError: mainForm.roomListError,
+    currentOffset: mainForm.currentOffset,
+    currentIsLoaded: mainForm.isLoaded,
+  }));
 
   const getMoreContents = async () => {
+    dispatch(isLoaded());
+
     await new Promise(resolve => setTimeout(resolve, 1500));
-    dispatch(content(sort));
-    dispatch(rooms(sort));
+
+    batch(() => {
+      dispatch(content({ sort, currentOffset }));
+      dispatch(rooms({ sort, currentOffset }));
+    });
+    dispatch(isLoaded());
+  };
+  const onIntersect = async ([{ isIntersecting, target }], observer) => {
+    if (isIntersecting && !currentIsLoaded) {
+      observer.unobserve(target);
+      await getMoreContents();
+      observer.observe(target);
+    }
   };
 
   useEffect(() => {
-    dispatch(initializeMainForm());
-    dispatch(content(sort));
-    dispatch(rooms(sort));
-
+    batch(() => {
+      dispatch(initializeMainForm());
+      dispatch(content({ sort, currentOffset }));
+      dispatch(rooms({ sort, currentOffset }));
+    });
     scrollTop();
   }, [dispatch, sort]);
 
@@ -64,7 +92,9 @@ const MainFormContainer = () => {
 
     return (
       <MainForm
-        getMoreContents={getMoreContents}
+        isLoaded={currentIsLoaded}
+        onIntersect={onIntersect}
+        // getMoreContents={getMoreContents}
         completeContents={completeContents}
       />
     );

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeKeyword,
@@ -14,14 +14,16 @@ const SearchContainer = props => {
     keyword: search.topNav.keyword,
   }));
 
-  const searchKeyword = event => {
-    const currentKeyDown = event.key;
-    if (currentKeyDown === "Enter") {
-      const value = keyword;
-      dispatch(searchTopNavKeyword(keyword));
-      initializeKeyword("topNav");
-    }
-  };
+  const searchKeyword = useCallback(
+    event => {
+      const currentKeyDown = event.key;
+      if (currentKeyDown === "Enter") {
+        dispatch(searchTopNavKeyword(keyword));
+        // dispatch(initializeKeyword("topNav"));
+      }
+    },
+    [dispatch, keyword]
+  );
   // const searchTopNavKeyword = useCallback(
   //   event => {
   //     const currentKeyDown = event.key;
