@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector, batch, shallowEqual } from "react-redux";
 import {
   initializeMainForm,
   content,
   rooms,
   isLoaded,
+  increaseOffset,
 } from "../modules/mainForm";
 import MainForm from "../pages/Main/MainForm";
 
@@ -33,40 +34,40 @@ const scrollTop = () => {
 
 const MainFormContainer = () => {
   const dispatch = useDispatch();
+  const [isIntersect, setIntersect] = useState(false);
 
-  const {
-    sort,
-    contentList,
-    roomList,
-    contentListError,
-    roomsListError,
-    currentOffset,
-    currentIsLoaded,
-  } = useSelector(({ category, mainForm }) => ({
-    sort: category.sort,
-    contentList: mainForm.contentList,
-    roomList: mainForm.roomList,
-    contentListError: mainForm.contentListError,
-    roomListError: mainForm.roomListError,
-    currentOffset: mainForm.currentOffset,
-    currentIsLoaded: mainForm.isLoaded,
-  }));
+  const { sort, contentList, roomList, currentOffset, currentIsLoaded } =
+    useSelector(({ category, mainForm }) => ({
+      sort: category.sort,
+      contentList: mainForm.contentList,
+      roomList: mainForm.roomList,
+      currentOffset: mainForm.currentOffset,
+      currentIsLoaded: mainForm.isLoaded,
+    }));
 
-  const getMoreContents = async () => {
-    dispatch(isLoaded());
+  useEffect(() => {
+    async function getMoreContents() {
+      if (!isIntersect) return;
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+      dispatch(isLoaded());
 
-    batch(() => {
-      dispatch(content({ sort, currentOffset }));
-      dispatch(rooms({ sort, currentOffset }));
-    });
-    dispatch(isLoaded());
-  };
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      batch(() => {
+        dispatch(content({ sort, currentOffset }));
+        dispatch(rooms({ sort, currentOffset }));
+        dispatch(increaseOffset());
+      });
+      dispatch(isLoaded());
+      setIntersect(false);
+    }
+    getMoreContents();
+  }, [isIntersect]);
+
   const onIntersect = async ([{ isIntersecting, target }], observer) => {
-    if (isIntersecting && !currentIsLoaded) {
+    if (isIntersecting) {
       observer.unobserve(target);
-      await getMoreContents();
+      setIntersect(true);
       observer.observe(target);
     }
   };
@@ -76,6 +77,7 @@ const MainFormContainer = () => {
       dispatch(initializeMainForm());
       dispatch(content({ sort, currentOffset }));
       dispatch(rooms({ sort, currentOffset }));
+      dispatch(increaseOffset());
     });
     scrollTop();
   }, [dispatch, sort]);

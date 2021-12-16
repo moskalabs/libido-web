@@ -10,6 +10,8 @@ const INITIALIZE_MAINFORM = "mainForm/INITIALIZE_MAINFORM";
 
 const ISLOADED = "mainForm/ISLOADED";
 
+const INCREASEOFFSET = "mainForm/INCREASEOFFSET";
+
 const [CONTENT, CONTENT_SUCCESS, CONTENT_FAILURE] =
   createRequestActionTypes("mainForm/CONTENT");
 
@@ -29,6 +31,8 @@ export const rooms = createAction(ROOMS, ({ sort, currentOffset }) => ({
 }));
 
 export const isLoaded = createAction(ISLOADED);
+
+export const increaseOffset = createAction(INCREASEOFFSET);
 
 const contentSaga = createRequestSaga(CONTENT, mainFormAPI.content);
 const roomsSaga = createRequestSaga(ROOMS, mainFormAPI.rooms);
@@ -54,7 +58,7 @@ const mainForm = handleActions(
       produce(state, draft => {
         draft.contentList = state.contentList.concat(message);
         draft.contentListError = null;
-        draft.currentOffset = state.currentOffset + 1;
+        // draft.currentOffset = state.currentOffset + 1;
       }),
     [CONTENT_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -72,6 +76,10 @@ const mainForm = handleActions(
     [ISLOADED]: (state, action) => ({
       ...state,
       isLoaded: !state.isLoaded,
+    }),
+    [INCREASEOFFSET]: (state, action) => ({
+      ...state,
+      currentOffset: state.currentOffset + 1,
     }),
   },
   initialState

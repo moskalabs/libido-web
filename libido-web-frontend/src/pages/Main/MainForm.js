@@ -28,7 +28,7 @@ const MainForm = ({ isLoaded, onIntersect, completeContents }) => {
     }
 
     return () => observer && observer.disconnect();
-  }, [target.current]);
+  }, []);
 
   return (
     <Container>
