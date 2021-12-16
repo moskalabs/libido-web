@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector, batch, shallowEqual } from "react-redux";
 import {
   initializeMainForm,
@@ -37,13 +37,16 @@ const MainFormContainer = () => {
   const [isIntersect, setIntersect] = useState(false);
 
   const { sort, contentList, roomList, currentOffset, currentIsLoaded } =
-    useSelector(({ category, mainForm }) => ({
-      sort: category.sort,
-      contentList: mainForm.contentList,
-      roomList: mainForm.roomList,
-      currentOffset: mainForm.currentOffset,
-      currentIsLoaded: mainForm.isLoaded,
-    }));
+    useSelector(
+      ({ category, mainForm }) => ({
+        sort: category.sort,
+        contentList: mainForm.contentList,
+        roomList: mainForm.roomList,
+        currentOffset: mainForm.currentOffset,
+        currentIsLoaded: mainForm.isLoaded,
+      }),
+      shallowEqual
+    );
 
   useEffect(() => {
     async function getMoreContents() {
@@ -90,14 +93,12 @@ const MainFormContainer = () => {
       contentList,
       roomList
     );
-    // if(!isIntersect) setIntersect(false);
 
     return (
       <MainForm
         isLoaded={currentIsLoaded}
         isIntersect={isIntersect}
         onIntersect={onIntersect}
-        // getMoreContents={getMoreContents}
         completeContents={completeContents}
       />
     );
