@@ -68,7 +68,6 @@ const MainFormContainer = () => {
     if (isIntersecting) {
       observer.unobserve(target);
       setIntersect(true);
-      observer.observe(target);
     }
   };
 
@@ -91,10 +90,12 @@ const MainFormContainer = () => {
       contentList,
       roomList
     );
+    // if(!isIntersect) setIntersect(false);
 
     return (
       <MainForm
         isLoaded={currentIsLoaded}
+        isIntersect={isIntersect}
         onIntersect={onIntersect}
         // getMoreContents={getMoreContents}
         completeContents={completeContents}

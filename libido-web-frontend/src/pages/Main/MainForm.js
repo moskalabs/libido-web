@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Loader from "../../lib/Loader";
 import MainContent from "./MainContent";
 
-const MainForm = ({ isLoaded, onIntersect, completeContents }) => {
+const MainForm = ({ isLoaded, isIntersect, onIntersect, completeContents }) => {
   // const [target, setTarget] = useState(null);
   const target = useRef(null);
   // const [isLoaded, setIsLoaded] = useState(false);
@@ -19,6 +19,7 @@ const MainForm = ({ isLoaded, onIntersect, completeContents }) => {
   // };
 
   useEffect(() => {
+    if (isIntersect && isLoaded) return;
     let observer;
     if (target.current) {
       observer = new IntersectionObserver(onIntersect, {
@@ -28,7 +29,7 @@ const MainForm = ({ isLoaded, onIntersect, completeContents }) => {
     }
 
     return () => observer && observer.disconnect();
-  }, []);
+  }, [target.current, isIntersect]);
 
   return (
     <Container>
