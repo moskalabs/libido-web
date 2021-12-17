@@ -1,9 +1,16 @@
 import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Loader from "../../lib/Loader";
 import MainContent from "./MainContent";
+import FriendFigure from "../../components/common/FrinedFigure";
 
-const MainForm = ({ isLoaded, isIntersect, onIntersect, completeContents }) => {
+const MainForm = ({
+  isLoaded,
+  isIntersect,
+  onIntersect,
+  completeContents,
+  currentCategorySort,
+}) => {
   const target = useRef(null);
 
   useEffect(() => {
@@ -19,27 +26,61 @@ const MainForm = ({ isLoaded, isIntersect, onIntersect, completeContents }) => {
 
   return (
     <Container>
-      <ContentsContainer>
-        {completeContents.map(({ category, contents }, index) => {
-          const currentCategory = category;
-          return (
-            <CategoryBox key={index}>
-              <Name>{category}</Name>
-              <ContentList>
-                {contents.map((content, index) => {
+      {currentCategorySort === "libido" ||
+      currentCategorySort === "trending" ? (
+        <ContentsContainer sort={currentCategorySort}>
+          {completeContents.map(({ category, contents }, index) => {
+            const currentCategory = category;
+            return (
+              <CategoryBox key={index}>
+                <Name>{category}</Name>
+                <ContentList>
+                  {contents.map((content, index) => {
+                    return (
+                      <MainContent
+                        key={index}
+                        currentCategory={currentCategory}
+                        content={content}
+                      />
+                    );
+                  })}
+                </ContentList>
+              </CategoryBox>
+            );
+          })}
+        </ContentsContainer>
+      ) : (
+        <>
+          <FriendsContainer>
+            <Name>맞춤친구 추천</Name>
+            <FriendList>
+              {completeContents[0].map(
+                ({ id, nickname, image_url, follows }, index) => {
                   return (
-                    <MainContent
+                    <FriendFigure
+                      nickname={nickname}
+                      image_url={image_url}
+                      follows={follows}
                       key={index}
-                      currentCategory={currentCategory}
-                      content={content}
                     />
                   );
+                }
+              )}
+            </FriendList>
+          </FriendsContainer>
+          <ContentsContainer>
+            <CategoryBox>
+              <Name>친구 스트리밍</Name>
+              <ContentList>
+                {completeContents[1].map((content, index) => {
+                  return <MainContent key={index} content={content} />;
                 })}
               </ContentList>
             </CategoryBox>
-          );
-        })}
-      </ContentsContainer>
+          </ContentsContainer>
+        </>
+      )}
+
       <div ref={target} className="targetElement">
         {isLoaded && <Loader />}
       </div>
@@ -60,8 +101,26 @@ const Container = styled.div`
 `;
 
 const ContentsContainer = styled.div`
+  ${({ sort }) =>
+    (sort === "libido" || sort === "trending") &&
+    css`
+      display: flex;
+      justify-content: space-between;
+    `}
+`;
+
+const FriendsContainer = styled.div`
+  margin-bottom: 80px;
+  padding-right: 50px;
+`;
+
+const FriendList = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-radius: 8px;
+  overflow: scroll;
+  background-color: #fff;
 `;
 
 const CategoryBox = styled.div`

@@ -57,3 +57,26 @@ export const rooms = ({ categorySort, currentOffset }) => {
     }`
   );
 };
+
+export const friendList = () => {
+  return client.get("/data/followFriends.json");
+  // return client.get("http://127.0.0.1:8000/users/follows", {
+  //   headers: {
+  //     Authorization:
+  //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+  //   },
+  // });
+};
+
+export const friends = currentOffset => {
+  return client.get("/data/friendsRoom.json");
+  // return client.get(
+  //   `http://127.0.0.1:8000/rooms/friends?offset=${currentOffset}`,
+  //   {
+  //     headers: {
+  //       Authorization:
+  //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+  //     },
+  //   }
+  // );
+};

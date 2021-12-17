@@ -18,6 +18,12 @@ const [CONTENT, CONTENT_SUCCESS, CONTENT_FAILURE] =
 const [ROOMS, ROOMS_SUCCESS, ROOMS_FAILURE] =
   createRequestActionTypes("mainForm/ROOMS");
 
+const [FRIENDLIST, FRIENDLIST_SUCCESS, FRIENDLIST_FAILURE] =
+  createRequestActionTypes("mainForm/FRIENDLIST");
+
+const [FRIENDS, FRIENDS_SUCCESS, FRIENDS_FAILURE] =
+  createRequestActionTypes("mainForm/FRIENDS");
+
 export const initializeMainForm = createAction(INITIALIZE_MAINFORM);
 
 export const content = createAction(CONTENT, ({ sort, currentOffset }) => ({
@@ -30,24 +36,36 @@ export const rooms = createAction(ROOMS, ({ sort, currentOffset }) => ({
   currentOffset,
 }));
 
+export const friendList = createAction(FRIENDLIST);
+
+export const friends = createAction(FRIENDS, currentOffset => currentOffset);
+
 export const isLoaded = createAction(ISLOADED);
 
 export const increaseOffset = createAction(INCREASEOFFSET);
 
 const contentSaga = createRequestSaga(CONTENT, mainFormAPI.content);
 const roomsSaga = createRequestSaga(ROOMS, mainFormAPI.rooms);
+const friendListSaga = createRequestSaga(FRIENDLIST, mainFormAPI.friendList);
+const friendsSaga = createRequestSaga(FRIENDS, mainFormAPI.friends);
 
 export function* mainFormSaga() {
   yield takeEvery(CONTENT, contentSaga);
   yield takeEvery(ROOMS, roomsSaga);
+  yield takeEvery(FRIENDLIST, friendListSaga);
+  yield takeEvery(FRIENDS, friendsSaga);
 }
 
 const initialState = {
   contentList: [],
   roomList: [],
+  recommendFriendList: [],
+  friendsContentList: [],
   contentListError: null,
   roomListError: null,
-  currentOffset: 1,
+  recommendFriendListError: null,
+  friendsContentListError: null,
+  currentOffset: 0,
   isLoaded: false,
 };
 
@@ -58,7 +76,6 @@ const mainForm = handleActions(
       produce(state, draft => {
         draft.contentList = state.contentList.concat(message);
         draft.contentListError = null;
-        // draft.currentOffset = state.currentOffset + 1;
       }),
     [CONTENT_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -72,6 +89,24 @@ const mainForm = handleActions(
     [ROOMS_FAILURE]: (state, { payload: error }) => ({
       ...state,
       roomListError: error,
+    }),
+    [FRIENDLIST_SUCCESS]: (state, { payload: { message } }) =>
+      produce(state, draft => {
+        draft.recommendFriendList = state.recommendFriendList.concat(message);
+        draft.recommendFriendListError = null;
+      }),
+    [FRIENDLIST_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      recommendFriendListError: error,
+    }),
+    [FRIENDS_SUCCESS]: (state, { payload: { message } }) =>
+      produce(state, draft => {
+        draft.friendsContentList = state.friendsContentList.concat(message);
+        draft.friendsContentListError = null;
+      }),
+    [FRIENDS_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      friendsContentListError: error,
     }),
     [ISLOADED]: (state, action) => ({
       ...state,
