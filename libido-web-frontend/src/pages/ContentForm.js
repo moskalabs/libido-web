@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const MainContent = ({ currentCategory, content }) => {
+const ContentForm = ({ currentCategory, content }) => {
   const { image_url } = content;
 
   return (
@@ -105,4 +105,4 @@ const ContentSubInfo = styled.div`
   color: #848484;
 `;
 
-export default MainContent;
+export default ContentForm;

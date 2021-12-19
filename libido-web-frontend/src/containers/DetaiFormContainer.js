@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import DetailForm from "../pages/Detail/DetailForm";
 
 const DetailFormContainer = () => {
-  return <DetailForm />;
+  const contents = useSelector(({ search }) => search.topNav.contents);
+
+  return <DetailForm contents={contents} />;
 };
 
 export default DetailFormContainer;

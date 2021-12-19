@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import Loader from "../../lib/Loader";
-import MainContent from "./MainContent";
+import MainContent from "../ContentForm";
 import FriendFigure from "../../components/common/FrinedFigure";
 
 const MainForm = ({

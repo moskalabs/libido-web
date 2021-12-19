@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SideNav from "../../components/SideNav/SideNav";
 import DetailTemplate from "../Detail/DetailTemplate";
-import DetailFormContainer from "../../containers/DetaiFormlContainer";
+import DetailFormContainer from "../../containers/DetaiFormContainer";
 
 const DetailPage = () => {
   return (
