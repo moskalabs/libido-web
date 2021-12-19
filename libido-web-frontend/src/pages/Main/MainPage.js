@@ -37,7 +37,7 @@ const SideNavContainer = styled.div`
 
 const Inner = styled.div`
   margin: 185px 0 0 100px;
-  background-color: #f3f3f3;
+  /* background-color: #f3f3f3; */
 `;
 
 const CategoryBarWrapper = styled.div`

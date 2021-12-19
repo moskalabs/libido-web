@@ -39,9 +39,9 @@ const TopNav = () => {
 const Container = styled.div`
   width: 100%;
   position: fixed;
-  display: flex;
   top: 0;
   left: 116px;
+  display: flex;
   padding: 20px 10px;
   background-color: #fff;
   z-index: 10;

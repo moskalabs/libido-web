@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   initializeKeyword,
   changeField,
@@ -9,6 +10,7 @@ import SearchBar from "../components/common/SearchBar";
 
 const SearchContainer = props => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { keyword } = useSelector(({ search }) => ({
     keyword: search.topNav.keyword,
@@ -20,6 +22,7 @@ const SearchContainer = props => {
       if (currentKeyDown === "Enter") {
         dispatch(searchTopNavKeyword(keyword));
         dispatch(initializeKeyword("topNav"));
+        navigate(`/detail?search=${keyword}`);
       }
     },
     [dispatch, keyword]
