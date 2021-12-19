@@ -9,7 +9,6 @@ const LoginForm = () => {
     form: auth.login,
   }));
 
-  //인풋 변경 이벤트
   const onChange = e => {
     const { value, name } = e.target;
     dispatch(
@@ -23,7 +22,7 @@ const LoginForm = () => {
 
   const onSubmit = e => {
     e.preventDefault();
-  }; //구현예정^^
+  };
 
   useEffect(() => {
     dispatch(initializeForm("login"));

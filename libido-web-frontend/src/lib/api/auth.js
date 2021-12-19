@@ -31,6 +31,7 @@ export const phoneNumber = phoneNumber => {
     .then(res => console.log(res));
 };
 
+//중복체크
 export const checkInput = checkInputValue => {
   const regExp =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;

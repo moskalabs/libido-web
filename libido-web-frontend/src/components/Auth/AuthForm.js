@@ -91,7 +91,7 @@ const AuthForm = ({
     <StyledAuthForm>
       <div className="guide">CREATE LIBIDO ID</div>
       <h3>{text}</h3>
-      <form onSubmit={onSubmit}>
+      <form>
         {/* <StyledInput
           name="userName"
           placeholder="이름"

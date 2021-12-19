@@ -15,7 +15,7 @@ const StyledAuthTemplate = styled.div`
 
 const LoginBox = styled.div`
   padding: 2rem;
-  width: 480px;
+  width: 420px;
   border: 1px #c4c3c2 solid;
   border-radius: 2px;
 `;
