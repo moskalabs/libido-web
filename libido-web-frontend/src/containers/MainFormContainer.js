@@ -69,7 +69,6 @@ const MainFormContainer = () => {
 
       if (sort === "friends") {
         batch(() => {
-          dispatch(friendList());
           dispatch(friends(currentOffset));
         });
       } else {

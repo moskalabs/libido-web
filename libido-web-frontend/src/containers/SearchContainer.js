@@ -19,7 +19,7 @@ const SearchContainer = props => {
       const currentKeyDown = event.key;
       if (currentKeyDown === "Enter") {
         dispatch(searchTopNavKeyword(keyword));
-        // dispatch(initializeKeyword("topNav"));
+        dispatch(initializeKeyword("topNav"));
       }
     },
     [dispatch, keyword]
