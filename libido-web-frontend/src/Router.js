@@ -6,7 +6,6 @@ import MainPage from "./pages/Main/MainPage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import FindPasswordPage from "./pages/Auth/FindPasswordPage";
-import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -17,7 +16,6 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/password" element={<FindPasswordPage />} />
-        <Route path="/reset" element={<ResetPasswordPage />} />
       </Routes>
     </BrowserRouter>
   );

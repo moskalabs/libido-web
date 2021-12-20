@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StyledLoginForm = styled.div`
   display: flex;
@@ -100,34 +100,35 @@ function LoginForm() {
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "D6LeoiC8EqM1qxbMl3rP",
-      callbackUrl: "http://localhost:3000",
-      isPopup: true,
+      callbackUrl: "http://localhost:3000/login",
+      isPopup: false,
       loginButton: { color: "green", type: 1, height: "40" },
       callbackHandle: true,
     });
     naverLogin.init();
   };
 
-  const location = useLocation();
-  const getNaverToken = () => {
-    if (!location.hash) return;
-    const token = location.hash.split("=")[1].split("&")[0];
-    console.log(token);
-    console.log("토큰토큰");
-  };
+  // const getNaverToken = () => {
+  //   console.log("d");
+  //   if (!location.hash) return;
+  //   const token = location.hash.split("=")[1].split("&")[0];
+  //   console.log(token);
+  //   console.log("토큰토큰");
+  // };
 
   useEffect(() => {
     initializeNaverLogin();
-    getNaverToken();
-    UserProfile();
+    // getNaverToken();
+    userProfile();
   });
-  const UserProfile = () => {
+
+  const userProfile = () => {
     window.location.href.includes("access_token") && GetUser();
     function GetUser() {
       const location = window.location.href.split("=")[1];
       const token = location.split("&")[0];
-      console.log("token: ", token);
-      fetch(`http://127.0.0.1:8000/users/naver/login`, {
+
+      fetch(`http://172.30.1.7:8000/users/naver/login`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -137,6 +138,7 @@ function LoginForm() {
         .then(res => res.json())
         .then(res => {
           localStorage.setItem("access_token", res.access_token);
+          localStorage.setItem("userInfo", JSON.stringify(res.results));
         })
         .catch(err => console.log("err : ", err));
     }

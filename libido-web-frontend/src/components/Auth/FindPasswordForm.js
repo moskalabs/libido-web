@@ -8,12 +8,21 @@ const StyledPasswordForm = styled.div`
   align-items: center;
   form {
     text-align: center;
-    div {
-      font-size: 0.6rem;
+    .condition {
+      font-size: 0.8rem;
+      color: gray;
     }
   }
 `;
 
+const ResetPw = styled.div`
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: bolder;
+  color: #525252;
+  letter-spacing: 1px;
+`;
 const FindPw = styled.div`
   margin-bottom: 30px;
   font-weight: bolder;
@@ -34,6 +43,18 @@ const StyledInput = styled.input`
 const EmailInput = styled.input`
   width: 210px;
   padding: 10px 20px;
+  /* margin-top: 10px; */
+  margin-right: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px rgba(38, 47, 106, 0.5) solid;
+  border-radius: 4px;
+`;
+const PasswordInput = styled.input`
+  width: 315px;
+  padding: 10px 20px;
+  margin-top: 10px;
   margin-right: 10px;
   margin-bottom: 15px;
   font-size: 0.9rem;
@@ -76,6 +97,13 @@ function FindPasswordForm() {
         <OverlayButton>인증번호 발송</OverlayButton>
         <EmailInput name="verificationCode" placeholder="인증번호" />
         <OverlayButton>인증번호 입력</OverlayButton>
+
+        <ResetPw>비밀번호 재설정</ResetPw>
+        <PasswordInput placeholder="새로운 비밀번호" />
+        <div className="condition">
+          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        </div>
+        <PasswordInput placeholder="비밀번호 확인" />
       </form>
       <Footer>
         <Button type="submit">NEXT</Button>

@@ -64,15 +64,13 @@ const OverlayButton = styled.button`
   border-radius: 4px;
   box-shadow: 1px 1px 1px #e8eaed;
 `;
-const IdContainer = styled.div`
-  display: flex;
-`;
 
 const Footer = styled.div`
   display: flex;
 `;
 const Button = styled.button`
   padding: 12px 18px;
+  margin-top: 40px;
   border-radius: 3px;
   background: #262f6a;
   border-style: none;
@@ -88,6 +86,8 @@ function RegisterForm() {
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [verificationCode, setVerificationCode] = useState(null);
+  const [authNumber, setAuthNumber] = useState(null);
+  const [isLoginSuccess, setLoginSuccess] = useState(false);
 
   const onEmailHandler = e => {
     setEmail(e.target.value);
@@ -175,30 +175,53 @@ function RegisterForm() {
       currentKey = "nickname";
     }
 
-    client.post(`http://221.154.228.231:8000/users/${checkType}`, {
-      [currentKey]: currentCheckInputValue,
-    });
+    client
+      .post(`http://172.30.1.7:8000/users/${checkType}`, {
+        [currentKey]: currentCheckInputValue,
+      })
+      .then(res => {
+        const message = res.data.message;
+        if (message === "AVAILABLE_EMAIL" || message === "AVAILABLE_NICKNAME") {
+          console.log("사용 가능 아이디");
+        } else {
+          console.log("중복된 아이디");
+        }
+      });
   };
-
   const sendVerificationCode = e => {
     client
-      .post("http://172.30.1.58:8000/users/sendsms", {
+      .post("http://172.30.1.7:8000/users/signupemail", {
         email,
       })
-      .then(res => console.log(res));
+      .then(res => {
+        const authNumber = res.data["auth_number"];
+        console.log(authNumber);
+        setAuthNumber(authNumber);
+      });
+  };
+
+  const test = e => {
+    if (authNumber === verificationCode) {
+      console.log("성공");
+      setLoginSuccess(true);
+    } else {
+      setLoginSuccess(false);
+    }
+  };
+
+  const test2 = e => {
+    setVerificationCode(e.target.value);
   };
 
   return (
     <StyledRegisterForm>
       <div className="registerGuide">CREATE LIBIDO ID</div>
       <h3>회원가입</h3>
-      <IdContainer>
+      <div>
         <StyledInput name="email" onChange={onEmailHandler} placeholder="ID" />
         <OverlayButton onClick={inputValueCheck} data-check="idCheckButton">
           중복확인
         </OverlayButton>
-      </IdContainer>
-      <IdContainer>
         <StyledInput
           name="nickname"
           onChange={onNicknameHandler}
@@ -211,50 +234,53 @@ function RegisterForm() {
         >
           중복확인
         </OverlayButton>
-      </IdContainer>
-      <div className="condition">
-        문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        <div className="condition">
+          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        </div>
+        <PhoneInfo>이메일 정보 입력</PhoneInfo>
+        <StyledInput
+          name="emailVerification"
+          placeholder="이메일"
+          type="email"
+        />
+        <OverlayButton onClick={sendVerificationCode}>
+          인증번호 발송
+        </OverlayButton>
+        <StyledInput
+          onChange={test2}
+          name="verificationCode"
+          placeholder="인증번호"
+        />
+        <OverlayButton onClick={test}>인증번호 입력</OverlayButton>
+
+        {isLoginSuccess && (
+          <>
+            <PasswordContainer>
+              <PasswordInput
+                name="password"
+                placeholder="PASSWORD"
+                type="password"
+                onChange={onChangePassword}
+              />
+
+              <PasswordInput
+                name="re_password"
+                placeholder="PW CHECK"
+                type="password"
+                onChange={onChangePasswordConfirm}
+              />
+            </PasswordContainer>
+            <div className="condition">
+              {isPasswordConfirm
+                ? "비밀번호가 일치하지 않습니다"
+                : "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"}
+            </div>
+          </>
+        )}
       </div>
-      <PhoneInfo>이메일 정보 입력</PhoneInfo>
-      <StyledInput name="emailVerification" placeholder="이메일" type="email" />
-      <OverlayButton onClick={sendVerificationCode}>
-        인증번호 발송
-      </OverlayButton>
-      {verificationCode && (
-        <>
-          <StyledInput name="verificationCode" placeholder="인증번호" />
-          <OverlayButton>인증번호 입력</OverlayButton>
-        </>
-      )}
-      {verificationCode && (
-        <>
-          <PasswordContainer>
-            <PasswordInput
-              name="password"
-              placeholder="PASSWORD"
-              type="password"
-              onChange={onChangePassword}
-            />
-
-            <PasswordInput
-              name="re_password"
-              placeholder="PW CHECK"
-              type="password"
-              onChange={onChangePasswordConfirm}
-            />
-          </PasswordContainer>
-          <div className="condition">
-            {isPasswordConfirm
-              ? "비밀번호가 일치하지 않습니다"
-              : "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"}
-          </div>
-        </>
-      )}
-
       <Footer>
         <Button onClick={signupTest}>NEXT</Button>
       </Footer>
-      {/* <CountryList /> */}
     </StyledRegisterForm>
   );
 }
