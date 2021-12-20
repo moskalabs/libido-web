@@ -38,8 +38,9 @@ const MainFormContainer = () => {
   const dispatch = useDispatch();
   const [isIntersect, setIntersect] = useState(false);
 
+  const sort = useSelector(({ category }) => category.sort);
+
   const {
-    sort,
     contentList,
     roomList,
     recommendFriendList,
@@ -47,8 +48,7 @@ const MainFormContainer = () => {
     currentOffset,
     currentIsLoaded,
   } = useSelector(
-    ({ category, mainForm }) => ({
-      sort: category.sort,
+    ({ mainForm }) => ({
       contentList: mainForm.contentList,
       roomList: mainForm.roomList,
       recommendFriendList: mainForm.recommendFriendList,
@@ -69,16 +69,17 @@ const MainFormContainer = () => {
 
       if (sort === "friends") {
         batch(() => {
+          dispatch(increaseOffset());
           dispatch(friends(currentOffset));
         });
       } else {
         batch(() => {
+          dispatch(increaseOffset());
           dispatch(content({ sort, currentOffset }));
           dispatch(rooms({ sort, currentOffset }));
         });
       }
 
-      dispatch(increaseOffset());
       dispatch(isLoaded());
       setIntersect(false);
     }
@@ -93,21 +94,20 @@ const MainFormContainer = () => {
   };
 
   useEffect(() => {
+    dispatch(initializeMainForm());
+
     if (sort === "friends") {
       batch(() => {
-        dispatch(initializeMainForm());
         dispatch(friendList());
         dispatch(friends(currentOffset));
       });
     } else {
       batch(() => {
-        dispatch(initializeMainForm());
         dispatch(content({ sort, currentOffset }));
         dispatch(rooms({ sort, currentOffset }));
       });
     }
-
-    dispatch(increaseOffset());
+    // dispatch(increaseOffset());
     scrollTop();
   }, [dispatch, sort]);
 

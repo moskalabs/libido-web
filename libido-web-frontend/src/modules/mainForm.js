@@ -65,7 +65,7 @@ const initialState = {
   roomListError: null,
   recommendFriendListError: null,
   friendsContentListError: null,
-  currentOffset: 0,
+  currentOffset: 1,
   isLoaded: false,
 };
 
