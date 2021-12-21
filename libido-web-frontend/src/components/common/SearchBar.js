@@ -37,7 +37,7 @@ const SearchBar = ({
       topNav={topNav}
       placeholder={placeholder}
       onChange={changeKeyword}
-      onKeyDown={searchKeyword}
+      onKeyPress={searchKeyword}
       value={keyword}
     />
   );
