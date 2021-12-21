@@ -9,30 +9,9 @@ import {
   isLoaded,
   increaseOffset,
 } from "../modules/mainForm";
+import { bindingCategoryToContents } from "../lib/bindingCategoryToContents";
+import { resetPageScroll } from "../lib/resetPageScroll";
 import MainForm from "../pages/Main/MainForm";
-
-const bindingCategoryToContents = (categorySort, curContents, curRooms) => {
-  const firstCategoryName =
-    categorySort === "libido" ? "맞춤형 추천 영상" : "인기영상";
-  const secondeCategoryName =
-    categorySort === "libido" ? "맞춤 스트리밍" : "인기 STREAMING";
-
-  const firstContents = {
-    category: firstCategoryName,
-    contents: curContents,
-  };
-  const secondContents = {
-    category: secondeCategoryName,
-    contents: curRooms,
-  };
-
-  const joinContents = [firstContents, secondContents];
-  return joinContents;
-};
-
-const scrollTop = () => {
-  window.scrollTo(0, 0);
-};
 
 const MainFormContainer = () => {
   const dispatch = useDispatch();
@@ -69,12 +48,10 @@ const MainFormContainer = () => {
 
       if (sort === "friends") {
         batch(() => {
-          dispatch(increaseOffset());
           dispatch(friends(currentOffset));
         });
       } else {
         batch(() => {
-          dispatch(increaseOffset());
           dispatch(content({ sort, currentOffset }));
           dispatch(rooms({ sort, currentOffset }));
         });
@@ -84,11 +61,12 @@ const MainFormContainer = () => {
       setIntersect(false);
     }
     getMoreContents();
-  }, [isIntersect]);
+  }, [isIntersect, currentOffset]);
 
   const onIntersect = async ([{ isIntersecting, target }], observer) => {
     if (isIntersecting) {
       observer.unobserve(target);
+      dispatch(increaseOffset());
       setIntersect(true);
     }
   };
@@ -99,16 +77,16 @@ const MainFormContainer = () => {
     if (sort === "friends") {
       batch(() => {
         dispatch(friendList());
-        dispatch(friends(currentOffset));
+        dispatch(friends());
       });
     } else {
       batch(() => {
-        dispatch(content({ sort, currentOffset }));
-        dispatch(rooms({ sort, currentOffset }));
+        dispatch(content({ sort }));
+        dispatch(rooms({ sort }));
       });
     }
-    // dispatch(increaseOffset());
-    scrollTop();
+
+    resetPageScroll();
   }, [dispatch, sort]);
 
   let completeContents;

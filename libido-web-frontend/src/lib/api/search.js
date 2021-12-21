@@ -1,7 +1,8 @@
 import client from "./client";
 import { API } from "../../config";
 
-export const searchKeyword = keyword =>
-  client
-    .get(`http://172.30.1.44:8000/contents/search?keyword=${keyword}`)
-    .then(res => console.log(res));
+export const searchKeyword = keyword => {
+  return client.get(
+    `http://15.164.210.185:8000/contents/search?keyword=${keyword}`
+  );
+};

@@ -1,13 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
+  const navigate = useNavigate();
+
+  const goToMain = e => {
+    navigate("/");
+  };
+
   return (
     <Container>
-      <TopNavHeader>
+      <TopNavHeader onClick={goToMain}>
         <LogoContainer>
           <LogoImg />
         </LogoContainer>
@@ -42,7 +48,7 @@ const Container = styled.div`
   top: 0;
   left: 116px;
   display: flex;
-  padding: 20px 10px;
+  padding: 0 10px;
   background-color: #fff;
   z-index: 10;
 `;
@@ -60,10 +66,10 @@ const LogoContainer = styled.div`
 
 const LogoImg = styled.div`
   width: 200px;
-  height: 50px;
-  background: url(./images/logo.png) no-repeat;
+  height: 120px;
+  background: url(./images/LIBIDO_LOGO.png) no-repeat;
   background-position: center center;
-  background-size: 850px 850px;
+  background-size: 200px 120px;
 `;
 
 const SearchBarContainer = styled.div`

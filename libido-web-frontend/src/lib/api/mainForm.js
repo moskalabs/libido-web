@@ -16,9 +16,9 @@ import { identifyQuerySort } from "../identifyQuerySort";
 
 export const content = ({ sort, currentOffset = 1 }) => {
   const querySort = identifyQuerySort(sort);
-
+  console.log(currentOffset);
   return client.get(
-    `http://172.30.1.44:8000/contents?category=${querySort}&offset=${
+    `http://15.164.210.185:8000/contents?category=${querySort}&offset=${
       Math.abs(currentOffset - 1) * 8
     }`,
     {
@@ -39,9 +39,9 @@ export const content = ({ sort, currentOffset = 1 }) => {
 
 export const rooms = ({ sort, currentOffset = 1 }) => {
   const querySort = identifyQuerySort(sort);
-
+  // console.log(currentOffset);
   return client.get(
-    `http://172.30.1.44:8000/rooms?category=${querySort}&offset=${
+    `http://15.164.210.185:8000/rooms?category=${querySort}&offset=${
       Math.abs(currentOffset - 1) * 8
     }`,
     {
@@ -60,7 +60,7 @@ export const rooms = ({ sort, currentOffset = 1 }) => {
 
 export const friendList = () => {
   // return client.get("/data/followFriends.json");
-  return client.get("http://172.30.1.44:8000/users/follows", {
+  return client.get("http://15.164.210.185:8000/users/follows", {
     headers: {
       Authorization:
         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
@@ -72,7 +72,7 @@ export const friends = (currentOffset = 1) => {
   // return client.get("/data/friendsRoom.json");
 
   return client.get(
-    `http://172.30.1.44:8000/rooms/friends?offset=${
+    `http://15.164.210.185:8000/rooms/friends?offset=${
       Math.abs(currentOffset - 1) * 8
     }`,
     {

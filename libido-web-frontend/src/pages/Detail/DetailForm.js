@@ -1,14 +1,30 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import ContentForm from "../ContentForm";
 
 const DetailForm = ({ contents }) => {
+  const query = useLocation().search;
+
+  const searchKeyword = new URLSearchParams(query).get("search");
+
   return (
     <Container>
       <CategoryBox>
-        <Name>검색 결과</Name>
+        <Name>{`${searchKeyword} 검색 결과`}</Name>
         <SearchList>
-          <ContentForm />
+          {contents.map(({ title, category, image_url, link_url }, index) => {
+            return (
+              <ContentForm
+                currentCategory="검색 영상"
+                key={index}
+                title={title}
+                image_url={image_url}
+                link_url={link_url}
+                category={category}
+              />
+            );
+          })}
         </SearchList>
       </CategoryBox>
     </Container>

@@ -25,13 +25,20 @@ const StyledSearchBar = styled.input`
     `}
 `;
 
-const SearchBar = ({ topNav, placeholder, changeKeyword, searchKeyword }) => {
+const SearchBar = ({
+  topNav,
+  placeholder,
+  changeKeyword,
+  searchKeyword,
+  keyword,
+}) => {
   return (
     <StyledSearchBar
       topNav={topNav}
       placeholder={placeholder}
       onChange={changeKeyword}
       onKeyDown={searchKeyword}
+      value={keyword}
     />
   );
 };

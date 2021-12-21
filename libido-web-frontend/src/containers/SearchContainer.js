@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   initializeKeyword,
   changeField,
-  searchTopNavKeyword,
+  searchCurrentKeyword,
 } from "../modules/search";
 import SearchBar from "../components/common/SearchBar";
 
@@ -13,15 +13,15 @@ const SearchContainer = props => {
   const navigate = useNavigate();
 
   const { keyword } = useSelector(({ search }) => ({
-    keyword: search.topNav.keyword,
+    keyword: search.keyword,
   }));
 
   const searchKeyword = useCallback(
     event => {
       const currentKeyDown = event.key;
       if (currentKeyDown === "Enter") {
-        dispatch(searchTopNavKeyword(keyword));
-        dispatch(initializeKeyword("topNav"));
+        dispatch(initializeKeyword());
+        dispatch(searchCurrentKeyword(keyword));
         navigate(`/detail?search=${keyword}`);
       }
     },
@@ -51,6 +51,7 @@ const SearchContainer = props => {
     <SearchBar
       changeKeyword={changeTopNavKeyword}
       searchKeyword={searchKeyword}
+      keyword={keyword}
       {...props}
     />
   );

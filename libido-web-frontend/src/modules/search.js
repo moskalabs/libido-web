@@ -10,62 +10,57 @@ const CHANGE_FIELD = "search/CHANGE_FIELD";
 const INITIALIZE_SEARCHSTATE = "search/INITIALIZE_SEARCHSTATE";
 const INITIALIZE_KEYWORD = "search/INITIALIZE_KEYWORD";
 
-const [
-  SEARCH_TOPNAVKEYWORD,
-  SEARCH_TOPNAVKEYWORD_SUCCESS,
-  SEARCH_TOPNAVKEYWORD_FAILURE,
-] = createRequestActionTypes("search/searchTopNavKeyword");
+const [SEARCH_KEYWORD, SEARCH_KEYWORD_SUCCESS, SEARCH_KEYWORD_FAILURE] =
+  createRequestActionTypes("search/searchKeyword");
 
 export const initializeSearchState = createAction(INITIALIZE_SEARCHSTATE);
 
-export const initializeKeyword = createAction(INITIALIZE_KEYWORD, form => form);
+export const initializeKeyword = createAction(INITIALIZE_KEYWORD);
 
 export const changeField = createAction(CHANGE_FIELD, ({ form, value }) => ({
   form,
   value,
 }));
 
-export const searchTopNavKeyword = createAction(
-  SEARCH_TOPNAVKEYWORD,
+export const searchCurrentKeyword = createAction(
+  SEARCH_KEYWORD,
   value => value
 );
 
-const searchTopNavKeywordSaga = createRequestSaga(
-  SEARCH_TOPNAVKEYWORD,
+const searchCurrentKeywordSaga = createRequestSaga(
+  SEARCH_KEYWORD,
   searchAPI.searchKeyword
 );
 
 export function* searchSaga() {
-  yield takeLatest(SEARCH_TOPNAVKEYWORD, searchTopNavKeywordSaga);
+  yield takeLatest(SEARCH_KEYWORD, searchCurrentKeywordSaga);
 }
 
 const initialState = {
-  topNav: {
-    keyword: "",
-    contents: [],
-    token: "",
-  },
+  keyword: "",
+  contents: [],
+  token: "",
   searchError: null,
 };
 
 const search = handleActions(
   {
     [INITIALIZE_SEARCHSTATE]: state => initialState,
-    [INITIALIZE_KEYWORD]: (state, { payload: form }) =>
-      produce(state, draft => {
-        draft[form].keyword = "";
-      }),
+    [INITIALIZE_KEYWORD]: (state, action) => ({
+      ...state,
+      keyword: "",
+    }),
     [CHANGE_FIELD]: (state, { payload: { form, value } }) =>
       produce(state, draft => {
-        draft[form].keyword = value;
+        draft.keyword = value;
       }),
-    [SEARCH_TOPNAVKEYWORD_SUCCESS]: (state, { payload: { message } }) =>
+    [SEARCH_KEYWORD_SUCCESS]: (state, { payload: { message, page } }) =>
       produce(state, draft => {
-        draft.topNav.contents = state.topNav.contents.concat(message); // message 정제 과정 필요 => token값과 contents 분리
-        draft.topNav.token = message;
+        draft.contents = message;
+        draft.token = page;
         draft.searchError = null;
       }),
-    [SEARCH_TOPNAVKEYWORD_FAILURE]: (state, { payload: error }) => ({
+    [SEARCH_KEYWORD_FAILURE]: (state, { payload: error }) => ({
       ...state,
       searchError: error,
     }),

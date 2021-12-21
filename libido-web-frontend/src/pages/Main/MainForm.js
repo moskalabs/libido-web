@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import Loader from "../../lib/Loader";
-import MainContent from "../ContentForm";
+import ContentForm from "../ContentForm";
 import FriendFigure from "../../components/common/FrinedFigure";
 
 const MainForm = ({
@@ -35,15 +35,20 @@ const MainForm = ({
               <CategoryBox key={index}>
                 <Name>{category}</Name>
                 <ContentList>
-                  {contents.map((content, index) => {
-                    return (
-                      <MainContent
-                        key={index}
-                        currentCategory={currentCategory}
-                        content={content}
-                      />
-                    );
-                  })}
+                  {contents.map(
+                    ({ category, link_url, title, image_url }, index) => {
+                      return (
+                        <ContentForm
+                          key={index}
+                          currentCategory={currentCategory}
+                          category={category}
+                          title={title}
+                          image_url={image_url}
+                          link_url={link_url}
+                        />
+                      );
+                    }
+                  )}
                 </ContentList>
               </CategoryBox>
             );
@@ -72,9 +77,19 @@ const MainForm = ({
             <CategoryBox>
               <Name>친구 스트리밍</Name>
               <ContentList>
-                {completeContents[1].map((content, index) => {
-                  return <MainContent key={index} content={content} />;
-                })}
+                {completeContents[1].map(
+                  ({ category, title, image_url, link_url }, index) => {
+                    return (
+                      <ContentForm
+                        key={index}
+                        category={category}
+                        title={title}
+                        image_url={image_url}
+                        link_url={link_url}
+                      />
+                    );
+                  }
+                )}
               </ContentList>
             </CategoryBox>
           </ContentsContainer>
