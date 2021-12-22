@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import client from "../../lib/api/client";
 
 const StyledLoginForm = styled.div`
@@ -212,11 +212,11 @@ function LoginForm() {
 
         {/* <div onClick="onSignIn" class="g-signin2" data-onsuccess="onSignIn" /> */}
         <SocialButtonContainer>
-          {/* <GoogleLogin
+          <GoogleLogin
             onSuccess={onSuccessGoogle}
-            clientId="983084770227-20pud7lcitmbnm8bcq8vlb056b9f251v.apps.googleusercontent.com"
+            clientId="446963991551-6e9gh8ou52mac0je7f753tdrq1gc7377.apps.googleusercontent.com"
             buttonText="start with Google"
-          /> */}
+          />
 
           <SocialButton>
             <div id="naverIdLogin" />

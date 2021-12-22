@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import client from "../lib/api/client";
 
 const ContentForm = ({
+  room_id,
   currentCategory,
   category,
   title,
@@ -12,10 +14,30 @@ const ContentForm = ({
     window.open(link, "_blank");
   };
 
+  const entryContentRoom = () => {
+    client
+      .post(
+        "http://15.164.210.185:8000/users/history",
+        { room_id },
+        {
+          headers: {
+            Authorization:
+              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+          },
+        }
+      )
+      .then(res => console.log(res));
+  };
+
   return (
     <Container
       onClick={e => {
-        goToContentUrl(link_url);
+        if (
+          currentCategory === "맞춤 스트리밍" ||
+          currentCategory === "인기 STREAMING"
+        ) {
+          entryContentRoom();
+        } else goToContentUrl(link_url);
       }}
     >
       {currentCategory === "맟춤형 추천 영상" ||
