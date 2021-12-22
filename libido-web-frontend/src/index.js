@@ -19,11 +19,11 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-  <>
+  <Provider store={store}>
     <GlobalStyle />
     <ThemeProvider theme={theme}>
       <Router />
     </ThemeProvider>
-  </>,
+  </Provider>,
   document.getElementById("root")
 );
