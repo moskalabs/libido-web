@@ -32,7 +32,9 @@ const ContentForm = ({
         {(currentCategory === "맞춤 스트리밍" ||
           currentCategory === "인기 STREAMING" ||
           !currentCategory) && <LiveIcon className="chat" />}
-        <ContentTitle>{title}</ContentTitle>
+        <ContentTitle>
+          {title.length > 40 ? `${title.slice(0, 40)}...` : title}
+        </ContentTitle>
         {currentCategory === "맞춤형 추천 영상" ||
         currentCategory === "인기영상" ||
         currentCategory === "검색 영상" ? (
@@ -58,6 +60,7 @@ const ContentForm = ({
 };
 
 const Container = styled.div`
+  max-height: 350px;
   margin-bottom: 30px;
   background-color: #fff;
   border: 1px solid #d5d5d5;
