@@ -1,26 +1,41 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
+  const navigate = useNavigate();
+
+  const goToMain = e => {
+    navigate("/");
+  };
+
   return (
     <Container>
-      <TopNavHeader>
+      <TopNavHeader onClick={goToMain}>
         <LogoContainer>
           <LogoImg />
         </LogoContainer>
         <SearchBarContainer>
-          <SearchContainer topNav placeholder="search here..." />
+          <SearchContainer
+            topNav
+            placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
+          />
           <div className="searchIcon" />
+          <div className="searchLine" />
         </SearchBarContainer>
         <RightSubMenu>
-          <MessageContainer>
+          {/* 로그인 했을 때 옆에 작게 사이드로 추가_지금은 비로그인 */}
+          {/* <MessageContainer>
             <MessageLogo />
             <MessageLink to="/">Messages</MessageLink>
-          </MessageContainer>
-          <Button main>로그인</Button>
+          </MessageContainer> */}
+          <div className="rightSubMenuLine" />
+          <TopNavButtonContainer>
+            <ButtonMarginTop main>로그인</ButtonMarginTop>
+            <Button main>회원가입</Button>
+          </TopNavButtonContainer>
         </RightSubMenu>
       </TopNavHeader>
     </Container>
@@ -28,26 +43,33 @@ const TopNav = () => {
 };
 
 const Container = styled.div`
-  max-width: 1328px;
-  position: absolute;
+  width: 100%;
+  position: fixed;
   top: 0;
-  left: 92px;
-  padding: 25px 0 25px;
-  border: none;
-  border-radius: 30px;
+  left: 116px;
+  display: flex;
+  padding: 0 10px;
   background-color: #fff;
+  z-index: 10;
 `;
 
 const TopNavHeader = styled.header`
+  min-width: 1820px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
 `;
 
 const LogoContainer = styled.div`
-  // 차후 에셋에 따라 수정
+  margin: 0 170px 0 20px;
+`;
+
+const LogoImg = styled.div`
   width: 200px;
-  height: 50px;
-  margin: 0 90px 0 18px;
+  height: 120px;
+  background: url(./images/LIBIDO_LOGO.png) no-repeat;
+  background-position: center center;
+  background-size: 200px 120px;
 `;
 
 const SearchBarContainer = styled.div`
@@ -58,50 +80,64 @@ const SearchBarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 10px;
-    right: 20px;
+    top: 13px;
+    right: 140px;
     width: 30px;
     height: 30px;
-    background: url(./images/search.svg) no-repeat;
-    background-size: 25px 25px;
+    background: url(./images/icon_search.png) no-repeat;
+    background-size: 35px 35px;
     background-position: center center;
+  }
+  .searchLine {
+    position: absolute;
+    top: 0;
+    right: 190px;
+    border-left: 1px solid #262f6a;
+    height: 58px;
+  }
+`;
+const RightSubMenu = styled.div`
+  position: relative;
+  margin-left: 85px;
+
+  .rightSubMenuLine {
+    position: absolute;
+    top: -20px;
+    right: 350px;
+    border-left: 1px solid #d9d9d9;
+    height: 120px;
   }
 `;
 
-const LogoImg = styled.div`
-  width: 160px;
-  height: 50px;
-  background: url(./images/logo.png) no-repeat;
-  background-position: center center;
-  background-size: 650px 650px;
-`;
-
-const RightSubMenu = styled.div`
+const TopNavButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  margin-right: 20px;
+  flex-direction: column;
+  margin-right: 80px;
 `;
 
-const MessageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 120px;
-  margin: 0 10px 0 90px;
+const ButtonMarginTop = styled(Button)`
+  margin-bottom: 3px;
 `;
+// const MessageContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   width: 120px;
+//   margin: 0 10px 0 90px;
+// `;
 
-const MessageLogo = styled.div`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-  background: url(./images/message.svg) no-repeat;
-  background-position: center center;
-  background-size: 20px 20px;
-`;
+// const MessageLogo = styled.div`
+//   width: 30px;
+//   height: 30px;
+//   margin-right: 8px;
+//   background: url(./images/message.svg) no-repeat;
+//   background-position: center center;
+//   background-size: 20px 20px;
+// `;
 
-const MessageLink = styled(Link)`
-  text-decoration: none;
-  color: #707070;
-  letter-spacing: 0.5px;
-`;
+// const MessageLink = styled(Link)`
+//   text-decoration: none;
+//   color: #707070;
+//   letter-spacing: 0.5px;
+// `;
 
 export default TopNav;

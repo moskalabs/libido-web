@@ -1,57 +1,130 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { initializeMainForm, content, rooms } from "../modules/mainForm";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector, batch, shallowEqual } from "react-redux";
+import {
+  initializeMainForm,
+  content,
+  rooms,
+  friendList,
+  friends,
+  isLoaded,
+  increaseOffset,
+} from "../modules/mainForm";
+import { bindingCategoryToContents } from "../lib/bindingCategoryToContents";
+import { resetPageScroll } from "../lib/resetPageScroll";
 import MainForm from "../pages/Main/MainForm";
-
-const bindingCategoryToContents = (categorySort, curContents) => {
-  const firstCategoryName =
-    categorySort === "libido" ? "맞춤형 추천 영상" : "인기영상";
-  const secondeCategoryName =
-    categorySort === "libido" ? "맞춤 스트리밍" : "인기 STREAMING";
-  const firstContents = {
-    category: firstCategoryName,
-    contents: curContents.slice(0, 8),
-  };
-  const secondContents = {
-    category: secondeCategoryName,
-    contents: curContents.slice(8, 16),
-  };
-
-  const joinContents = [firstContents, secondContents];
-  return joinContents;
-};
-
-const scrollTop = () => {
-  window.scrollTo(0, 0);
-};
 
 const MainFormContainer = () => {
   const dispatch = useDispatch();
+  const [isIntersect, setIntersect] = useState(false);
 
-  const { sort, contents, contentsError } = useSelector(
-    ({ category, mainForm }) => ({
-      sort: category.sort,
-      contents: mainForm.contents,
-      contentsError: mainForm.contentsError,
-    })
+  const sort = useSelector(({ category }) => category.sort);
+
+  const {
+    contentList,
+    roomList,
+    recommendFriendList,
+    friendsContentList,
+    currentOffset,
+    currentIsLoaded,
+  } = useSelector(
+    ({ mainForm }) => ({
+      contentList: mainForm.contentList,
+      roomList: mainForm.roomList,
+      recommendFriendList: mainForm.recommendFriendList,
+      friendsContentList: mainForm.friendsContentList,
+      currentOffset: mainForm.currentOffset,
+      currentIsLoaded: mainForm.isLoaded,
+    }),
+    shallowEqual
   );
 
   useEffect(() => {
-    dispatch(initializeMainForm());
-    dispatch(content(sort));
-    dispatch(rooms(sort));
+    async function getMoreContents() {
+      if (!isIntersect) return;
 
-    scrollTop();
+      dispatch(isLoaded());
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      if (sort === "friends") {
+        batch(() => {
+          dispatch(friends(currentOffset));
+        });
+      } else {
+        batch(() => {
+          dispatch(content({ sort, currentOffset }));
+          dispatch(rooms({ sort, currentOffset }));
+        });
+      }
+
+      dispatch(isLoaded());
+      setIntersect(false);
+    }
+    getMoreContents();
+  }, [isIntersect, currentOffset]);
+
+  const onIntersect = async ([{ isIntersecting, target }], observer) => {
+    if (isIntersecting) {
+      observer.unobserve(target);
+      dispatch(increaseOffset());
+      setIntersect(true);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(initializeMainForm());
+
+    if (sort === "friends") {
+      batch(() => {
+        dispatch(friendList());
+        dispatch(friends());
+      });
+    } else {
+      batch(() => {
+        dispatch(content({ sort }));
+        dispatch(rooms({ sort }));
+      });
+    }
+
+    resetPageScroll();
   }, [dispatch, sort]);
 
-  const curContentsNum = contents.length;
+  let completeContents;
+  let curContentsNum;
   const completeContentsNum = 16;
 
-  if (curContentsNum === completeContentsNum) {
-    const completeContents = bindingCategoryToContents(sort, contents);
+  if (sort === "friends") {
+    curContentsNum = recommendFriendList.length + friendsContentList.length;
+    completeContents = [recommendFriendList, friendsContentList];
 
-    return <MainForm completeContents={completeContents} />;
-  } else return null;
+    if (curContentsNum >= completeContentsNum) {
+      return (
+        <MainForm
+          isLoaded={currentIsLoaded}
+          isIntersect={isIntersect}
+          onIntersect={onIntersect}
+          completeContents={completeContents}
+          currentCategorySort={sort}
+        />
+      );
+    } else return null;
+  } else if (sort === "libido" || sort === "trending") {
+    curContentsNum = contentList.length + roomList.length;
+
+    if (curContentsNum >= completeContentsNum) {
+      completeContents = bindingCategoryToContents(sort, contentList, roomList);
+
+      return (
+        <MainForm
+          isLoaded={currentIsLoaded}
+          isIntersect={isIntersect}
+          onIntersect={onIntersect}
+          completeContents={completeContents}
+          currentCategorySort={sort}
+        />
+      );
+    } else return null;
+  }
 };
 
 export default MainFormContainer;

@@ -2,9 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const StyledSearchBar = styled.input`
-  border: 1px solid #4dbce9;
+  border: 1px solid #262f6a;
   border-radius: 100px;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 500;
   padding: 0 10px;
   &:focus {
@@ -18,19 +18,27 @@ const StyledSearchBar = styled.input`
   ${props =>
     props.topNav &&
     css`
-      width: 600px;
-      height: 50px;
+      width: 890px;
+      height: 58px;
+      margin-right: 115px;
       padding: 0 30px;
     `}
 `;
 
-const SearchBar = ({ topNav, placeholder, changeKeyword, searchKeyword }) => {
+const SearchBar = ({
+  topNav,
+  placeholder,
+  changeKeyword,
+  searchKeyword,
+  keyword,
+}) => {
   return (
     <StyledSearchBar
       topNav={topNav}
       placeholder={placeholder}
       onChange={changeKeyword}
-      onKeyDown={searchKeyword}
+      onKeyPress={searchKeyword}
+      value={keyword}
     />
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const MainTemplate = ({ children }) => {
+const DetailTemplate = ({ children }) => {
   return <Container>{children}</Container>;
 };
 
@@ -10,4 +10,4 @@ const Container = styled.div`
   background-color: #f3f3f3;
 `;
 
-export default MainTemplate;
+export default DetailTemplate;

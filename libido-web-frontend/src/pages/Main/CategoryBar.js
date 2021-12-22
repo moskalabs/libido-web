@@ -34,11 +34,13 @@ const CategoryBar = ({ curCategory, syncCategoryPath }) => {
 
 const Container = styled.div`
   position: fixed;
-  min-width: 1330px;
-  padding: 15px 400px;
-  border: 1px solid #979797;
-  border-radius: 100px;
+  top: 118px;
+  min-width: 1820px;
+  padding: 20px 400px;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
   background-color: #fff;
+  z-index: 20;
 `;
 
 const CategoryList = styled.div`
@@ -50,7 +52,7 @@ const CategoryList = styled.div`
 const MoveCategoryButton = styled.button`
   border: none;
   background: none;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   color: #606770;
   cursor: pointer;
@@ -59,8 +61,8 @@ const MoveCategoryButton = styled.button`
     active &&
     css`
       font-weight: 700;
-      border-bottom: 3px solid #4dbce9;
-      color: #4dbce9;
+      border-bottom: 4px solid #262f6a;
+      color: #262f6a;
     `}
 `;
 

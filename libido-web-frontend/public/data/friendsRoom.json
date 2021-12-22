@@ -1,0 +1,92 @@
+{
+  "message": [
+    {
+      "id": 1,
+      "category": "youtube",
+      "is_public": true,
+      "password": "",
+      "link_url": "https://www.youtube.com/embed/Mn1e0ilDHOQ",
+      "title": "세상에 놀라운 일이",
+      "nickname": "봉개발",
+      "image_url": "https://i.ytimg.com/vi/Mn1e0ilDHOQ/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.552Z"
+    },
+    {
+      "id": 43,
+      "category": "youtube",
+      "is_public": false,
+      "password": "1234",
+      "link_url": "https://www.youtube.com/embed/JSUdEJy3EYA",
+      "title": "오렌지 따기",
+      "nickname": "최개발",
+      "image_url": "https://i.ytimg.com/vi/JSUdEJy3EYA/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.611Z"
+    },
+    {
+      "id": 2,
+      "category": "youtube",
+      "is_public": true,
+      "password": "",
+      "link_url": "https://www.youtube.com/embed/nvJeJSrghOI",
+      "title": "빵 만들기",
+      "nickname": "설개발",
+      "image_url": "https://i.ytimg.com/vi/nvJeJSrghOI/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.556Z"
+    },
+    {
+      "id": 44,
+      "category": "youtube",
+      "is_public": false,
+      "password": "1234",
+      "link_url": "https://www.youtube.com/embed/PXoBK7fVK8o",
+      "title": "방 설명",
+      "nickname": "설개발",
+      "image_url": "https://i.ytimg.com/vi/PXoBK7fVK8o/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.612Z"
+    },
+    {
+      "id": 23,
+      "category": "youtube",
+      "is_public": false,
+      "password": "1234",
+      "link_url": "https://www.youtube.com/embed/Ju38UrespXg",
+      "title": "방 설명",
+      "nickname": "연수르",
+      "image_url": "https://i.ytimg.com/vi/Ju38UrespXg/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.593Z"
+    },
+    {
+      "id": 24,
+      "category": "youtube",
+      "is_public": true,
+      "password": "",
+      "link_url": "https://www.youtube.com/embed/LrCKflz0D3s",
+      "title": "방 설명",
+      "nickname": "연수르",
+      "image_url": "https://i.ytimg.com/vi/LrCKflz0D3s/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.594Z"
+    },
+    {
+      "id": 35,
+      "category": "youtube",
+      "is_public": false,
+      "password": "1234",
+      "link_url": "https://www.youtube.com/embed/sii3RJyNZzE",
+      "title": "방 설명",
+      "nickname": "석해주",
+      "image_url": "https://i.ytimg.com/vi/sii3RJyNZzE/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.604Z"
+    },
+    {
+      "id": 13,
+      "category": "youtube",
+      "is_public": true,
+      "password": "",
+      "link_url": "https://www.youtube.com/embed/PlMb5dMjwwM",
+      "title": "방 설명",
+      "nickname": "유반문",
+      "image_url": "https://i.ytimg.com/vi/PlMb5dMjwwM/mqdefault.jpg",
+      "published_at": "2021-12-08T08:02:44.581Z"
+    }
+  ]
+}

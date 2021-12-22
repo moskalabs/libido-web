@@ -5,7 +5,7 @@ const SideNav = () => {
   return (
     <Container>
       <SideNavHeader>
-        <ToggleButton />
+        <MenuButton />
         <IconContainer>
           <IconBox>
             <Icon className="home" data-button="home" />
@@ -16,7 +16,7 @@ const SideNav = () => {
             <p>방만들기</p>
           </IconBox>
           <IconBox>
-            <Icon className="search" data-button="search" />
+            <Icon className="live" data-button="live" />
             <p>검색</p>
           </IconBox>
           <IconBox>
@@ -33,12 +33,11 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 46px;
   height: 100%;
-  padding: 0 46px 0;
+  padding: 0 33px 0;
   border: none;
-  border-radius: 30px;
-  background-color: #fff;
+  background-color: #262f6a;
+  z-index: 30;
 `;
 
 const SideNavHeader = styled.div`
@@ -48,30 +47,30 @@ const SideNavHeader = styled.div`
   padding-top: 25px;
 `;
 
-const ToggleButton = styled.button`
-  border: none;
+const MenuButton = styled.button`
   width: 50px;
   height: 50px;
+  border: none;
   cursor: pointer;
-  background: url(./images/toggle.svg) no-repeat;
-  background-size: 30px 30px;
+  background: url(./images/icon_menu.png) no-repeat;
+  background-size: 45px 45px;
   background-position: center center;
 `;
 
 const IconContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 45px;
 `;
 
 const IconBox = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   text-align: center;
 
   p {
-    margin-top: 3px;
-    font-size: 13px;
-    color: #707070;
+    font-size: 14px;
+    font-weight: 100;
+    color: #ffffff;
   }
 `;
 
@@ -81,26 +80,26 @@ const Icon = styled.button`
   height: 50px;
 
   &.home {
-    background: url(./images/home.svg) no-repeat;
-    background-size: 30px 30px;
+    background: url(./images/icon_home.png) no-repeat;
+    background-size: 40px 40px;
     background-position: center center;
   }
 
   &.room {
-    background: url(./images/room.png) no-repeat;
+    background: url(./images/icon_room.png) no-repeat;
     background-size: 50px 50px;
     background-position: center center;
   }
 
-  &.search {
-    background: url(./images/search.svg) no-repeat;
-    background-size: 30px 30px;
+  &.live {
+    background: url(./images/icon_live.png) no-repeat;
+    background-size: 50px 50px;
     background-position: center center;
   }
 
   &.setting {
-    background: url(./images/setting.svg) no-repeat;
-    background-size: 30px 30px;
+    background: url(./images/icon_setting.png) no-repeat;
+    background-size: 45px 45px;
     background-position: center center;
   }
 `;
