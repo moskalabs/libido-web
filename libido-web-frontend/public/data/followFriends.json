@@ -1,0 +1,52 @@
+{
+  "message": [
+    {
+      "id": 1,
+      "nickname": "봉개발",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 13
+    },
+    {
+      "id": 2,
+      "nickname": "설개발",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 9
+    },
+    {
+      "id": 22,
+      "nickname": "연수르",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 14
+    },
+    {
+      "id": 33,
+      "nickname": "석해주",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 18
+    },
+    {
+      "id": 13,
+      "nickname": "유반문",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 14
+    },
+    {
+      "id": 14,
+      "nickname": "이재은",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 18
+    },
+    {
+      "id": 20,
+      "nickname": "신유징",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 18
+    },
+    {
+      "id": 22,
+      "nickname": "연수르",
+      "image_url": "https://w.namu.la/s/3ca92265fffe4dd38a729df3df7dd41ea3ef12b72383958c8fd0bea79ffaa0331810fb8bea8ba09156d69e5f792eef522dd8eb932389ed972ff233c2c9adb34f0157b57486f677e31243406bc0d128bd5b79ba982c9d861f1d6958144803d18664853083be13fb8fc63620192f90ec13",
+      "follows": 14
+    }
+  ]
+}
