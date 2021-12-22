@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
+import client from "../../lib/api/client";
 
 const StyledLoginForm = styled.div`
   display: flex;
@@ -49,19 +51,20 @@ const SocialButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 27px;
-  border-radius: 3px;
+  padding: 5px 15px;
+  margin-left: 10px;
   background: white;
-  border: 1px lightgray solid;
+  color: rgba(0, 0, 0, 0.54);
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
+  border: 1px solid transparent;
   cursor: pointer;
-  font-family: "Readex Pro", sans-serif;
   font-weight: 100;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
   img {
-    margin-right: 10px;
-  }
-  #naverIcon,
-  #googleIcon {
-    width: 32px;
+    margin-right: 15px;
   }
 `;
 
@@ -96,29 +99,50 @@ const NextButton = styled.button`
 `;
 
 function LoginForm() {
+  const [googleToken, setGoogleToken] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const onEmailHandler = e => {
+    setEmail(e.target.value);
+  };
+  const onPasswordHandler = e => {
+    setPassword(e.target.value);
+  };
   const { naver } = window;
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "D6LeoiC8EqM1qxbMl3rP",
       callbackUrl: "http://localhost:3000/login",
       isPopup: false,
-      loginButton: { color: "green", type: 1, height: "40" },
+      loginButton: { color: "green", type: 1, height: "28" },
       callbackHandle: true,
     });
     naverLogin.init();
   };
 
-  // const getNaverToken = () => {
-  //   console.log("d");
-  //   if (!location.hash) return;
-  //   const token = location.hash.split("=")[1].split("&")[0];
-  //   console.log(token);
-  //   console.log("토큰토큰");
-  // };
+  useEffect(() => {
+    if (googleToken === "") return;
+
+    async function test() {
+      const result = await client.get(
+        "http://15.164.210.185:8000/users/google/login",
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: googleToken,
+          },
+        }
+      );
+      console.log(result);
+    }
+    test();
+  }, [googleToken]);
 
   useEffect(() => {
     initializeNaverLogin();
-    // getNaverToken();
     userProfile();
   });
 
@@ -128,7 +152,7 @@ function LoginForm() {
       const location = window.location.href.split("=")[1];
       const token = location.split("&")[0];
 
-      fetch(`http://172.30.1.7:8000/users/naver/login`, {
+      fetch(`http://15.164.210.185:8000/users/naver/login`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -144,6 +168,27 @@ function LoginForm() {
     }
   };
 
+  const onSuccessGoogle = response => {
+    const googleToken = response.accessToken;
+    setGoogleToken(googleToken);
+  };
+
+  const testLogin = e => {
+    client
+      .post("http://15.164.210.185:8000/users/signin", {
+        email,
+        password,
+      })
+      .then(res => {
+        const access_token = res.data.ACCESS_TOKEN;
+        const userInfo = res.data.result;
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+        navigate("/");
+      });
+  };
+
   return (
     <>
       <StyledLoginForm>
@@ -151,31 +196,31 @@ function LoginForm() {
         <div>리비도에 로그인하여</div>
         <div className="newService">새로운 서비스를 만나보세요 :)</div>
 
-        <StyledInput name="email" placeholder="EMAIL ID" type="email" />
-        <StyledInput name="password" placeholder="PASSWORD" type="password" />
+        <StyledInput
+          onChange={onEmailHandler}
+          name="email"
+          placeholder="EMAIL ID"
+          type="email"
+        />
+        <StyledInput
+          onChange={onPasswordHandler}
+          name="password"
+          placeholder="PASSWORD"
+          type="password"
+        />
         <ForgetPassword>· FORGET PASSWORD?</ForgetPassword>
+
+        {/* <div onClick="onSignIn" class="g-signin2" data-onsuccess="onSignIn" /> */}
         <SocialButtonContainer>
+          <GoogleLogin
+            onSuccess={onSuccessGoogle}
+            clientId="983084770227-20pud7lcitmbnm8bcq8vlb056b9f251v.apps.googleusercontent.com"
+            buttonText="start with Google"
+          />
+
           <SocialButton>
-            <img
-              id="googleIcon"
-              alt="google"
-              src="https://img.icons8.com/color/48/000000/google-logo.png"
-            />
-            start with
-            <br /> Google
-          </SocialButton>
-          <SocialButton>
-            {/* <img
-                id="naverIcon"
-                alt="naver"
-                src="http://vonpat01.cafe24.com/wp-content/uploads/2020/08/naver.png"
-                // id="naverIdLogin"
-              /> */}
-            <div id="naverIdLogin">
-              start with
-              <br />
-              NAVER
-            </div>
+            <div id="naverIdLogin" />
+            start with Naver
           </SocialButton>
         </SocialButtonContainer>
       </StyledLoginForm>
@@ -183,7 +228,7 @@ function LoginForm() {
         <StyledLink to="/register">
           <SignupButton>CREATE ID</SignupButton>
         </StyledLink>
-        <NextButton>NEXT</NextButton>
+        <NextButton onClick={testLogin}>LOGIN</NextButton>
       </ButtonContainer>
     </>
   );

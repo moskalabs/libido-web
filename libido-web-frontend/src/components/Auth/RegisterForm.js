@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import client from "../../lib/api/client";
 
@@ -83,37 +84,40 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [re_password, setRepassword] = useState("");
   const [nickname, setNickname] = useState("");
+
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [verificationCode, setVerificationCode] = useState(null);
   const [authNumber, setAuthNumber] = useState(null);
   const [isLoginSuccess, setLoginSuccess] = useState(false);
 
+  const navigate = useNavigate();
+
   const onEmailHandler = e => {
     setEmail(e.target.value);
   };
-  const onPasswordHandler = e => {
-    setPassword(e.target.value);
-    console.log("비번");
-  };
-  const onRepasswordHandler = e => {
-    setRepassword(e.target.value);
-    console.log("비번재확인");
-  };
+
   const onNicknameHandler = e => {
     setNickname(e.target.value);
   };
 
   const signupTest = e => {
     console.log(email, nickname, password, re_password);
+    const nation = "korea";
     client
-      .post("http://172.30.1.44:8000/users/signup", {
+      .post("http://15.164.210.185:8000/users/signup", {
         email,
         nickname,
         password,
         re_password,
+        nation,
       })
-      .then(res => console.log(res));
+      .then(res => {
+        const message = res.data.message;
+        if (message === "SUCCESS") {
+          navigate("/");
+        }
+      });
   };
 
   const onChangePassword = useCallback(e => {
@@ -161,7 +165,6 @@ function RegisterForm() {
   const inputValueCheck = e => {
     const currentCheckButtonType = e.target.dataset.check;
     const currentCheckInputValue = sortCheckInputValue(currentCheckButtonType);
-    console.log(currentCheckInputValue);
 
     const regExp =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -176,21 +179,23 @@ function RegisterForm() {
     }
 
     client
-      .post(`http://172.30.1.7:8000/users/${checkType}`, {
+      .post(`http://15.164.210.185:8000/users/${checkType}`, {
         [currentKey]: currentCheckInputValue,
       })
       .then(res => {
         const message = res.data.message;
+        console.log(message);
         if (message === "AVAILABLE_EMAIL" || message === "AVAILABLE_NICKNAME") {
           console.log("사용 가능 아이디");
-        } else {
-          console.log("중복된 아이디");
         }
+      })
+      .catch(error => {
+        console.log("중복되었습니다.");
       });
   };
   const sendVerificationCode = e => {
     client
-      .post("http://172.30.1.7:8000/users/signupemail", {
+      .post("http://15.164.210.185:8000/users/signupemail", {
         email,
       })
       .then(res => {
@@ -272,8 +277,12 @@ function RegisterForm() {
             </PasswordContainer>
             <div className="condition">
               {isPasswordConfirm
-                ? "비밀번호가 일치하지 않습니다"
-                : "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"}
+                ? "비밀번호가 일치합니다!"
+                : `${
+                    re_password.length === 0
+                      ? "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"
+                      : "비밀번호가 일치하지 않습니다"
+                  }`}
             </div>
           </>
         )}
