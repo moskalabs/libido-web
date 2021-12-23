@@ -15,14 +15,16 @@ const ContentForm = ({
   };
 
   const entryContentRoom = () => {
+    //개인방에 들어가기 전에 서버와 통신하는 함수입니다. 실제 방은 만들어져 있지 않아, UI 관련 기능을 구현하지 못했습니다.
+    const accessToken = localStorage.getItem("access_token");
+
     client
       .post(
         "http://15.164.210.185:8000/users/history",
         { room_id },
         {
           headers: {
-            Authorization:
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+            Authorization: accessToken,
           },
         }
       )

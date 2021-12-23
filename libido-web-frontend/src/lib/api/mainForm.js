@@ -2,17 +2,18 @@ import client from "./client";
 import { API } from "../../config";
 import { identifyQuerySort } from "../identifyQuerySort";
 
+const accessToken = localStorage.getItem("access_token");
+
 export const content = ({ sort, currentOffset = 1 }) => {
   const querySort = identifyQuerySort(sort);
-
+  console.log(accessToken);
   return client.get(
     `${API.baseUrl}contents?category=${querySort}&offset=${
       Math.abs(currentOffset - 1) * 8
     }`,
     {
       headers: {
-        Authorization:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+        Authorization: accessToken,
       },
     }
   );
@@ -27,8 +28,7 @@ export const rooms = ({ sort, currentOffset = 1 }) => {
     }`,
     {
       headers: {
-        Authorization:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+        Authorization: accessToken,
       },
     }
   );
@@ -37,8 +37,7 @@ export const rooms = ({ sort, currentOffset = 1 }) => {
 export const friendList = () => {
   return client.get(`${API.baseUrl}users/follows`, {
     headers: {
-      Authorization:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+      Authorization: accessToken,
     },
   });
 };
@@ -48,8 +47,7 @@ export const friends = (currentOffset = 1) => {
     `${API.baseUrl}rooms/friends?offset=${Math.abs(currentOffset - 1) * 8}`,
     {
       headers: {
-        Authorization:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDF9.P5mvM9ULQ6qiuBL10ld6ZmilB349CHKfBc32gdzXqL4",
+        Authorization: accessToken,
       },
     }
   );

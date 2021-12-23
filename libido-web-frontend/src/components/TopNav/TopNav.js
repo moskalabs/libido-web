@@ -1,45 +1,87 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, matchPath, Link } from "react-router-dom";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const accessToken = localStorage.getItem("access_token");
 
   const goToMain = e => {
     navigate("/");
   };
 
-  return (
-    <Container>
-      <TopNavHeader onClick={goToMain}>
-        <LogoContainer>
-          <LogoImg />
-        </LogoContainer>
-        <SearchBarContainer>
-          <SearchContainer
-            topNav
-            placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
-          />
-          <div className="searchIcon" />
-          <div className="searchLine" />
-        </SearchBarContainer>
-        <RightSubMenu>
-          {/* 로그인 했을 때 옆에 작게 사이드로 추가_지금은 비로그인 */}
-          {/* <MessageContainer>
-            <MessageLogo />
-            <MessageLink to="/">Messages</MessageLink>
-          </MessageContainer> */}
-          <div className="rightSubMenuLine" />
-          <TopNavButtonContainer>
-            <ButtonMarginTop main>로그인</ButtonMarginTop>
-            <Button main>회원가입</Button>
-          </TopNavButtonContainer>
-        </RightSubMenu>
-      </TopNavHeader>
-    </Container>
-  );
+  const goToAuthPage = e => {
+    const authSort = e.target.dataset.authsort;
+    navigate(`/${authSort}`);
+  };
+
+  const isAuthView = () => {
+    const currentPathname = location.pathname;
+    if (
+      matchPath("/login", currentPathname) ||
+      matchPath("/register", currentPathname) ||
+      matchPath("/password", currentPathname)
+    )
+      return true;
+    else return false;
+  };
+
+  if (isAuthView()) return null;
+  else
+    return (
+      <Container>
+        <TopNavHeader>
+          <LogoContainer onClick={goToMain}>
+            <LogoImg />
+          </LogoContainer>
+          <SearchBarContainer>
+            <SearchContainer
+              topNav
+              placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
+            />
+            <div className="searchIcon" />
+            <div className="searchLine" />
+          </SearchBarContainer>
+          <RightSubMenu>
+            <div className="rightSubMenuLine" />
+            {accessToken ? (
+              <UserInfoContainer>
+                <UserFigure />
+                <UserSettingContainer>
+                  <UserName>
+                    Hello, <span className="userName">Choi</span>
+                  </UserName>
+                  <MessageContainer>
+                    <MessageLink to="/">Messages</MessageLink>
+                    <MessageLogo />
+                  </MessageContainer>
+                  <UserAccountContainer>
+                    <span>Your account</span>
+                    <div className="dropdownButton" />
+                  </UserAccountContainer>
+                </UserSettingContainer>
+              </UserInfoContainer>
+            ) : (
+              <TopNavButtonContainer>
+                <ButtonMarginTop
+                  data-authsort="login"
+                  onClick={goToAuthPage}
+                  main
+                >
+                  로그인
+                </ButtonMarginTop>
+                <Button onClick={goToAuthPage} data-authsort="register" main>
+                  회원가입
+                </Button>
+              </TopNavButtonContainer>
+            )}
+          </RightSubMenu>
+        </TopNavHeader>
+      </Container>
+    );
 };
 
 const Container = styled.div`
@@ -62,6 +104,7 @@ const TopNavHeader = styled.header`
 
 const LogoContainer = styled.div`
   margin: 0 170px 0 20px;
+  cursor: pointer;
 `;
 
 const LogoImg = styled.div`
@@ -102,10 +145,10 @@ const RightSubMenu = styled.div`
 
   .rightSubMenuLine {
     position: absolute;
-    top: -20px;
+    top: -26px;
     right: 350px;
     border-left: 1px solid #d9d9d9;
-    height: 120px;
+    height: 125px;
   }
 `;
 
@@ -118,26 +161,62 @@ const TopNavButtonContainer = styled.div`
 const ButtonMarginTop = styled(Button)`
   margin-bottom: 3px;
 `;
-// const MessageContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   width: 120px;
-//   margin: 0 10px 0 90px;
-// `;
 
-// const MessageLogo = styled.div`
-//   width: 30px;
-//   height: 30px;
-//   margin-right: 8px;
-//   background: url(./images/message.svg) no-repeat;
-//   background-position: center center;
-//   background-size: 20px 20px;
-// `;
+const UserInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 120px;
+`;
 
-// const MessageLink = styled(Link)`
-//   text-decoration: none;
-//   color: #707070;
-//   letter-spacing: 0.5px;
-// `;
+const UserFigure = styled.div`
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-right: 25px;
+  /* background-color: red; */
+  background: url(./images/profile_test.jpeg) no-repeat;
+  background-size: 60px 60px;
+  background-position: center center;
+`;
+
+const UserSettingContainer = styled.div`
+  margin-left: 20px;
+`;
+
+const UserName = styled.div`
+  font-size: 18px;
+
+  .userName {
+    font-size: 20px;
+    font-weight: 700;
+    color: #262f6a;
+  }
+`;
+
+const MessageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+`;
+
+const MessageLink = styled(Link)`
+  text-decoration: none;
+  color: #262f6a;
+  letter-spacing: 0.5px;
+`;
+
+const MessageLogo = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  background: url(./images/message.svg) no-repeat;
+  background-position: center center;
+  background-size: 20px 20px;
+`;
+
+const UserAccountContainer = styled.div`
+  font-size: 17px;
+`;
 
 export default TopNav;
