@@ -6,7 +6,7 @@ const accessToken = localStorage.getItem("access_token");
 
 export const content = ({ sort, currentOffset = 1 }) => {
   const querySort = identifyQuerySort(sort);
-  console.log(accessToken);
+
   return client.get(
     `${API.baseUrl}contents?category=${querySort}&offset=${
       Math.abs(currentOffset - 1) * 8

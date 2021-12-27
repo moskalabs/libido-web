@@ -3,6 +3,157 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import client from "../../lib/api/client";
 
+function RegisterForm({
+  form,
+  changeRegisterInputValue,
+  inputValueDuplicationCheck,
+  sendToEmailForVerificationCode,
+  sendRegisterInfo,
+}) {
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(null);
+  const [authNumber, setAuthNumber] = useState(null);
+  const [isLoginSuccess, setLoginSuccess] = useState(false);
+
+  const { email, password, re_password, nickname } = form;
+
+  const navigate = useNavigate();
+
+  const signupTest = e => {
+    const nation = "korea";
+    client
+      .post("http://15.164.210.185:8000/users/signup", {
+        email,
+        nickname,
+        password,
+        re_password,
+        nation,
+      })
+      .then(res => {
+        const message = res.data.message;
+        if (message === "SUCCESS") {
+          navigate("/");
+        }
+      });
+  };
+
+  // const onChangePassword = useCallback(e => {
+  //   const passwordRegex =
+  //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+  //   const passwordCurrent = e.target.value;
+  //   console.log(passwordRegex.test(e.target.value));
+  //   setPassword(passwordCurrent);
+  //   if (!passwordRegex.test(passwordCurrent)) {
+  //     setIsPassword(false);
+  //   } else {
+  //     setIsPassword(true);
+  //   }
+  // }, []);
+
+  // const onChangePasswordConfirm = useCallback(
+  //   e => {
+  //     const passwordConfirmCurrent = e.target.value;
+  //     setRepassword(passwordConfirmCurrent);
+
+  //     if (password === passwordConfirmCurrent) {
+  //       setIsPasswordConfirm(true);
+  //     } else {
+  //       setIsPasswordConfirm(false);
+  //     }
+  //   },
+  //   [password]
+  // );
+
+  const sendVerificationCode = e => {
+    client
+      .post("http://15.164.210.185:8000/users/signupemail", {
+        email,
+      })
+      .then(res => {
+        const authNumber = res.data.auth_number;
+        console.log(authNumber);
+        setAuthNumber(authNumber);
+      });
+  };
+
+  const test = e => {
+    if (authNumber === verificationCode) {
+      console.log("성공");
+      setLoginSuccess(true);
+    } else {
+      setLoginSuccess(false);
+    }
+  };
+
+  return (
+    <StyledRegisterForm onChange={changeRegisterInputValue}>
+      <div className="registerGuide">CREATE LIBIDO ID</div>
+      <h3>회원가입</h3>
+      <div>
+        <StyledInput name="email" placeholder="ID" />
+        <OverlayButton
+          onClick={inputValueDuplicationCheck}
+          data-check="idCheckButton"
+        >
+          중복확인
+        </OverlayButton>
+        <StyledInput name="nickname" placeholder="닉네임" type="text" />
+        <OverlayButton
+          onClick={inputValueDuplicationCheck}
+          data-check="nicknameCheckButton"
+        >
+          중복확인
+        </OverlayButton>
+        <div className="condition">
+          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        </div>
+        <PhoneInfo>이메일 정보 입력</PhoneInfo>
+        <StyledInput
+          name="emailVerification"
+          placeholder="이메일"
+          type="email"
+        />
+        <OverlayButton onClick={sendToEmailForVerificationCode}>
+          인증번호 발송
+        </OverlayButton>
+        <StyledInput name="verificationCode" placeholder="인증번호" />
+        <OverlayButton onClick={test}>인증번호 입력</OverlayButton>
+
+        {isLoginSuccess && (
+          <>
+            <PasswordContainer>
+              <PasswordInput
+                name="password"
+                placeholder="PASSWORD"
+                type="password"
+              />
+
+              <PasswordInput
+                name="re_password"
+                placeholder="PW CHECK"
+                type="password"
+              />
+            </PasswordContainer>
+            <div className="condition">
+              {isPasswordConfirm
+                ? "비밀번호가 일치합니다!"
+                : `${
+                    re_password.length === 0
+                      ? "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"
+                      : "비밀번호가 일치하지 않습니다"
+                  }`}
+            </div>
+          </>
+        )}
+      </div>
+      <Footer>
+        <Button onClick={signupTest}>NEXT</Button>
+      </Footer>
+    </StyledRegisterForm>
+  );
+}
+
 const StyledRegisterForm = styled.div`
   display: flex;
   flex-direction: column;
@@ -78,220 +229,5 @@ const Button = styled.button`
   cursor: pointer;
   color: white;
 `;
-
-function RegisterForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [re_password, setRepassword] = useState("");
-  const [nickname, setNickname] = useState("");
-
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [verificationCode, setVerificationCode] = useState(null);
-  const [authNumber, setAuthNumber] = useState(null);
-  const [isLoginSuccess, setLoginSuccess] = useState(false);
-
-  const navigate = useNavigate();
-
-  const onEmailHandler = e => {
-    setEmail(e.target.value);
-  };
-
-  const onNicknameHandler = e => {
-    setNickname(e.target.value);
-  };
-
-  const signupTest = e => {
-    console.log(email, nickname, password, re_password);
-    const nation = "korea";
-    client
-      .post("http://15.164.210.185:8000/users/signup", {
-        email,
-        nickname,
-        password,
-        re_password,
-        nation,
-      })
-      .then(res => {
-        const message = res.data.message;
-        if (message === "SUCCESS") {
-          navigate("/");
-        }
-      });
-  };
-
-  const onChangePassword = useCallback(e => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const passwordCurrent = e.target.value;
-    console.log(passwordRegex.test(e.target.value));
-    setPassword(passwordCurrent);
-    if (!passwordRegex.test(passwordCurrent)) {
-      setIsPassword(false);
-    } else {
-      setIsPassword(true);
-    }
-  }, []);
-
-  const onChangePasswordConfirm = useCallback(
-    e => {
-      const passwordConfirmCurrent = e.target.value;
-      setRepassword(passwordConfirmCurrent);
-
-      if (password === passwordConfirmCurrent) {
-        setIsPasswordConfirm(true);
-      } else {
-        setIsPasswordConfirm(false);
-      }
-    },
-    [password]
-  );
-
-  const sortCheckInputValue = currentCheckButtonType => {
-    let checkInputValue;
-    switch (currentCheckButtonType) {
-      case "nicknameCheckButton":
-        checkInputValue = nickname;
-        break;
-      case "idCheckButton":
-        checkInputValue = email;
-        break;
-      default:
-        break;
-    }
-    return checkInputValue;
-  };
-
-  const inputValueCheck = e => {
-    const currentCheckButtonType = e.target.dataset.check;
-    const currentCheckInputValue = sortCheckInputValue(currentCheckButtonType);
-
-    const regExp =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    let checkType;
-    let currentKey;
-    if (regExp.test(currentCheckInputValue)) {
-      checkType = "emailcheck";
-      currentKey = "email";
-    } else {
-      checkType = "nicknamecheck";
-      currentKey = "nickname";
-    }
-
-    client
-      .post(`http://15.164.210.185:8000/users/${checkType}`, {
-        [currentKey]: currentCheckInputValue,
-      })
-      .then(res => {
-        const message = res.data.message;
-        console.log(message);
-        if (message === "AVAILABLE_EMAIL" || message === "AVAILABLE_NICKNAME") {
-          console.log("사용 가능 아이디");
-        }
-      })
-      .catch(error => {
-        console.log("중복되었습니다.");
-      });
-  };
-  const sendVerificationCode = e => {
-    client
-      .post("http://15.164.210.185:8000/users/signupemail", {
-        email,
-      })
-      .then(res => {
-        const authNumber = res.data["auth_number"];
-        console.log(authNumber);
-        setAuthNumber(authNumber);
-      });
-  };
-
-  const test = e => {
-    if (authNumber === verificationCode) {
-      console.log("성공");
-      setLoginSuccess(true);
-    } else {
-      setLoginSuccess(false);
-    }
-  };
-
-  const test2 = e => {
-    setVerificationCode(e.target.value);
-  };
-
-  return (
-    <StyledRegisterForm>
-      <div className="registerGuide">CREATE LIBIDO ID</div>
-      <h3>회원가입</h3>
-      <div>
-        <StyledInput name="email" onChange={onEmailHandler} placeholder="ID" />
-        <OverlayButton onClick={inputValueCheck} data-check="idCheckButton">
-          중복확인
-        </OverlayButton>
-        <StyledInput
-          name="nickname"
-          onChange={onNicknameHandler}
-          placeholder="닉네임"
-          type="text"
-        />
-        <OverlayButton
-          onClick={inputValueCheck}
-          data-check="nicknameCheckButton"
-        >
-          중복확인
-        </OverlayButton>
-        <div className="condition">
-          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
-        </div>
-        <PhoneInfo>이메일 정보 입력</PhoneInfo>
-        <StyledInput
-          name="emailVerification"
-          placeholder="이메일"
-          type="email"
-        />
-        <OverlayButton onClick={sendVerificationCode}>
-          인증번호 발송
-        </OverlayButton>
-        <StyledInput
-          onChange={test2}
-          name="verificationCode"
-          placeholder="인증번호"
-        />
-        <OverlayButton onClick={test}>인증번호 입력</OverlayButton>
-
-        {isLoginSuccess && (
-          <>
-            <PasswordContainer>
-              <PasswordInput
-                name="password"
-                placeholder="PASSWORD"
-                type="password"
-                onChange={onChangePassword}
-              />
-
-              <PasswordInput
-                name="re_password"
-                placeholder="PW CHECK"
-                type="password"
-                onChange={onChangePasswordConfirm}
-              />
-            </PasswordContainer>
-            <div className="condition">
-              {isPasswordConfirm
-                ? "비밀번호가 일치합니다!"
-                : `${
-                    re_password.length === 0
-                      ? "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"
-                      : "비밀번호가 일치하지 않습니다"
-                  }`}
-            </div>
-          </>
-        )}
-      </div>
-      <Footer>
-        <Button onClick={signupTest}>NEXT</Button>
-      </Footer>
-    </StyledRegisterForm>
-  );
-}
 
 export default RegisterForm;
