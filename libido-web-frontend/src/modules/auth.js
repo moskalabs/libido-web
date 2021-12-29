@@ -18,7 +18,14 @@ const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
 const [DUPLICATIONCHECK, DUPLICATIONCHECK_SUCCESS, DUPLICATIONCHECK_FAILURE] =
   createRequestActionTypes("auth/DUPLICATIONCHECK");
 
+const [
+  VERIFICATIONCODESEND,
+  VERIFICATIONCODESEND_SUCCESS,
+  VERIFICATIONCODESEND_FAILURE,
+] = createRequestActionTypes("auth/VERIFICATIONCODESEND");
+
 const INITIALIZE_AVAILABLE = "auth/INITIALIZE_AVAILABLE";
+
 const INITIALIZE_DUPLICATIONINFO = "auth/INITIALIZE_DUPLICATIONINFO";
 
 export const changeField = createAction(
@@ -42,6 +49,7 @@ export const register = createAction(
     nickname,
   })
 );
+
 export const login = createAction(LOGIN, ({ email, password }) => ({
   email,
   password,
@@ -58,19 +66,28 @@ export const checkInputValue = createAction(
     currentCheckInputValue,
   })
 );
-
-const registerSaga = createRequestSaga(REGISTER, authAPI.register);
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+export const verificationCodeSend = createAction(
+  VERIFICATIONCODESEND,
+  email => email
+);
 
 const checkInputValueSaga = createRequestSaga(
   DUPLICATIONCHECK,
   authAPI.checkInput
 );
+const verificationCodeSendSaga = createRequestSaga(
+  VERIFICATIONCODESEND,
+  authAPI.verificationCodeSend
+);
+
+const registerSaga = createRequestSaga(REGISTER, authAPI.register);
+const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 
 export function* authSaga() {
   yield takeLatest(REGISTER, registerSaga);
   yield takeLatest(LOGIN, loginSaga);
   yield takeEvery(DUPLICATIONCHECK, checkInputValueSaga);
+  yield takeEvery(VERIFICATIONCODESEND, verificationCodeSendSaga);
 }
 
 const initialState = {
@@ -83,9 +100,11 @@ const initialState = {
     password: "",
     re_password: "",
     nickname: "",
-    verificationCode: "",
     isDuplicationCheckSuccess: "",
+    verificationCode: "",
   },
+  token: "",
+  message: "",
   authError: null,
 };
 
@@ -109,15 +128,6 @@ const auth = handleActions(
       ...state,
       authError: error,
     }),
-    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
-      ...state,
-      authError: null,
-      auth,
-    }),
-    [LOGIN_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      authError: error,
-    }),
     [INITIALIZE_DUPLICATIONINFO]: (state, action) =>
       produce(state, draft => {
         draft.register.isDuplicationCheckSuccess = "";
@@ -131,9 +141,22 @@ const auth = handleActions(
       ...state,
       authError: response.data.message,
     }),
+    [VERIFICATIONCODESEND_SUCCESS]: (state, { payload: { auth_number } }) =>
+      produce(state, draft => {
+        draft.register.verificationCode = auth_number;
+      }),
     [INITIALIZE_AVAILABLE]: state => ({
       ...state,
       isCheckSuccess: null,
+    }),
+    [LOGIN_SUCCESS]: (state, { payload: { ACCESS_TOKEN } }) => ({
+      ...state,
+      token: ACCESS_TOKEN,
+      authError: null,
+    }),
+    [LOGIN_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      authError: error,
     }),
   },
   initialState

@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import client from "../../lib/api/client";
 
-function LoginForm() {
+function LoginForm({ form, changeLoginInputValue, signin }) {
   const [googleToken, setGoogleToken] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
-  const onEmailHandler = e => {
-    setEmail(e.target.value);
-  };
-  const onPasswordHandler = e => {
-    setPassword(e.target.value);
-  };
+  const { email, password } = form;
+
   const { naver } = window;
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
@@ -80,57 +72,23 @@ function LoginForm() {
     setGoogleToken(googleToken);
   };
 
-  const testLogin = e => {
-    client
-      .post("http://15.164.210.185:8000/users/signin", {
-        email,
-        password,
-      })
-      .then(res => {
-        const access_token = res.data.ACCESS_TOKEN;
-        const userInfo = res.data.result;
-        localStorage.setItem("access_token", access_token);
-        // localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-        navigate("/");
-      });
-  };
-
-  const goToForgotPassword = e => {
-    navigate("/password");
-  };
-
   return (
-    <>
-      <StyledLoginForm>
+    <Container>
+      <StyledLoginForm onChange={changeLoginInputValue}>
         <div className="login">LOGIN</div>
         <div>리비도에 로그인하여</div>
         <div className="newService">새로운 서비스를 만나보세요 :)</div>
 
-        <StyledInput
-          onChange={onEmailHandler}
-          name="email"
-          placeholder="EMAIL ID"
-          type="email"
-        />
-        <StyledInput
-          onChange={onPasswordHandler}
-          name="password"
-          placeholder="PASSWORD"
-          type="password"
-        />
-        <ForgetPassword onClick={goToForgotPassword}>
-          · FORGET PASSWORD?
-        </ForgetPassword>
+        <StyledInput name="email" placeholder="EMAIL ID" type="email" />
+        <StyledInput name="password" placeholder="PASSWORD" type="password" />
+        <ForgetPassword to="password">· FORGET PASSWORD?</ForgetPassword>
 
-        {/* <div onClick="onSignIn" class="g-signin2" data-onsuccess="onSignIn" /> */}
         <SocialButtonContainer>
           <GoogleLogin
             onSuccess={onSuccessGoogle}
             clientId="446963991551-6e9gh8ou52mac0je7f753tdrq1gc7377.apps.googleusercontent.com"
             buttonText="start with Google"
           />
-
           <SocialButton>
             <div id="naverIdLogin" />
             start with Naver
@@ -141,11 +99,13 @@ function LoginForm() {
         <StyledLink to="/register">
           <SignupButton>CREATE ID</SignupButton>
         </StyledLink>
-        <NextButton onClick={testLogin}>LOGIN</NextButton>
+        <NextButton onClick={signin}>LOGIN</NextButton>
       </ButtonContainer>
-    </>
+    </Container>
   );
 }
+
+const Container = styled.div``;
 
 const StyledLoginForm = styled.div`
   display: flex;
@@ -178,13 +138,14 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const ForgetPassword = styled.button`
+const ForgetPassword = styled(Link)`
   margin: 20px 0 10px;
   border: none;
   background-color: #fff;
   font-family: "Readex Pro", sans-serif;
   font-size: 16px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
   color: #262f6a;
 `;

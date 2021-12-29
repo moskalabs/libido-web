@@ -1,25 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   changeField,
   initializeForm,
   register,
   initializeDuplicationInfo,
   checkInputValue,
+  verificationCodeSend,
 } from "../../modules/auth";
 import RegisterForm from "../../components/Auth/RegisterForm";
-import { check } from "../../modules/user";
+
+const checkPasswordPattern = currentInputPassword => {
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+  if (passwordRegex.test(currentInputPassword)) return true;
+  else return false;
+};
 
 const RegisterFormContainer = () => {
   const dispatch = useDispatch();
-  const { form, message, checkResult } = useSelector(({ auth }) => ({
-    form: auth.register,
-    message: auth.message,
-    checkResult: auth.isCheckSuccess,
-  }));
+  const navigate = useNavigate();
+
+  const form = useSelector(({ auth }) => auth.register);
+  const message = useSelector(({ auth }) => auth.message);
+
   const authError = useSelector(({ auth }) => auth.authError);
 
-  // const isAvailable = checkResult && checkResult.split("_")[0];
+  const [isCorrectPasswordPattern, setCorrectPasswordPattern] = useState(false);
 
   const changeRegisterInputValue = event => {
     const { value, name } = event.target;
@@ -27,7 +34,10 @@ const RegisterFormContainer = () => {
       "emailVerification",
       "verificationCode",
     ];
+    const isPassword = "password";
     if (doNotChangeRegisterInputValues.includes(name)) return;
+    else if (isPassword === name)
+      setCorrectPasswordPattern(checkPasswordPattern(value));
 
     dispatch(
       changeField({
@@ -69,13 +79,15 @@ const RegisterFormContainer = () => {
   };
 
   const sendToEmailForVerificationCode = event => {
-    console.log(form.email);
+    const currentVerificationEmail = event.target.previousSibling.value;
+    if (currentVerificationEmail !== form.email) return;
+
+    dispatch(verificationCodeSend(currentVerificationEmail));
   };
 
-  const sendRegisterInfo = e => {
-    e.preventDefault();
+  const signup = event => {
     const { email, password, re_password, nickname } = form;
-    if (password !== re_password) return;
+
     dispatch(
       register({
         email,
@@ -90,24 +102,20 @@ const RegisterFormContainer = () => {
     dispatch(initializeForm("register"));
   }, [dispatch]);
 
-  useEffect(() => {
-    if (message === "SUCCESS") {
-      // dispatch(check());
-    } else {
-      // dispatch(check);
-    }
-  }, [message, dispatch]);
-
-  return (
-    <RegisterForm
-      form={form}
-      authError={authError}
-      changeRegisterInputValue={changeRegisterInputValue}
-      inputValueDuplicationCheck={inputValueDuplicationCheck}
-      sendToEmailForVerificationCode={sendToEmailForVerificationCode}
-      sendRegisterInfo={sendRegisterInfo}
-    />
-  );
+  if (message === "SUCCESS") navigate("/");
+  else {
+    return (
+      <RegisterForm
+        form={form}
+        isCorrectPasswordPattern={isCorrectPasswordPattern}
+        authError={authError}
+        changeRegisterInputValue={changeRegisterInputValue}
+        inputValueDuplicationCheck={inputValueDuplicationCheck}
+        sendToEmailForVerificationCode={sendToEmailForVerificationCode}
+        signup={signup}
+      />
+    );
+  }
 };
 
 export default RegisterFormContainer;

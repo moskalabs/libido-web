@@ -1,88 +1,40 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
-import client from "../../lib/api/client";
 
 function RegisterForm({
   form,
+  isCorrectPasswordPattern,
   changeRegisterInputValue,
   inputValueDuplicationCheck,
   sendToEmailForVerificationCode,
-  sendRegisterInfo,
+  signup,
 }) {
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [verificationCode, setVerificationCode] = useState(null);
-  const [authNumber, setAuthNumber] = useState(null);
-  const [isLoginSuccess, setLoginSuccess] = useState(false);
+  const [isCompareVerificationCodeSuccess, setCompareVerificationCode] =
+    useState(false);
 
-  const { email, password, re_password, nickname } = form;
+  const { password, re_password, verificationCode } = form;
 
-  const navigate = useNavigate();
-
-  const signupTest = e => {
-    const nation = "korea";
-    client
-      .post("http://15.164.210.185:8000/users/signup", {
-        email,
-        nickname,
-        password,
-        re_password,
-        nation,
-      })
-      .then(res => {
-        const message = res.data.message;
-        if (message === "SUCCESS") {
-          navigate("/");
-        }
-      });
+  const compareVerificationCode = event => {
+    const currentUserInputVerificationCode = event.target.previousSibling.value;
+    if (currentUserInputVerificationCode === verificationCode)
+      setCompareVerificationCode(true);
   };
 
-  // const onChangePassword = useCallback(e => {
-  //   const passwordRegex =
-  //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-  //   const passwordCurrent = e.target.value;
-  //   console.log(passwordRegex.test(e.target.value));
-  //   setPassword(passwordCurrent);
-  //   if (!passwordRegex.test(passwordCurrent)) {
-  //     setIsPassword(false);
-  //   } else {
-  //     setIsPassword(true);
-  //   }
-  // }, []);
+  const outputPasswordInfoCondition = () => {
+    const currentPasswordLength = password.length;
+    const currentRePasswordLength = re_password.length;
+    const emptyInputValue = 0;
 
-  // const onChangePasswordConfirm = useCallback(
-  //   e => {
-  //     const passwordConfirmCurrent = e.target.value;
-  //     setRepassword(passwordConfirmCurrent);
-
-  //     if (password === passwordConfirmCurrent) {
-  //       setIsPasswordConfirm(true);
-  //     } else {
-  //       setIsPasswordConfirm(false);
-  //     }
-  //   },
-  //   [password]
-  // );
-
-  const sendVerificationCode = e => {
-    client
-      .post("http://15.164.210.185:8000/users/signupemail", {
-        email,
-      })
-      .then(res => {
-        const authNumber = res.data.auth_number;
-        console.log(authNumber);
-        setAuthNumber(authNumber);
-      });
-  };
-
-  const test = e => {
-    if (authNumber === verificationCode) {
-      console.log("성공");
-      setLoginSuccess(true);
-    } else {
-      setLoginSuccess(false);
+    if (currentPasswordLength === emptyInputValue)
+      return "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요";
+    else {
+      if (currentRePasswordLength === emptyInputValue) {
+        if (isCorrectPasswordPattern) return "사용할 수 있는 비밀번호입니다";
+        else return "올바른 비밀번호 형식을 지켜주세요";
+      } else {
+        if (password === re_password) return "비밀번호가 일치합니다";
+        else return "비밀번호가 일치하지 않습니다";
+      }
     }
   };
 
@@ -118,9 +70,11 @@ function RegisterForm({
           인증번호 발송
         </OverlayButton>
         <StyledInput name="verificationCode" placeholder="인증번호" />
-        <OverlayButton onClick={test}>인증번호 입력</OverlayButton>
+        <OverlayButton onClick={compareVerificationCode}>
+          인증번호 입력
+        </OverlayButton>
 
-        {isLoginSuccess && (
+        {isCompareVerificationCodeSuccess && (
           <>
             <PasswordContainer>
               <PasswordInput
@@ -135,20 +89,12 @@ function RegisterForm({
                 type="password"
               />
             </PasswordContainer>
-            <div className="condition">
-              {isPasswordConfirm
-                ? "비밀번호가 일치합니다!"
-                : `${
-                    re_password.length === 0
-                      ? "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"
-                      : "비밀번호가 일치하지 않습니다"
-                  }`}
-            </div>
+            <div className="condition">{outputPasswordInfoCondition()}</div>
           </>
         )}
       </div>
       <Footer>
-        <Button onClick={signupTest}>NEXT</Button>
+        <Button onClick={signup}>NEXT</Button>
       </Footer>
     </StyledRegisterForm>
   );

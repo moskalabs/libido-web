@@ -9,12 +9,20 @@ import rootReducer, { rootSaga } from "./modules";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./styles/GlobalStyle";
 import theme from "./styles/theme";
+import { loadState, saveState } from "./localStorage";
 
 const sagaMiddleware = createSagaMiddleware();
+
+const persistedState = loadState();
+
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+store.subscribe(() => {
+  saveState({ ...persistedState, access_token: store.getState().auth.token });
+});
 
 sagaMiddleware.run(rootSaga);
 
