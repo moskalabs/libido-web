@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import client from "../../lib/api/client";
 
-function LoginForm({ form, changeLoginInputValue, signin }) {
+function LoginForm({ changeLoginInputValue, signin }) {
   const [googleToken, setGoogleToken] = useState("");
-  const navigate = useNavigate();
-
-  const { email, password } = form;
 
   const { naver } = window;
+
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "D6LeoiC8EqM1qxbMl3rP",
@@ -22,28 +20,10 @@ function LoginForm({ form, changeLoginInputValue, signin }) {
     naverLogin.init();
   };
 
-  useEffect(() => {
-    if (googleToken === "") return;
-
-    async function test() {
-      const result = await client.get(
-        "http://15.164.210.185:8000/users/google/login",
-        {
-          headers: {
-            "content-type": "application/json",
-            Authorization: googleToken,
-          },
-        }
-      );
-      console.log(result);
-    }
-    test();
-  }, [googleToken]);
-
-  useEffect(() => {
-    initializeNaverLogin();
-    userProfile();
-  });
+  const onSuccessGoogle = response => {
+    const googleToken = response.accessToken;
+    setGoogleToken(googleToken);
+  };
 
   const userProfile = () => {
     window.location.href.includes("access_token") && GetUser();
@@ -61,16 +41,32 @@ function LoginForm({ form, changeLoginInputValue, signin }) {
         .then(res => res.json())
         .then(res => {
           localStorage.setItem("access_token", res.access_token);
-          localStorage.setItem("userInfo", JSON.stringify(res.results));
         })
         .catch(err => console.log("err : ", err));
     }
   };
 
-  const onSuccessGoogle = response => {
-    const googleToken = response.accessToken;
-    setGoogleToken(googleToken);
-  };
+  useEffect(() => {
+    if (googleToken === "") return;
+
+    async function googleLogin() {
+      const result = await client.get(
+        "http://15.164.210.185:8000/users/google/login",
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: googleToken,
+          },
+        }
+      );
+    }
+    googleLogin();
+  }, [googleToken]);
+
+  useEffect(() => {
+    initializeNaverLogin();
+    userProfile();
+  });
 
   return (
     <Container>

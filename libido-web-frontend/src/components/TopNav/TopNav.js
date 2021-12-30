@@ -15,7 +15,7 @@ const TopNav = () => {
 
   const goToAuthPage = e => {
     const authSort = e.target.dataset.authsort;
-    navigate(`/${authSort}`);
+    navigate(`/?auth=${authSort}`);
   };
 
   const isAuthView = () => {

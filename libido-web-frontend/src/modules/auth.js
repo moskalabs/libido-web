@@ -28,6 +28,8 @@ const INITIALIZE_AVAILABLE = "auth/INITIALIZE_AVAILABLE";
 
 const INITIALIZE_DUPLICATIONINFO = "auth/INITIALIZE_DUPLICATIONINFO";
 
+const SET_AUTHMODALVISIBLE = "auth/SET_AUTHMODALVISIBLE";
+
 export const changeField = createAction(
   CHANGE_FIELD,
   ({ form, key, value }) => ({
@@ -71,6 +73,8 @@ export const verificationCodeSend = createAction(
   email => email
 );
 
+export const setAuthModalVisible = createAction(SET_AUTHMODALVISIBLE);
+
 const checkInputValueSaga = createRequestSaga(
   DUPLICATIONCHECK,
   authAPI.checkInput
@@ -106,6 +110,7 @@ const initialState = {
   token: "",
   message: "",
   authError: null,
+  isVisibleAuthModal: false,
 };
 
 const auth = handleActions(
@@ -157,6 +162,10 @@ const auth = handleActions(
     [LOGIN_FAILURE]: (state, { payload: error }) => ({
       ...state,
       authError: error,
+    }),
+    [SET_AUTHMODALVISIBLE]: state => ({
+      ...state,
+      isVisibleAuthModal: !state.isVisibleAuthModal,
     }),
   },
   initialState
