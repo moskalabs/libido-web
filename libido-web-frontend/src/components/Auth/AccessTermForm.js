@@ -1,9 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { check } from "../../lib/api/auth";
 
 const AccessTermForm = () => {
+  const [checkInfo, setCheckInfo] = useState({
+    webAccessCheck: false,
+    privateInfoCheck: false,
+    advertiseCheck: false,
+  });
+  const [detailInfo, setDetailInfo] = useState({
+    webAccessDetail: false,
+    privateInfoDetail: false,
+    advertiseDetail: false,
+  });
+
+  const isCheckActive = checkActiveState => {
+    const currentCheckActiveState = checkInfo[checkActiveState];
+
+    if (checkActiveState === "allCheck") {
+      let allChecked = true;
+      for (const [key, value] of Object.entries(checkInfo)) {
+        if (!value) allChecked = false;
+      }
+      return allChecked;
+    }
+    if (currentCheckActiveState) return true;
+  };
+
+  const setCheckValue = (currentTargetedState, currentButtonName) => {
+    if (currentTargetedState === "checkInfo")
+      if (currentButtonName === "allCheck") {
+        setCheckInfo({
+          ...checkInfo,
+          webAccessCheck: !checkInfo.webAccessCheck,
+          privateInfoCheck: !checkInfo.privateInfoCheck,
+          advertiseCheck: !checkInfo.advertiseCheck,
+        });
+      } else {
+        setCheckInfo({
+          ...checkInfo,
+          [currentButtonName]: !checkInfo[currentButtonName],
+        });
+      }
+    else if (currentTargetedState === "detailInfo") {
+      setDetailInfo({
+        ...detailInfo,
+        [currentButtonName]: !detailInfo[currentButtonName],
+      });
+    }
+  };
+
+  const checkClickSort = event => {
+    const currentTargetElementInfo = {
+      nodeName: event.target.nodeName,
+      className: event.target.className,
+    };
+
+    if (
+      currentTargetElementInfo.nodeName !== "BUTTON" &&
+      currentTargetElementInfo.className !== "detailInfo"
+    )
+      return;
+
+    const currentTargetButtonSort = event.target.dataset.buttonsort;
+    const currentButtonName = event.target.name
+      ? event.target.name
+      : event.target.nextSibling.name;
+
+    switch (currentTargetButtonSort) {
+      case "checkButton":
+        setCheckValue("checkInfo", currentButtonName);
+        break;
+      case "arrowButton":
+        setCheckValue("detailInfo", currentButtonName);
+        break;
+      case "nextButton":
+        console.log("nextButton");
+        break;
+      default:
+        setCheckValue("detailInfo", currentButtonName);
+    }
+  };
+
   return (
-    <Container>
+    <Container onClick={checkClickSort}>
       <LogoName>LIBIDO</LogoName>
       <RegisterAccessTermContainer>
         <RegisterAccessTerm>
@@ -12,7 +92,11 @@ const AccessTermForm = () => {
               이용약관, 개인정보 수집 및 이용에 모두 동의합니다.
             </AccessInfo>
           </LeftInfoContainer>
-          <CheckIcon data-buttonsort="checkButton" />
+          <CheckIcon
+            active={isCheckActive("allCheck")}
+            name="allCheck"
+            data-buttonsort="checkButton"
+          />
         </RegisterAccessTerm>
         <RegisterAccessTerm>
           <LeftInfoContainer>
@@ -20,11 +104,15 @@ const AccessTermForm = () => {
               리비도 이용약관 동의 <span className="necessary">(필수)</span>
             </AccessInfo>
             <MoreInfoContainer>
-              <div className="info">자세히</div>
-              <ArrowIcon data-buttonsort="arrowButton" />
+              <div className="detailInfo">자세히</div>
+              <ArrowIcon name="webAccessDetail" data-buttonsort="arrowButton" />
             </MoreInfoContainer>
           </LeftInfoContainer>
-          <CheckIcon data-buttonsort="checkButton" />
+          <CheckIcon
+            active={isCheckActive("webAccessCheck")}
+            name="webAccessCheck"
+            data-buttonsort="checkButton"
+          />
         </RegisterAccessTerm>
         <RegisterAccessTerm>
           <LeftInfoContainer>
@@ -33,21 +121,32 @@ const AccessTermForm = () => {
               <span className="necessary">(필수)</span>
             </AccessInfo>
             <MoreInfoContainer>
-              <div className="info">자세히</div>
-              <ArrowIcon data-buttonsort="arrowButton" />
+              <div className="detailInfo">자세히</div>
+              <ArrowIcon
+                name="privateInfoDetail"
+                data-buttonsort="arrowButton"
+              />
             </MoreInfoContainer>
           </LeftInfoContainer>
-          <CheckIcon data-buttonsort="checkButton" />
+          <CheckIcon
+            active={isCheckActive("privateInfoCheck")}
+            name="privateInfoCheck"
+            data-buttonsort="checkButton"
+          />
         </RegisterAccessTerm>
         <RegisterAccessTerm>
           <LeftInfoContainer>
             <AccessInfo>이벤트 및 마케팅 수신 동의</AccessInfo>
             <MoreInfoContainer>
-              <div className="info">자세히</div>
-              <ArrowIcon data-buttonsort="arrowButton" />
+              <div className="detailInfo">자세히</div>
+              <ArrowIcon name="advertiseDetail" data-buttonsort="arrowButton" />
             </MoreInfoContainer>
           </LeftInfoContainer>
-          <CheckIcon data-buttonsort="checkButton" />
+          <CheckIcon
+            active={isCheckActive("advertiseCheck")}
+            name="advertiseCheck"
+            data-buttonsort="checkButton"
+          />
         </RegisterAccessTerm>
       </RegisterAccessTermContainer>
       <Footer>
@@ -104,20 +203,27 @@ const MoreInfoContainer = styled.div`
   }
 `;
 
-const ArrowIcon = styled.div`
+const ArrowIcon = styled.button`
   width: 20px;
   height: 20px;
   background: url(./images/icon_spread.png) no-repeat;
   background-position: center;
   background-size: contain;
+  border: none;
+  cursor: pointer;
 `;
 
-const CheckIcon = styled.div`
+const CheckIcon = styled.button`
   width: 40px;
   height: 40px;
-  background: url(./images/icon_unactive_check.png) no-repeat;
+  background: ${({ active }) =>
+      active
+        ? "url(./images/icon_active_check.png)"
+        : "url(./images/icon_unactive_check.png)"}
+    no-repeat;
   background-position: center;
   background-size: contain;
+  border: none;
   cursor: pointer;
 `;
 
