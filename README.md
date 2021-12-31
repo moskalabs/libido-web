@@ -11,7 +11,7 @@
 
 ## 적용 기술
 
-- Front-end: React(Funiction-Component)_reactr-router-dom(V6), 
+- Front-end: React(Funiction-Component)_react-router-dom(V6), 
 Styled-Components, redux, redux-saga, JavaScript(ES6)
 - Back-end: Django, Python, MySQL, jwt, bcrypt, AWS(EC2, RDS)
 - 협업툴: Trello, Slack, Notion, Github, dbdiagram, postman
