@@ -1,13 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeField, initializeForm, login } from "../../modules/auth";
+import {
+  changeField,
+  initializeForm,
+  login,
+  setAuthModalVisible,
+} from "../../modules/auth";
+import AuthTemplate from "../../components/Auth/AuthTemplate";
 import LoginForm from "../../components/Auth/LoginForm";
 
 const LoginFormContainer = () => {
   const dispatch = useDispatch();
-  const { form } = useSelector(({ auth }) => ({
-    form: auth.login,
-  }));
+
+  const form = useSelector(({ auth }) => auth.login);
+  const isVisibleAuthModal = useSelector(
+    ({ auth }) => auth.login.isVisibleAuthModal
+  );
 
   const changeLoginInputValue = event => {
     const { value, name } = event.target;
@@ -31,13 +39,17 @@ const LoginFormContainer = () => {
     dispatch(initializeForm("login"));
   }, [dispatch]);
 
-  return (
-    <LoginForm
-      form={form}
-      changeLoginInputValue={changeLoginInputValue}
-      signin={signin}
-    />
-  );
+  if (isVisibleAuthModal) {
+    return (
+      <AuthTemplate>
+        <LoginForm
+          form={form}
+          changeLoginInputValue={changeLoginInputValue}
+          signin={signin}
+        />
+      </AuthTemplate>
+    );
+  } else return null;
 };
 
 export default LoginFormContainer;

@@ -24,8 +24,6 @@ const [
   VERIFICATIONCODESEND_FAILURE,
 ] = createRequestActionTypes("auth/VERIFICATIONCODESEND");
 
-const INITIALIZE_AVAILABLE = "auth/INITIALIZE_AVAILABLE";
-
 const INITIALIZE_DUPLICATIONINFO = "auth/INITIALIZE_DUPLICATIONINFO";
 
 const SET_AUTHMODALVISIBLE = "auth/SET_AUTHMODALVISIBLE";
@@ -39,8 +37,6 @@ export const changeField = createAction(
   })
 );
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);
-
-export const initializeAvailable = createAction(INITIALIZE_AVAILABLE);
 
 export const register = createAction(
   REGISTER,
@@ -73,7 +69,10 @@ export const verificationCodeSend = createAction(
   email => email
 );
 
-export const setAuthModalVisible = createAction(SET_AUTHMODALVISIBLE);
+export const setAuthModalVisible = createAction(
+  SET_AUTHMODALVISIBLE,
+  form => form
+);
 
 const checkInputValueSaga = createRequestSaga(
   DUPLICATIONCHECK,
@@ -98,6 +97,7 @@ const initialState = {
   login: {
     email: "",
     password: "",
+    isVisibleAuthModal: false,
   },
   register: {
     email: "",
@@ -106,11 +106,11 @@ const initialState = {
     nickname: "",
     isDuplicationCheckSuccess: "",
     verificationCode: "",
+    isVisibleAuthModal: false,
   },
   token: "",
   message: "",
   authError: null,
-  isVisibleAuthModal: false,
 };
 
 const auth = handleActions(
@@ -150,10 +150,6 @@ const auth = handleActions(
       produce(state, draft => {
         draft.register.verificationCode = auth_number;
       }),
-    [INITIALIZE_AVAILABLE]: state => ({
-      ...state,
-      isCheckSuccess: null,
-    }),
     [LOGIN_SUCCESS]: (state, { payload: { ACCESS_TOKEN } }) => ({
       ...state,
       token: ACCESS_TOKEN,
@@ -163,10 +159,10 @@ const auth = handleActions(
       ...state,
       authError: error,
     }),
-    [SET_AUTHMODALVISIBLE]: state => ({
-      ...state,
-      isVisibleAuthModal: !state.isVisibleAuthModal,
-    }),
+    [SET_AUTHMODALVISIBLE]: (state, { payload: form }) =>
+      produce(state, draft => {
+        draft[form].isVisibleAuthModal = !state[form].isVisibleAuthModal;
+      }),
   },
   initialState
 );

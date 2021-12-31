@@ -4,6 +4,8 @@ import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
+import LoginFormContainer from "../../containers/Auth/LoginFormContainer";
+import RegisterFormContainer from "../../containers/Auth/RegisterFormContainer";
 
 const MainPage = () => {
   return (
@@ -16,6 +18,8 @@ const MainPage = () => {
           <CategoryBarContainer />
         </CategoryBarWrapper>
         <MainTemplate>
+          <LoginFormContainer />
+          <RegisterFormContainer />
           <MainFormContainer />
         </MainTemplate>
       </Inner>
@@ -37,7 +41,6 @@ const SideNavContainer = styled.div`
 
 const Inner = styled.div`
   margin: 185px 0 0 100px;
-  /* background-color: #f3f3f3; */
 `;
 
 const CategoryBarWrapper = styled.div`

@@ -10,6 +10,7 @@ import {
   verificationCodeSend,
 } from "../../modules/auth";
 import RegisterForm from "../../components/Auth/RegisterForm";
+import AuthTemplate from "../../components/Auth/AuthTemplate";
 
 const checkPasswordPattern = currentInputPassword => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -23,6 +24,9 @@ const RegisterFormContainer = () => {
 
   const form = useSelector(({ auth }) => auth.register);
   const message = useSelector(({ auth }) => auth.message);
+  const isVisibleAuthModal = useSelector(
+    ({ auth }) => auth.register.isVisibleAuthModal
+  );
 
   const authError = useSelector(({ auth }) => auth.authError);
 
@@ -102,20 +106,24 @@ const RegisterFormContainer = () => {
     dispatch(initializeForm("register"));
   }, [dispatch]);
 
-  if (message === "SUCCESS") navigate("/");
-  else {
-    return (
-      <RegisterForm
-        form={form}
-        isCorrectPasswordPattern={isCorrectPasswordPattern}
-        authError={authError}
-        changeRegisterInputValue={changeRegisterInputValue}
-        inputValueDuplicationCheck={inputValueDuplicationCheck}
-        sendToEmailForVerificationCode={sendToEmailForVerificationCode}
-        signup={signup}
-      />
-    );
-  }
+  if (isVisibleAuthModal) {
+    if (message === "SUCCESS") navigate("/");
+    else {
+      return (
+        <AuthTemplate>
+          <RegisterForm
+            form={form}
+            isCorrectPasswordPattern={isCorrectPasswordPattern}
+            authError={authError}
+            changeRegisterInputValue={changeRegisterInputValue}
+            inputValueDuplicationCheck={inputValueDuplicationCheck}
+            sendToEmailForVerificationCode={sendToEmailForVerificationCode}
+            signup={signup}
+          />
+        </AuthTemplate>
+      );
+    }
+  } else return null;
 };
 
 export default RegisterFormContainer;
