@@ -8,6 +8,7 @@ import {
 } from "../../modules/auth";
 import AuthTemplate from "../../components/Auth/AuthTemplate";
 import LoginForm from "../../components/Auth/LoginForm";
+import BodyBlackout from "../../components/common/BodyBlackout";
 
 const LoginFormContainer = () => {
   const dispatch = useDispatch();
@@ -41,13 +42,19 @@ const LoginFormContainer = () => {
 
   if (isVisibleAuthModal) {
     return (
-      <AuthTemplate>
-        <LoginForm
-          form={form}
-          changeLoginInputValue={changeLoginInputValue}
-          signin={signin}
+      <>
+        <BodyBlackout
+          modalSort="login"
+          setAuthModalVisible={setAuthModalVisible}
         />
-      </AuthTemplate>
+        <AuthTemplate>
+          <LoginForm
+            form={form}
+            changeLoginInputValue={changeLoginInputValue}
+            signin={signin}
+          />
+        </AuthTemplate>
+      </>
     );
   } else return null;
 };

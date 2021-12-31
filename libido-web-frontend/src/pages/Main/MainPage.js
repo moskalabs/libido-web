@@ -9,21 +9,23 @@ import RegisterFormContainer from "../../containers/Auth/RegisterFormContainer";
 
 const MainPage = () => {
   return (
-    <Container>
-      <SideNavContainer>
-        <SideNav />
-      </SideNavContainer>
-      <Inner>
-        <CategoryBarWrapper>
-          <CategoryBarContainer />
-        </CategoryBarWrapper>
-        <MainTemplate>
-          <LoginFormContainer />
-          <RegisterFormContainer />
-          <MainFormContainer />
-        </MainTemplate>
-      </Inner>
-    </Container>
+    <>
+      <LoginFormContainer />
+      <RegisterFormContainer />
+      <Container>
+        <SideNavContainer>
+          <SideNav />
+        </SideNavContainer>
+        <Inner>
+          <CategoryBarWrapper>
+            <CategoryBarContainer />
+          </CategoryBarWrapper>
+          <MainTemplate>
+            <MainFormContainer />
+          </MainTemplate>
+        </Inner>
+      </Container>
+    </>
   );
 };
 

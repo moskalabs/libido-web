@@ -8,9 +8,11 @@ import {
   initializeDuplicationInfo,
   checkInputValue,
   verificationCodeSend,
+  setAuthModalVisible,
 } from "../../modules/auth";
 import RegisterForm from "../../components/Auth/RegisterForm";
 import AuthTemplate from "../../components/Auth/AuthTemplate";
+import BodyBlackout from "../../components/common/BodyBlackout";
 
 const checkPasswordPattern = currentInputPassword => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -110,17 +112,23 @@ const RegisterFormContainer = () => {
     if (message === "SUCCESS") navigate("/");
     else {
       return (
-        <AuthTemplate>
-          <RegisterForm
-            form={form}
-            isCorrectPasswordPattern={isCorrectPasswordPattern}
-            authError={authError}
-            changeRegisterInputValue={changeRegisterInputValue}
-            inputValueDuplicationCheck={inputValueDuplicationCheck}
-            sendToEmailForVerificationCode={sendToEmailForVerificationCode}
-            signup={signup}
+        <>
+          <BodyBlackout
+            modalSort="register"
+            setAuthModalVisible={setAuthModalVisible}
           />
-        </AuthTemplate>
+          <AuthTemplate>
+            <RegisterForm
+              form={form}
+              isCorrectPasswordPattern={isCorrectPasswordPattern}
+              authError={authError}
+              changeRegisterInputValue={changeRegisterInputValue}
+              inputValueDuplicationCheck={inputValueDuplicationCheck}
+              sendToEmailForVerificationCode={sendToEmailForVerificationCode}
+              signup={signup}
+            />
+          </AuthTemplate>
+        </>
       );
     }
   } else return null;
