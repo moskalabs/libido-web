@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import AccessTermForm from "./AccessTermForm";
 
 function RegisterForm({
   form,
@@ -38,66 +39,67 @@ function RegisterForm({
     }
   };
 
-  return (
-    <StyledRegisterForm onChange={changeRegisterInputValue}>
-      <div className="registerGuide">CREATE LIBIDO ID</div>
-      <h3>회원가입</h3>
-      <div>
-        <StyledInput name="email" placeholder="ID" />
-        <OverlayButton
-          onClick={inputValueDuplicationCheck}
-          data-check="idCheckButton"
-        >
-          중복확인
-        </OverlayButton>
-        <StyledInput name="nickname" placeholder="닉네임" type="text" />
-        <OverlayButton
-          onClick={inputValueDuplicationCheck}
-          data-check="nicknameCheckButton"
-        >
-          중복확인
-        </OverlayButton>
-        <div className="condition">
-          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
-        </div>
-        <PhoneInfo>이메일 정보 입력</PhoneInfo>
-        <StyledInput
-          name="emailVerification"
-          placeholder="이메일"
-          type="email"
-        />
-        <OverlayButton onClick={sendToEmailForVerificationCode}>
-          인증번호 발송
-        </OverlayButton>
-        <StyledInput name="verificationCode" placeholder="인증번호" />
-        <OverlayButton onClick={compareVerificationCode}>
-          인증번호 입력
-        </OverlayButton>
+  return <AccessTermForm />;
+  // return (
+  //   <StyledRegisterForm onChange={changeRegisterInputValue}>
+  //     <div className="registerGuide">CREATE LIBIDO ID</div>
+  //     <h3>회원가입</h3>
+  //     <div>
+  //       <StyledInput name="email" placeholder="ID" />
+  //       <OverlayButton
+  //         onClick={inputValueDuplicationCheck}
+  //         data-check="idCheckButton"
+  //       >
+  //         중복확인
+  //       </OverlayButton>
+  //       <StyledInput name="nickname" placeholder="닉네임" type="text" />
+  //       <OverlayButton
+  //         onClick={inputValueDuplicationCheck}
+  //         data-check="nicknameCheckButton"
+  //       >
+  //         중복확인
+  //       </OverlayButton>
+  //       <div className="condition">
+  //         문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+  //       </div>
+  //       <PhoneInfo>이메일 정보 입력</PhoneInfo>
+  //       <StyledInput
+  //         name="emailVerification"
+  //         placeholder="이메일"
+  //         type="email"
+  //       />
+  //       <OverlayButton onClick={sendToEmailForVerificationCode}>
+  //         인증번호 발송
+  //       </OverlayButton>
+  //       <StyledInput name="verificationCode" placeholder="인증번호" />
+  //       <OverlayButton onClick={compareVerificationCode}>
+  //         인증번호 입력
+  //       </OverlayButton>
 
-        {isCompareVerificationCodeSuccess && (
-          <>
-            <PasswordContainer>
-              <PasswordInput
-                name="password"
-                placeholder="PASSWORD"
-                type="password"
-              />
+  //       {isCompareVerificationCodeSuccess && (
+  //         <>
+  //           <PasswordContainer>
+  //             <PasswordInput
+  //               name="password"
+  //               placeholder="PASSWORD"
+  //               type="password"
+  //             />
 
-              <PasswordInput
-                name="re_password"
-                placeholder="PW CHECK"
-                type="password"
-              />
-            </PasswordContainer>
-            <div className="condition">{outputPasswordInfoCondition()}</div>
-          </>
-        )}
-      </div>
-      <Footer>
-        <Button onClick={signup}>NEXT</Button>
-      </Footer>
-    </StyledRegisterForm>
-  );
+  //             <PasswordInput
+  //               name="re_password"
+  //               placeholder="PW CHECK"
+  //               type="password"
+  //             />
+  //           </PasswordContainer>
+  //           <div className="condition">{outputPasswordInfoCondition()}</div>
+  //         </>
+  //       )}
+  //     </div>
+  //     <Footer>
+  //       <Button onClick={signup}>NEXT</Button>
+  //     </Footer>
+  //   </StyledRegisterForm>
+  // );
 }
 
 const StyledRegisterForm = styled.div`
