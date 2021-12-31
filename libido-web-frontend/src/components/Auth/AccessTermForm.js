@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { check } from "../../lib/api/auth";
 
-const AccessTermForm = () => {
+const AccessTermForm = ({ goToRegisterForm }) => {
   const [checkInfo, setCheckInfo] = useState({
     webAccessCheck: false,
     privateInfoCheck: false,
@@ -13,6 +12,12 @@ const AccessTermForm = () => {
     privateInfoDetail: false,
     advertiseDetail: false,
   });
+
+  const checkPrimaryAccessTerms = () => {
+    const { webAccessCheck, privateInfoCheck } = checkInfo;
+    if (webAccessCheck && privateInfoCheck) return true;
+    else return false;
+  };
 
   const isCheckActive = checkActiveState => {
     const currentCheckActiveState = checkInfo[checkActiveState];
@@ -75,7 +80,7 @@ const AccessTermForm = () => {
         setCheckValue("detailInfo", currentButtonName);
         break;
       case "nextButton":
-        console.log("nextButton");
+        goToRegisterForm();
         break;
       default:
         setCheckValue("detailInfo", currentButtonName);
@@ -150,7 +155,13 @@ const AccessTermForm = () => {
         </RegisterAccessTerm>
       </RegisterAccessTermContainer>
       <Footer>
-        <NextButton data-buttonsort="nextButton">NEXT</NextButton>
+        <NextButton
+          disabled={checkPrimaryAccessTerms()}
+          name="nextToRegisterButton"
+          data-buttonsort="nextButton"
+        >
+          NEXT
+        </NextButton>
       </Footer>
     </Container>
   );

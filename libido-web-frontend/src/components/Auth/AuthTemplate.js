@@ -4,9 +4,7 @@ import styled from "styled-components";
 const AuthTemplate = ({ children }) => {
   return (
     <StyledAuthTemplate>
-      <LoginBox>
-        <div>{children}</div>
-      </LoginBox>
+      <Inner>{children}</Inner>
     </StyledAuthTemplate>
   );
 };
@@ -23,9 +21,8 @@ const StyledAuthTemplate = styled.div`
   align-items: center;
 `;
 
-const LoginBox = styled.div`
+const Inner = styled.div`
   padding: 2rem;
-  min-width: 420px;
   border: 1px #c4c3c2 solid;
   border-radius: 2px;
   z-index: 1011;
