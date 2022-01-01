@@ -36,10 +36,14 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const ForgetPassword = styled.div`
-  margin-bottom: 50px;
+const ForgetPassword = styled.button`
+  margin: 20px 0 10px;
+  border: none;
+  background-color: #fff;
   font-family: "Readex Pro", sans-serif;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
   color: #262f6a;
 `;
 const SocialButtonContainer = styled.div`
@@ -183,10 +187,14 @@ function LoginForm() {
         const access_token = res.data.ACCESS_TOKEN;
         const userInfo = res.data.result;
         localStorage.setItem("access_token", access_token);
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        // localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
         navigate("/");
       });
+  };
+
+  const goToForgotPassword = e => {
+    navigate("/password");
   };
 
   return (
@@ -208,13 +216,15 @@ function LoginForm() {
           placeholder="PASSWORD"
           type="password"
         />
-        <ForgetPassword>· FORGET PASSWORD?</ForgetPassword>
+        <ForgetPassword onClick={goToForgotPassword}>
+          · FORGET PASSWORD?
+        </ForgetPassword>
 
         {/* <div onClick="onSignIn" class="g-signin2" data-onsuccess="onSignIn" /> */}
         <SocialButtonContainer>
           <GoogleLogin
             onSuccess={onSuccessGoogle}
-            clientId="983084770227-20pud7lcitmbnm8bcq8vlb056b9f251v.apps.googleusercontent.com"
+            clientId="446963991551-6e9gh8ou52mac0je7f753tdrq1gc7377.apps.googleusercontent.com"
             buttonText="start with Google"
           />
 

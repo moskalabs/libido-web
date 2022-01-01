@@ -36,10 +36,11 @@ const MainForm = ({
                 <Name>{category}</Name>
                 <ContentList>
                   {contents.map(
-                    ({ category, link_url, title, image_url }, index) => {
+                    ({ id, category, link_url, title, image_url }, index) => {
                       return (
                         <ContentForm
                           key={index}
+                          room_id={id}
                           currentCategory={currentCategory}
                           category={category}
                           title={title}

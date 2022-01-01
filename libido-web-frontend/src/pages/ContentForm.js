@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import client from "../lib/api/client";
 
 const ContentForm = ({
+  room_id,
   currentCategory,
   category,
   title,
@@ -12,10 +14,32 @@ const ContentForm = ({
     window.open(link, "_blank");
   };
 
+  const entryContentRoom = () => {
+    //개인방에 들어가기 전에 서버와 통신하는 함수입니다. 실제 방은 만들어져 있지 않아, UI 관련 기능을 구현하지 못했습니다.
+    const accessToken = localStorage.getItem("access_token");
+
+    client
+      .post(
+        "http://15.164.210.185:8000/users/history",
+        { room_id },
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      .then(res => console.log(res));
+  };
+
   return (
     <Container
       onClick={e => {
-        goToContentUrl(link_url);
+        if (
+          currentCategory === "맞춤 스트리밍" ||
+          currentCategory === "인기 STREAMING"
+        ) {
+          entryContentRoom();
+        } else goToContentUrl(link_url);
       }}
     >
       {currentCategory === "맟춤형 추천 영상" ||

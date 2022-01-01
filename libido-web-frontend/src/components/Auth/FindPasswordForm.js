@@ -69,6 +69,7 @@ const OverlayButton = styled.button`
   border: #e8eaed solid 1px;
   border-radius: 4px;
   box-shadow: 1px 1px 1px #e8eaed;
+  cursor: pointer;
 `;
 const Footer = styled.div`
   display: flex;
