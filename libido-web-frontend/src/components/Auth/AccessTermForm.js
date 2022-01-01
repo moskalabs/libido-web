@@ -15,8 +15,8 @@ const AccessTermForm = ({ goToRegisterForm }) => {
 
   const checkPrimaryAccessTerms = () => {
     const { webAccessCheck, privateInfoCheck } = checkInfo;
-    if (webAccessCheck && privateInfoCheck) return true;
-    else return false;
+    if (webAccessCheck && privateInfoCheck) return false;
+    else return true;
   };
 
   const isCheckActive = checkActiveState => {

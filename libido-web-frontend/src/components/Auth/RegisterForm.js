@@ -50,7 +50,7 @@ function RegisterForm({
       <Container onChange={changeRegisterInputValue}>
         <div className="registerGuide">CREATE LIBIDO ID</div>
         <h3>회원가입</h3>
-        <Inner>
+        <FormContainer>
           <StyledInput name="email" placeholder="ID" />
           <OverlayButton
             onClick={inputValueDuplicationCheck}
@@ -58,9 +58,11 @@ function RegisterForm({
           >
             중복확인
           </OverlayButton>
-          <div className="condition">
-            문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
-          </div>
+        </FormContainer>
+        <div className="condition">
+          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        </div>
+        <FormContainer>
           <StyledInput name="nickname" placeholder="닉네임" type="text" />
           <OverlayButton
             onClick={inputValueDuplicationCheck}
@@ -68,7 +70,9 @@ function RegisterForm({
           >
             중복확인
           </OverlayButton>
-          <EmailInfo>이메일 정보 입력</EmailInfo>
+        </FormContainer>
+        <EmailInfo>이메일 정보 입력</EmailInfo>
+        <FormContainer>
           <StyledInput
             name="emailVerification"
             placeholder="이메일"
@@ -77,33 +81,34 @@ function RegisterForm({
           <OverlayButton onClick={sendToEmailForVerificationCode}>
             인증번호 발송
           </OverlayButton>
+        </FormContainer>
+        <FormContainer>
           <StyledInput name="verificationCode" placeholder="인증번호" />
           <OverlayButton onClick={compareVerificationCode}>
             인증번호 입력
           </OverlayButton>
+        </FormContainer>
+        {isCompareVerificationCodeSuccess && (
+          <>
+            <PasswordContainer>
+              <PasswordInput
+                name="password"
+                placeholder="PASSWORD"
+                type="password"
+              />
 
-          {isCompareVerificationCodeSuccess && (
-            <>
-              <PasswordContainer>
-                <PasswordInput
-                  name="password"
-                  placeholder="PASSWORD"
-                  type="password"
-                />
-
-                <PasswordInput
-                  name="re_password"
-                  placeholder="PW CHECK"
-                  type="password"
-                />
-              </PasswordContainer>
-              <div className="condition">{outputPasswordInfoCondition()}</div>
-            </>
-          )}
-        </Inner>
-        <Footer>
-          <Button onClick={signup}>회원가입</Button>
-        </Footer>
+              <PasswordInput
+                name="re_password"
+                placeholder="PW CHECK"
+                type="password"
+              />
+            </PasswordContainer>
+            <div className="condition">{outputPasswordInfoCondition()}</div>
+            <Footer>
+              <Button onClick={signup}>회원가입</Button>
+            </Footer>
+          </>
+        )}
       </Container>
     );
   } else return <AccessTermForm goToRegisterForm={goToRegisterForm} />;
@@ -113,10 +118,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 
   .registerGuide {
     font-family: "Readex Pro", sans-serif;
+    text-align: center;
     font-size: 1.3rem;
     font-weight: bold;
     letter-spacing: 1px;
@@ -130,17 +135,19 @@ const Container = styled.div`
   .condition {
     font-size: 0.8rem;
     color: gray;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 `;
 
-const Inner = styled.div``;
+const FormContainer = styled.div`
+  margin-bottom: 10px;
+`;
 
 const StyledInput = styled.input`
   width: 250px;
   padding: 10px 20px;
   margin-right: 5px;
-  margin-bottom: 10px;
+
   font-size: 0.9rem;
   outline: none;
   border: 1px rgba(38, 47, 106, 0.5) solid;
@@ -161,7 +168,7 @@ const PasswordInput = styled.input`
   border-radius: 4px;
 `;
 const EmailInfo = styled.div`
-  margin-bottom: 10px;
+  margin: 10px 0;
   font-size: 0.9em;
   font-weight: bolder;
   color: #525252;
@@ -174,14 +181,16 @@ const OverlayButton = styled.button`
   border: #e8eaed solid 1px;
   border-radius: 4px;
   box-shadow: 1px 1px 1px #e8eaed;
+  cursor: pointer;
 `;
 
 const Footer = styled.div`
   display: flex;
+  margin: 0 auto;
 `;
 const Button = styled.button`
   padding: 12px 18px;
-  margin-top: 40px;
+  margin-top: 20px;
   border-radius: 3px;
   background: #262f6a;
   border-style: none;
