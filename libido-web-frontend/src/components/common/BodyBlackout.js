@@ -1,9 +1,14 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-const BodyBlackout = ({ modalSort, setAuthModalVisible }) => {
+const BodyBlackout = ({
+  modalSort,
+  setAuthModalVisible,
+  isVisibleAuthModal,
+}) => {
   const dispatch = useDispatch();
-
+  if (isVisibleAuthModal)
+    document.querySelector("body").style.setProperty("overflow", "hidden");
   return (
     <BodyBlackoutStyle
       onClick={() => {

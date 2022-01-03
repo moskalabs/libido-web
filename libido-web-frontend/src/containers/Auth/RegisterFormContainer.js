@@ -63,6 +63,7 @@ const RegisterFormContainer = () => {
       currentCheckButtonType,
       form
     );
+
     dispatch(initializeDuplicationInfo());
     dispatch(checkInputValue(currentCheckInputValue));
   };
@@ -110,6 +111,7 @@ const RegisterFormContainer = () => {
         <BodyBlackout
           modalSort="register"
           setAuthModalVisible={setAuthModalVisible}
+          isVisibleAuthModal={isVisibleAuthModal}
         />
         <AuthTemplate>
           <RegisterForm
