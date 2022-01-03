@@ -21,28 +21,39 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
     else return true;
   };
 
+  const isAllChecked = () => {
+    let allChecked = true;
+    for (const value of Object.values(checkInfo)) {
+      if (!value) allChecked = false;
+    }
+    return allChecked;
+  };
+
   const isCheckActive = checkActiveState => {
     const currentCheckActiveState = checkInfo[checkActiveState];
 
-    if (checkActiveState === "allCheck") {
-      let allChecked = true;
-      for (const value of Object.values(checkInfo)) {
-        if (!value) allChecked = false;
-      }
-      return allChecked;
-    }
+    if (checkActiveState === "allCheck") return isAllChecked();
     if (currentCheckActiveState) return true;
   };
 
   const setCheckValue = (currentTargetedState, currentButtonName) => {
     if (currentTargetedState === "checkInfo")
       if (currentButtonName === "allCheck") {
-        setCheckInfo({
-          ...checkInfo,
-          webAccessCheck: !checkInfo.webAccessCheck,
-          privateInfoCheck: !checkInfo.privateInfoCheck,
-          advertiseCheck: !checkInfo.advertiseCheck,
-        });
+        if (isAllChecked()) {
+          setCheckInfo({
+            ...checkInfo,
+            webAccessCheck: false,
+            privateInfoCheck: false,
+            advertiseCheck: false,
+          });
+        } else {
+          setCheckInfo({
+            ...checkInfo,
+            webAccessCheck: true,
+            privateInfoCheck: true,
+            advertiseCheck: true,
+          });
+        }
       } else {
         setCheckInfo({
           ...checkInfo,

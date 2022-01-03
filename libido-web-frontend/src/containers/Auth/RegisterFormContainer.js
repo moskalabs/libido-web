@@ -75,7 +75,8 @@ const RegisterFormContainer = () => {
   };
 
   const signup = () => {
-    const { email, password, re_password, nickname, is_receive_email } = form;
+    const { email, password, re_password, nickname, is_receive_email, nation } =
+      form;
 
     dispatch(
       register({
@@ -84,6 +85,7 @@ const RegisterFormContainer = () => {
         re_password,
         nickname,
         is_receive_email,
+        nation,
       })
     );
   };

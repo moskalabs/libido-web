@@ -14,7 +14,6 @@ function RegisterForm({
 }) {
   const [isCompareVerificationCodeSuccess, setCompareVerificationCode] =
     useState(false);
-
   const [isRegisterFormVisible, setRegisterFormVisible] = useState(false);
 
   const { password, re_password, verificationCode, nation } = form;
@@ -57,6 +56,7 @@ function RegisterForm({
           <StyledCountryDropdown
             name="nation"
             defaultOptionLabel={nation.length === 0 ? "나라 선택" : nation}
+            valueType="short"
           >
             <span className="iconArrow">
               <img alt="arrowIcon" src="./images/icon_arrow_down.png" />
