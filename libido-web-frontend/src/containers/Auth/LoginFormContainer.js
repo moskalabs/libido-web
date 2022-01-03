@@ -17,6 +17,7 @@ const LoginFormContainer = () => {
   const isVisibleAuthModal = useSelector(
     ({ auth }) => auth.login.isVisibleAuthModal
   );
+  const message = useSelector(({ auth }) => auth.message);
 
   const changeLoginInputValue = event => {
     const { value, name } = event.target;
@@ -30,7 +31,7 @@ const LoginFormContainer = () => {
     );
   };
 
-  const signin = event => {
+  const signin = () => {
     const { email, password } = form;
 
     dispatch(login({ email, password }));

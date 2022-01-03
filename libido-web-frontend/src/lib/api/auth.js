@@ -13,13 +13,15 @@ export const register = ({
   password,
   re_password,
   nickname,
+  is_receive_email,
   nation = "korea",
 }) => {
   return client.post("http://15.164.210.185:8000/users/signup", {
     email,
+    nickname,
     password,
     re_password,
-    nickname,
+    is_receive_email,
     nation,
   });
 };

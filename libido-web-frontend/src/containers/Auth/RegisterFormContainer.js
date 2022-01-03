@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,20 +9,18 @@ import {
   checkInputValue,
   verificationCodeSend,
   setAuthModalVisible,
+  setCurrentAdvertiseAccess,
 } from "../../modules/auth";
 import RegisterForm from "../../components/Auth/RegisterForm";
 import AuthTemplate from "../../components/Auth/AuthTemplate";
 import BodyBlackout from "../../components/common/BodyBlackout";
-
-const checkPasswordPattern = currentInputPassword => {
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-  if (passwordRegex.test(currentInputPassword)) return true;
-  else return false;
-};
+import {
+  checkPasswordPattern,
+  sortCheckInputValue,
+} from "../../lib/checkAuthPattern";
 
 const RegisterFormContainer = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const form = useSelector(({ auth }) => auth.register);
   const message = useSelector(({ auth }) => auth.message);
@@ -33,6 +31,13 @@ const RegisterFormContainer = () => {
   const authError = useSelector(({ auth }) => auth.authError);
 
   const [isCorrectPasswordPattern, setCorrectPasswordPattern] = useState(false);
+
+  const checkCurrentAdvertiseAccess = useCallback(
+    isCurrentAdvertiseAccess => {
+      dispatch(setCurrentAdvertiseAccess(isCurrentAdvertiseAccess));
+    },
+    [dispatch]
+  );
 
   const changeRegisterInputValue = event => {
     const { value, name } = event.target;
@@ -53,33 +58,12 @@ const RegisterFormContainer = () => {
       })
     );
   };
-
-  const sortCheckInputValue = currentCheckButtonType => {
-    let checkInputValue;
-    switch (currentCheckButtonType) {
-      case "nicknameCheckButton":
-        checkInputValue = {
-          currentCheckInputAPI: "nicknamecheck",
-          currentCheckKey: "nickname",
-          currentCheckInputValue: form.nickname,
-        };
-        break;
-      case "idCheckButton":
-        checkInputValue = {
-          currentCheckInputAPI: "emailcheck",
-          currentCheckKey: "email",
-          currentCheckInputValue: form.email,
-        };
-        break;
-      default:
-        break;
-    }
-    return checkInputValue;
-  };
-
   const inputValueDuplicationCheck = event => {
     const currentCheckButtonType = event.target.dataset.check;
-    const currentCheckInputValue = sortCheckInputValue(currentCheckButtonType);
+    const currentCheckInputValue = sortCheckInputValue(
+      currentCheckButtonType,
+      form
+    );
     dispatch(initializeDuplicationInfo());
     dispatch(checkInputValue(currentCheckInputValue));
   };
@@ -91,8 +75,8 @@ const RegisterFormContainer = () => {
     dispatch(verificationCodeSend(currentVerificationEmail));
   };
 
-  const signup = event => {
-    const { email, password, re_password, nickname } = form;
+  const signup = () => {
+    const { email, password, re_password, nickname, is_receive_email } = form;
 
     dispatch(
       register({
@@ -100,6 +84,7 @@ const RegisterFormContainer = () => {
         password,
         re_password,
         nickname,
+        is_receive_email,
       })
     );
   };
@@ -108,29 +93,33 @@ const RegisterFormContainer = () => {
     dispatch(initializeForm("register"));
   }, [dispatch]);
 
-  if (isVisibleAuthModal) {
-    if (message === "SUCCESS") navigate("/");
-    else {
-      return (
-        <>
-          <BodyBlackout
-            modalSort="register"
-            setAuthModalVisible={setAuthModalVisible}
-          />
-          <AuthTemplate>
-            <RegisterForm
-              form={form}
-              isCorrectPasswordPattern={isCorrectPasswordPattern}
-              authError={authError}
-              changeRegisterInputValue={changeRegisterInputValue}
-              inputValueDuplicationCheck={inputValueDuplicationCheck}
-              sendToEmailForVerificationCode={sendToEmailForVerificationCode}
-              signup={signup}
-            />
-          </AuthTemplate>
-        </>
-      );
+  useEffect(() => {
+    if (message === "SUCCESS") {
+      dispatch(initializeForm("register"));
     }
+  }, [message]);
+
+  if (isVisibleAuthModal) {
+    return (
+      <>
+        <BodyBlackout
+          modalSort="register"
+          setAuthModalVisible={setAuthModalVisible}
+        />
+        <AuthTemplate>
+          <RegisterForm
+            form={form}
+            checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
+            isCorrectPasswordPattern={isCorrectPasswordPattern}
+            authError={authError}
+            changeRegisterInputValue={changeRegisterInputValue}
+            inputValueDuplicationCheck={inputValueDuplicationCheck}
+            sendToEmailForVerificationCode={sendToEmailForVerificationCode}
+            signup={signup}
+          />
+        </AuthTemplate>
+      </>
+    );
   } else return null;
 };
 

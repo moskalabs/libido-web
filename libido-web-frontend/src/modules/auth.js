@@ -28,6 +28,8 @@ const INITIALIZE_DUPLICATIONINFO = "auth/INITIALIZE_DUPLICATIONINFO";
 
 const SET_AUTHMODALVISIBLE = "auth/SET_AUTHMODALVISIBLE";
 
+const SET_CURRENTADVERTISEACCESS = "auth/SET_CURRENTADVERTISEACCESS";
+
 export const changeField = createAction(
   CHANGE_FIELD,
   ({ form, key, value }) => ({
@@ -74,6 +76,11 @@ export const setAuthModalVisible = createAction(
   form => form
 );
 
+export const setCurrentAdvertiseAccess = createAction(
+  SET_CURRENTADVERTISEACCESS,
+  isCheckValue => isCheckValue
+);
+
 const checkInputValueSaga = createRequestSaga(
   DUPLICATIONCHECK,
   authAPI.checkInput
@@ -107,6 +114,7 @@ const initialState = {
     isDuplicationCheckSuccess: "",
     verificationCode: "",
     isVisibleAuthModal: false,
+    is_receive_email: false,
   },
   token: "",
   message: "",
@@ -115,15 +123,16 @@ const initialState = {
 
 const auth = handleActions(
   {
+    [INITIALIZE_FORM]: (state, { payload: form }) => ({
+      ...state,
+      [form]: initialState[form],
+      message: "",
+      authError: null,
+    }),
     [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
       produce(state, draft => {
         draft[form][key] = value;
       }),
-    [INITIALIZE_FORM]: (state, { payload: form }) => ({
-      ...state,
-      [form]: initialState[form],
-      authError: null,
-    }),
     [REGISTER_SUCCESS]: (state, { payload: { message } }) => ({
       ...state,
       message,
@@ -133,6 +142,10 @@ const auth = handleActions(
       ...state,
       authError: error,
     }),
+    [SET_CURRENTADVERTISEACCESS]: (state, { payload: isCheckValue }) =>
+      produce(state, draft => {
+        draft.register.is_receive_email = isCheckValue;
+      }),
     [INITIALIZE_DUPLICATIONINFO]: (state, action) =>
       produce(state, draft => {
         draft.register.isDuplicationCheckSuccess = "";
@@ -152,6 +165,7 @@ const auth = handleActions(
       }),
     [LOGIN_SUCCESS]: (state, { payload: { ACCESS_TOKEN } }) => ({
       ...state,
+      message: "SUCCESS",
       token: ACCESS_TOKEN,
       authError: null,
     }),

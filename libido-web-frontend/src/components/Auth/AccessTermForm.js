@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const AccessTermForm = ({ goToRegisterForm }) => {
+const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
   const [checkInfo, setCheckInfo] = useState({
     webAccessCheck: false,
     privateInfoCheck: false,
@@ -12,6 +12,8 @@ const AccessTermForm = ({ goToRegisterForm }) => {
     privateInfoDetail: false,
     advertiseDetail: false,
   });
+
+  const { advertiseCheck } = checkInfo;
 
   const checkPrimaryAccessTerms = () => {
     const { webAccessCheck, privateInfoCheck } = checkInfo;
@@ -24,7 +26,7 @@ const AccessTermForm = ({ goToRegisterForm }) => {
 
     if (checkActiveState === "allCheck") {
       let allChecked = true;
-      for (const [key, value] of Object.entries(checkInfo)) {
+      for (const value of Object.values(checkInfo)) {
         if (!value) allChecked = false;
       }
       return allChecked;
@@ -86,6 +88,10 @@ const AccessTermForm = ({ goToRegisterForm }) => {
         setCheckValue("detailInfo", currentButtonName);
     }
   };
+
+  useEffect(() => {
+    checkCurrentAdvertiseAccess(advertiseCheck);
+  }, [checkCurrentAdvertiseAccess, advertiseCheck]);
 
   return (
     <Container onClick={checkClickSort}>

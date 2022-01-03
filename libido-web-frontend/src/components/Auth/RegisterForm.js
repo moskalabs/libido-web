@@ -4,6 +4,7 @@ import AccessTermForm from "./AccessTermForm";
 
 function RegisterForm({
   form,
+  checkCurrentAdvertiseAccess,
   isCorrectPasswordPattern,
   changeRegisterInputValue,
   inputValueDuplicationCheck,
@@ -111,7 +112,13 @@ function RegisterForm({
         )}
       </Container>
     );
-  } else return <AccessTermForm goToRegisterForm={goToRegisterForm} />;
+  } else
+    return (
+      <AccessTermForm
+        checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
+        goToRegisterForm={goToRegisterForm}
+      />
+    );
 }
 
 const Container = styled.div`
