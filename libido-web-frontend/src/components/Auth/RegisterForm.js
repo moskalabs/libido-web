@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import AccessTermForm from "./AccessTermForm";
+import { CountryDropdown } from "react-country-region-selector";
 
 function RegisterForm({
   form,
@@ -16,7 +17,7 @@ function RegisterForm({
 
   const [isRegisterFormVisible, setRegisterFormVisible] = useState(false);
 
-  const { password, re_password, verificationCode } = form;
+  const { password, re_password, verificationCode, nation } = form;
 
   const goToRegisterForm = () => {
     setRegisterFormVisible(true);
@@ -51,6 +52,18 @@ function RegisterForm({
       <Container onChange={changeRegisterInputValue}>
         <div className="registerGuide">CREATE LIBIDO ID</div>
         <h3>회원가입</h3>
+        <Info>나라 선택</Info>
+        <FormContainer>
+          <StyledCountryDropdown
+            name="nation"
+            defaultOptionLabel={nation.length === 0 ? "나라 선택" : nation}
+          >
+            <span className="iconArrow">
+              <img alt="arrowIcon" src="./images/icon_arrow_down.png" />
+            </span>
+          </StyledCountryDropdown>
+        </FormContainer>
+        <Info>회원정보 입력</Info>
         <FormContainer>
           <StyledInput name="email" placeholder="ID" />
           <OverlayButton
@@ -72,7 +85,7 @@ function RegisterForm({
             중복확인
           </OverlayButton>
         </FormContainer>
-        <EmailInfo>이메일 정보 입력</EmailInfo>
+        <Info>이메일 정보 입력</Info>
         <FormContainer>
           <StyledInput
             name="emailVerification"
@@ -150,11 +163,30 @@ const FormContainer = styled.div`
   margin-bottom: 10px;
 `;
 
+const StyledCountryDropdown = styled(CountryDropdown)`
+  width: 250px;
+  padding: 10px 15px;
+  margin-right: 5px;
+  font-size: 0.9rem;
+  color: #595959;
+  outline: none;
+  border: 1px solid rgba(38, 47, 106, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  background: url(./images/icon_arrow_down.png) no-repeat;
+  background-position: calc(100% - 5px);
+  background-size: 25px 20px;
+
+  option {
+    background: red;
+  }
+`;
+
 const StyledInput = styled.input`
   width: 250px;
   padding: 10px 20px;
   margin-right: 5px;
-
   font-size: 0.9rem;
   outline: none;
   border: 1px rgba(38, 47, 106, 0.5) solid;
@@ -174,7 +206,7 @@ const PasswordInput = styled.input`
   border: 1px rgba(38, 47, 106, 0.5) solid;
   border-radius: 4px;
 `;
-const EmailInfo = styled.div`
+const Info = styled.div`
   margin: 10px 0;
   font-size: 0.9em;
   font-weight: bolder;

@@ -111,6 +111,7 @@ const initialState = {
     password: "",
     re_password: "",
     nickname: "",
+    nation: "",
     isDuplicationCheckSuccess: "",
     verificationCode: "",
     isVisibleAuthModal: false,

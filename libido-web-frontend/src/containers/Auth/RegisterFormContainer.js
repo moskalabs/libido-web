@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   changeField,
   initializeForm,
@@ -98,6 +97,10 @@ const RegisterFormContainer = () => {
       dispatch(initializeForm("register"));
     }
   }, [message]);
+
+  useEffect(() => {
+    if (!isVisibleAuthModal) dispatch(initializeForm("register"));
+  }, [isVisibleAuthModal]);
 
   if (isVisibleAuthModal) {
     return (
