@@ -41,6 +41,12 @@ const LoginFormContainer = () => {
     dispatch(initializeForm("login"));
   }, [dispatch]);
 
+  useEffect(() => {
+    if (message === "SUCCESS") {
+      dispatch(initializeForm("login"));
+    }
+  }, [message]);
+
   if (isVisibleAuthModal) {
     return (
       <>
