@@ -1,87 +1,78 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation, matchPath, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { setAuthModalVisible } from "../../modules/auth";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useDispatch();
+
   const accessToken = localStorage.getItem("access_token");
 
   const goToMain = e => {
     navigate("/");
   };
 
-  const goToAuthPage = e => {
-    const authSort = e.target.dataset.authsort;
-    navigate(`/${authSort}`);
+  const visibleModal = event => {
+    const currentTargetElement = event.target.nodeName;
+
+    if (currentTargetElement !== "BUTTON") return;
+
+    const authSort = event.target.dataset.authsort;
+
+    dispatch(setAuthModalVisible(authSort));
   };
 
-  const isAuthView = () => {
-    const currentPathname = location.pathname;
-    if (
-      matchPath("/login", currentPathname) ||
-      matchPath("/register", currentPathname) ||
-      matchPath("/password", currentPathname)
-    )
-      return true;
-    else return false;
-  };
-
-  if (isAuthView()) return null;
-  else
-    return (
-      <Container>
-        <TopNavHeader>
-          <LogoContainer onClick={goToMain}>
-            <LogoImg />
-          </LogoContainer>
-          <SearchBarContainer>
-            <SearchContainer
-              topNav
-              placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
-            />
-            <div className="searchIcon" />
-            <div className="searchLine" />
-          </SearchBarContainer>
-          <RightSubMenu>
-            <div className="rightSubMenuLine" />
-            {accessToken ? (
-              <UserInfoContainer>
-                <UserFigure />
-                <UserSettingContainer>
-                  <UserName>
-                    Hello, <span className="userName">Choi</span>
-                  </UserName>
-                  <MessageContainer>
-                    <MessageLink to="/">Messages</MessageLink>
-                    <MessageLogo />
-                  </MessageContainer>
-                  <UserAccountContainer>
-                    <span>Your account</span>
-                    <div className="dropdownButton" />
-                  </UserAccountContainer>
-                </UserSettingContainer>
-              </UserInfoContainer>
-            ) : (
-              <TopNavButtonContainer>
-                <ButtonMarginTop
-                  data-authsort="login"
-                  onClick={goToAuthPage}
-                  main
-                >
-                  로그인
-                </ButtonMarginTop>
-                <Button onClick={goToAuthPage} data-authsort="register" main>
-                  회원가입
-                </Button>
-              </TopNavButtonContainer>
-            )}
-          </RightSubMenu>
-        </TopNavHeader>
-      </Container>
-    );
+  return (
+    <Container>
+      <TopNavHeader>
+        <LogoContainer onClick={goToMain}>
+          <LogoImg />
+        </LogoContainer>
+        <SearchBarContainer>
+          <SearchContainer
+            topNav
+            placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
+          />
+          <div className="searchIcon" />
+          <div className="searchLine" />
+        </SearchBarContainer>
+        <RightSubMenu>
+          <div className="rightSubMenuLine" />
+          {accessToken ? (
+            <UserInfoContainer>
+              <UserFigure />
+              <UserSettingContainer>
+                <UserName>
+                  Hello, <span className="userName">Choi</span>
+                </UserName>
+                <MessageContainer>
+                  <MessageLink to="/">Messages</MessageLink>
+                  <MessageLogo />
+                </MessageContainer>
+                <UserAccountContainer>
+                  <span>Your account</span>
+                  <div className="dropdownButton" />
+                </UserAccountContainer>
+              </UserSettingContainer>
+            </UserInfoContainer>
+          ) : (
+            <TopNavButtonContainer onClick={visibleModal}>
+              <ButtonMarginTop data-authsort="login" main>
+                로그인
+              </ButtonMarginTop>
+              <Button data-authsort="register" main>
+                회원가입
+              </Button>
+            </TopNavButtonContainer>
+          )}
+        </RightSubMenu>
+      </TopNavHeader>
+    </Container>
+  );
 };
 
 const Container = styled.div`

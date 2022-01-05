@@ -1,16 +1,147 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
-import client from "../../lib/api/client";
+import AccessTermForm from "./AccessTermForm";
+import { CountryDropdown } from "react-country-region-selector";
 
-const StyledRegisterForm = styled.div`
+function RegisterForm({
+  form,
+  checkCurrentAdvertiseAccess,
+  isCorrectPasswordPattern,
+  changeRegisterInputValue,
+  inputValueDuplicationCheck,
+  sendToEmailForVerificationCode,
+  signup,
+}) {
+  const [isCompareVerificationCodeSuccess, setCompareVerificationCode] =
+    useState(false);
+  const [isRegisterFormVisible, setRegisterFormVisible] = useState(false);
+
+  const { password, re_password, verificationCode, nation } = form;
+
+  const goToRegisterForm = () => {
+    setRegisterFormVisible(true);
+  };
+
+  const compareVerificationCode = event => {
+    const currentUserInputVerificationCode = event.target.previousSibling.value;
+    if (currentUserInputVerificationCode === verificationCode)
+      setCompareVerificationCode(true);
+  };
+
+  const outputPasswordInfoCondition = () => {
+    const currentPasswordLength = password.length;
+    const currentRePasswordLength = re_password.length;
+    const emptyInputValue = 0;
+
+    if (currentPasswordLength === emptyInputValue)
+      return "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요";
+    else {
+      if (currentRePasswordLength === emptyInputValue) {
+        if (isCorrectPasswordPattern) return "사용할 수 있는 비밀번호입니다";
+        else return "올바른 비밀번호 형식을 지켜주세요";
+      } else {
+        if (password === re_password) return "비밀번호가 일치합니다";
+        else return "비밀번호가 일치하지 않습니다";
+      }
+    }
+  };
+
+  if (isRegisterFormVisible) {
+    return (
+      <Container onChange={changeRegisterInputValue}>
+        <div className="registerGuide">CREATE LIBIDO ID</div>
+        <h3>회원가입</h3>
+        <Info>나라 선택</Info>
+        <FormContainer>
+          <StyledCountryDropdown
+            name="nation"
+            defaultOptionLabel={nation.length === 0 ? "나라 선택" : nation}
+            valueType="short"
+          >
+            <span className="iconArrow">
+              <img alt="arrowIcon" src="./images/icon_arrow_down.png" />
+            </span>
+          </StyledCountryDropdown>
+        </FormContainer>
+        <Info>회원정보 입력</Info>
+        <FormContainer>
+          <StyledInput name="email" placeholder="ID" />
+          <OverlayButton
+            onClick={inputValueDuplicationCheck}
+            data-check="idCheckButton"
+          >
+            중복확인
+          </OverlayButton>
+        </FormContainer>
+        <div className="condition">
+          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+        </div>
+        <FormContainer>
+          <StyledInput name="nickname" placeholder="닉네임" type="text" />
+          <OverlayButton
+            onClick={inputValueDuplicationCheck}
+            data-check="nicknameCheckButton"
+          >
+            중복확인
+          </OverlayButton>
+        </FormContainer>
+        <Info>이메일 정보 입력</Info>
+        <FormContainer>
+          <StyledInput
+            name="emailVerification"
+            placeholder="이메일"
+            type="email"
+          />
+          <OverlayButton onClick={sendToEmailForVerificationCode}>
+            인증번호 발송
+          </OverlayButton>
+        </FormContainer>
+        <FormContainer>
+          <StyledInput name="verificationCode" placeholder="인증번호" />
+          <OverlayButton onClick={compareVerificationCode}>
+            인증번호 입력
+          </OverlayButton>
+        </FormContainer>
+        {isCompareVerificationCodeSuccess && (
+          <>
+            <PasswordContainer>
+              <PasswordInput
+                name="password"
+                placeholder="PASSWORD"
+                type="password"
+              />
+
+              <PasswordInput
+                name="re_password"
+                placeholder="PW CHECK"
+                type="password"
+              />
+            </PasswordContainer>
+            <div className="condition">{outputPasswordInfoCondition()}</div>
+            <Footer>
+              <Button onClick={signup}>회원가입</Button>
+            </Footer>
+          </>
+        )}
+      </Container>
+    );
+  } else
+    return (
+      <AccessTermForm
+        checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
+        goToRegisterForm={goToRegisterForm}
+      />
+    );
+}
+
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 
   .registerGuide {
     font-family: "Readex Pro", sans-serif;
+    text-align: center;
     font-size: 1.3rem;
     font-weight: bold;
     letter-spacing: 1px;
@@ -24,8 +155,42 @@ const StyledRegisterForm = styled.div`
   .condition {
     font-size: 0.8rem;
     color: gray;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
+`;
+
+const FormContainer = styled.div`
+  margin-bottom: 10px;
+`;
+
+const StyledCountryDropdown = styled(CountryDropdown)`
+  width: 250px;
+  padding: 10px 15px;
+  margin-right: 5px;
+  font-size: 0.9rem;
+  color: #595959;
+  outline: none;
+  border: 1px solid rgba(38, 47, 106, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  background: url(./images/icon_arrow_down.png) no-repeat;
+  background-position: calc(100% - 5px);
+  background-size: 25px 20px;
+
+  option {
+    background: red;
+  }
+`;
+
+const StyledInput = styled.input`
+  width: 250px;
+  padding: 10px 20px;
+  margin-right: 5px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px rgba(38, 47, 106, 0.5) solid;
+  border-radius: 4px;
 `;
 
 const PasswordContainer = styled.div`
@@ -41,257 +206,35 @@ const PasswordInput = styled.input`
   border: 1px rgba(38, 47, 106, 0.5) solid;
   border-radius: 4px;
 `;
-const PhoneInfo = styled.div`
-  margin-bottom: 10px;
+const Info = styled.div`
+  margin: 10px 0;
   font-size: 0.9em;
   font-weight: bolder;
   color: #525252;
   letter-spacing: 1px;
 `;
-const StyledInput = styled.input`
-  width: 250px;
-  padding: 10px 20px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px rgba(38, 47, 106, 0.5) solid;
-  border-radius: 4px;
-`;
+
 const OverlayButton = styled.button`
   padding: 10px 10px;
   background: white;
   border: #e8eaed solid 1px;
   border-radius: 4px;
   box-shadow: 1px 1px 1px #e8eaed;
+  cursor: pointer;
 `;
 
 const Footer = styled.div`
   display: flex;
+  margin: 0 auto;
 `;
 const Button = styled.button`
   padding: 12px 18px;
-  margin-top: 40px;
+  margin-top: 20px;
   border-radius: 3px;
   background: #262f6a;
   border-style: none;
   cursor: pointer;
   color: white;
 `;
-
-function RegisterForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [re_password, setRepassword] = useState("");
-  const [nickname, setNickname] = useState("");
-
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [verificationCode, setVerificationCode] = useState(null);
-  const [authNumber, setAuthNumber] = useState(null);
-  const [isLoginSuccess, setLoginSuccess] = useState(false);
-
-  const navigate = useNavigate();
-
-  const onEmailHandler = e => {
-    setEmail(e.target.value);
-  };
-
-  const onNicknameHandler = e => {
-    setNickname(e.target.value);
-  };
-
-  const signupTest = e => {
-    console.log(email, nickname, password, re_password);
-    const nation = "korea";
-    client
-      .post("http://15.164.210.185:8000/users/signup", {
-        email,
-        nickname,
-        password,
-        re_password,
-        nation,
-      })
-      .then(res => {
-        const message = res.data.message;
-        if (message === "SUCCESS") {
-          navigate("/");
-        }
-      });
-  };
-
-  const onChangePassword = useCallback(e => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const passwordCurrent = e.target.value;
-    console.log(passwordRegex.test(e.target.value));
-    setPassword(passwordCurrent);
-    if (!passwordRegex.test(passwordCurrent)) {
-      setIsPassword(false);
-    } else {
-      setIsPassword(true);
-    }
-  }, []);
-
-  const onChangePasswordConfirm = useCallback(
-    e => {
-      const passwordConfirmCurrent = e.target.value;
-      setRepassword(passwordConfirmCurrent);
-
-      if (password === passwordConfirmCurrent) {
-        setIsPasswordConfirm(true);
-      } else {
-        setIsPasswordConfirm(false);
-      }
-    },
-    [password]
-  );
-
-  const sortCheckInputValue = currentCheckButtonType => {
-    let checkInputValue;
-    switch (currentCheckButtonType) {
-      case "nicknameCheckButton":
-        checkInputValue = nickname;
-        break;
-      case "idCheckButton":
-        checkInputValue = email;
-        break;
-      default:
-        break;
-    }
-    return checkInputValue;
-  };
-
-  const inputValueCheck = e => {
-    const currentCheckButtonType = e.target.dataset.check;
-    const currentCheckInputValue = sortCheckInputValue(currentCheckButtonType);
-
-    const regExp =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    let checkType;
-    let currentKey;
-    if (regExp.test(currentCheckInputValue)) {
-      checkType = "emailcheck";
-      currentKey = "email";
-    } else {
-      checkType = "nicknamecheck";
-      currentKey = "nickname";
-    }
-
-    client
-      .post(`http://15.164.210.185:8000/users/${checkType}`, {
-        [currentKey]: currentCheckInputValue,
-      })
-      .then(res => {
-        const message = res.data.message;
-        console.log(message);
-        if (message === "AVAILABLE_EMAIL" || message === "AVAILABLE_NICKNAME") {
-          console.log("사용 가능 아이디");
-        }
-      })
-      .catch(error => {
-        console.log("중복되었습니다.");
-      });
-  };
-  const sendVerificationCode = e => {
-    client
-      .post("http://15.164.210.185:8000/users/signupemail", {
-        email,
-      })
-      .then(res => {
-        const authNumber = res.data["auth_number"];
-        console.log(authNumber);
-        setAuthNumber(authNumber);
-      });
-  };
-
-  const test = e => {
-    if (authNumber === verificationCode) {
-      console.log("성공");
-      setLoginSuccess(true);
-    } else {
-      setLoginSuccess(false);
-    }
-  };
-
-  const test2 = e => {
-    setVerificationCode(e.target.value);
-  };
-
-  return (
-    <StyledRegisterForm>
-      <div className="registerGuide">CREATE LIBIDO ID</div>
-      <h3>회원가입</h3>
-      <div>
-        <StyledInput name="email" onChange={onEmailHandler} placeholder="ID" />
-        <OverlayButton onClick={inputValueCheck} data-check="idCheckButton">
-          중복확인
-        </OverlayButton>
-        <StyledInput
-          name="nickname"
-          onChange={onNicknameHandler}
-          placeholder="닉네임"
-          type="text"
-        />
-        <OverlayButton
-          onClick={inputValueCheck}
-          data-check="nicknameCheckButton"
-        >
-          중복확인
-        </OverlayButton>
-        <div className="condition">
-          문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
-        </div>
-        <PhoneInfo>이메일 정보 입력</PhoneInfo>
-        <StyledInput
-          name="emailVerification"
-          placeholder="이메일"
-          type="email"
-        />
-        <OverlayButton onClick={sendVerificationCode}>
-          인증번호 발송
-        </OverlayButton>
-        <StyledInput
-          onChange={test2}
-          name="verificationCode"
-          placeholder="인증번호"
-        />
-        <OverlayButton onClick={test}>인증번호 입력</OverlayButton>
-
-        {isLoginSuccess && (
-          <>
-            <PasswordContainer>
-              <PasswordInput
-                name="password"
-                placeholder="PASSWORD"
-                type="password"
-                onChange={onChangePassword}
-              />
-
-              <PasswordInput
-                name="re_password"
-                placeholder="PW CHECK"
-                type="password"
-                onChange={onChangePasswordConfirm}
-              />
-            </PasswordContainer>
-            <div className="condition">
-              {isPasswordConfirm
-                ? "비밀번호가 일치합니다!"
-                : `${
-                    re_password.length === 0
-                      ? "문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요"
-                      : "비밀번호가 일치하지 않습니다"
-                  }`}
-            </div>
-          </>
-        )}
-      </div>
-      <Footer>
-        <Button onClick={signupTest}>NEXT</Button>
-      </Footer>
-    </StyledRegisterForm>
-  );
-}
 
 export default RegisterForm;

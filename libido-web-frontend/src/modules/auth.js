@@ -1,140 +1,185 @@
-// import { createAction, handleActions } from "redux-actions";
-// import produce from "immer";
-// import { takeLatest, takeEvery } from "redux-saga/effects";
-// import * as authAPI from "../lib/api/auth";
+import { createAction, handleActions } from "redux-actions";
+import produce from "immer";
+import { takeLatest, takeEvery } from "redux-saga/effects";
+import createRequestSaga, {
+  createRequestActionTypes,
+} from "../lib/createRequestSaga";
+import * as authAPI from "../lib/api/auth";
 
-// const CHANGE_FIELD = "auth/CHANGE_FIELD";
-// const INITIALIZE_FORM = "auth/INITIALIZE_FORM";
+const CHANGE_FIELD = "auth/CHANGE_FIELD";
+const INITIALIZE_FORM = "auth/INITIALIZE_FORM";
 
-// const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
-//   createRequestActionTypes("auth/REGISTER");
+const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
+  createRequestActionTypes("auth/REGISTER");
 
-// const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
-//   createRequestActionTypes("auth/LOGIN");
+const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
+  createRequestActionTypes("auth/LOGIN");
 
-// //중복체크
-// const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] =
-//   createRequestActionTypes("auth/CHECK");
+const [DUPLICATIONCHECK, DUPLICATIONCHECK_SUCCESS, DUPLICATIONCHECK_FAILURE] =
+  createRequestActionTypes("auth/DUPLICATIONCHECK");
 
-// const PHONENUMBER = "auth/PHONE_NUMBER";
-// // const IDCHECK = "auth/IDCHECK";
+const [
+  VERIFICATIONCODESEND,
+  VERIFICATIONCODESEND_SUCCESS,
+  VERIFICATIONCODESEND_FAILURE,
+] = createRequestActionTypes("auth/VERIFICATIONCODESEND");
 
-// const INITIALIZE_AVAILABLE = "auth/INITIALIZE_AVAILABLE";
+const INITIALIZE_DUPLICATIONINFO = "auth/INITIALIZE_DUPLICATIONINFO";
 
-// export const changeField = createAction(
-//   CHANGE_FIELD,
-//   ({ form, key, value }) => ({
-//     form, //register, login
-//     key, //email,password, re_password,phone_number,verificationCode
-//     value, //실제 바꾸려는 값
-//   })
-// );
-// export const initializeForm = createAction(INITIALIZE_FORM, form => form);
+const SET_AUTHMODALVISIBLE = "auth/SET_AUTHMODALVISIBLE";
 
-// export const initializeAvailable = createAction(INITIALIZE_AVAILABLE);
+const SET_CURRENTADVERTISEACCESS = "auth/SET_CURRENTADVERTISEACCESS";
 
-// export const register = createAction(
-//   REGISTER,
-//   ({ email, password, re_password, phone_number, nickname }) => ({
-//     email,
-//     password,
-//     re_password,
-//     phone_number,
-//     nickname,
-//   })
-// );
-// export const login = createAction(LOGIN, ({ email, password }) => ({
-//   email,
-//   password,
-// }));
+export const changeField = createAction(
+  CHANGE_FIELD,
+  ({ form, key, value }) => ({
+    form,
+    key,
+    value,
+  })
+);
+export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 
-// export const phoneNumberAction = createAction(
-//   PHONENUMBER,
-//   phoneNumber => phoneNumber
-// );
+export const register = createAction(
+  REGISTER,
+  ({ email, password, re_password, nickname }) => ({
+    email,
+    password,
+    re_password,
+    nickname,
+  })
+);
 
-// export const checkInputValue = createAction(
-//   CHECK,
-//   currentCheckInputValue => currentCheckInputValue
-// );
+export const login = createAction(LOGIN, ({ email, password }) => ({
+  email,
+  password,
+}));
 
-// //사가 생성
-// const registerSaga = createRequestSaga(REGISTER, authAPI.register);
-// const loginSaga = createRequestSaga(LOGIN, authAPI.login);
-// const phoneNumberSaga = createRequestSaga(PHONENUMBER, authAPI.phoneNumber);
-// const checkInputValueSaga = createRequestSaga(CHECK, authAPI.checkInput);
+export const initializeDuplicationInfo = createAction(
+  INITIALIZE_DUPLICATIONINFO
+);
+export const checkInputValue = createAction(
+  DUPLICATIONCHECK,
+  ({ currentCheckInputAPI, currentCheckKey, currentCheckInputValue }) => ({
+    currentCheckInputAPI,
+    currentCheckKey,
+    currentCheckInputValue,
+  })
+);
+export const verificationCodeSend = createAction(
+  VERIFICATIONCODESEND,
+  email => email
+);
 
-// export function* authSaga() {
-//   yield takeLatest(REGISTER, registerSaga);
-//   yield takeLatest(LOGIN, loginSaga);
-//   yield takeLatest(PHONENUMBER, phoneNumberSaga);
-//   yield takeEvery(CHECK, checkInputValueSaga);
-// }
+export const setAuthModalVisible = createAction(
+  SET_AUTHMODALVISIBLE,
+  form => form
+);
 
-// const initialState = {
-//   login: {
-//     email: "",
-//     password: "",
-//   },
-//   register: {
-//     email: "",
-//     password: "",
-//     re_password: "",
-//     nickname: "",
-//     phone_number: "",
-//     verificationCode: "",
-//   },
+export const setCurrentAdvertiseAccess = createAction(
+  SET_CURRENTADVERTISEACCESS,
+  isCheckValue => isCheckValue
+);
 
-//   message: "",
-//   authError: null,
-//   isCheckSuccess: null,
-// };
+const checkInputValueSaga = createRequestSaga(
+  DUPLICATIONCHECK,
+  authAPI.checkInput
+);
+const verificationCodeSendSaga = createRequestSaga(
+  VERIFICATIONCODESEND,
+  authAPI.verificationCodeSend
+);
 
-// const auth = handleActions(
-//   {
-//     [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
-//       produce(state, draft => {
-//         draft[form][key] = value;
-//       }),
-//     [INITIALIZE_FORM]: (state, { payload: form }) => ({
-//       ...state,
-//       [form]: initialState[form],
-//       authError: null, //폼 전환시 회원 인증 에러 초기화..?
-//     }),
-//     //회원가입 성공
-//     [REGISTER_SUCCESS]: (state, { payload: { message } }) => ({
-//       ...state,
-//       message,
-//       authError: null,
-//     }),
-//     //회원가입 실패
-//     [REGISTER_FAILURE]: (state, { payload: error }) => ({
-//       ...state,
-//       authError: error,
-//     }),
-//     //로그인 성공
-//     [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
-//       ...state,
-//       authError: null,
-//       auth,
-//     }),
-//     //로그인 실패
-//     [LOGIN_FAILURE]: (state, { payload: error }) => ({
-//       ...state,
-//       authError: error,
-//     }),
-//     //중복체크
-//     [CHECK_SUCCESS]: (state, { payload: { message } }) => ({
-//       ...state,
-//       isCheckSuccess: message,
-//     }),
+const registerSaga = createRequestSaga(REGISTER, authAPI.register);
+const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 
-//     [INITIALIZE_AVAILABLE]: state => ({
-//       ...state,
-//       isCheckSuccess: null,
-//     }),
-//   },
-//   initialState
-// );
+export function* authSaga() {
+  yield takeLatest(REGISTER, registerSaga);
+  yield takeLatest(LOGIN, loginSaga);
+  yield takeEvery(DUPLICATIONCHECK, checkInputValueSaga);
+  yield takeEvery(VERIFICATIONCODESEND, verificationCodeSendSaga);
+}
 
-// export default auth;
+const initialState = {
+  login: {
+    email: "",
+    password: "",
+    isVisibleAuthModal: false,
+  },
+  register: {
+    email: "",
+    password: "",
+    re_password: "",
+    nickname: "",
+    nation: "",
+    isDuplicationCheckSuccess: "",
+    verificationCode: "",
+    isVisibleAuthModal: false,
+    is_receive_email: false,
+  },
+  token: "",
+  message: "",
+  authError: null,
+};
+
+const auth = handleActions(
+  {
+    [INITIALIZE_FORM]: (state, { payload: form }) => ({
+      ...state,
+      [form]: initialState[form],
+      message: "",
+      authError: null,
+    }),
+    [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
+      produce(state, draft => {
+        draft[form][key] = value;
+      }),
+    [REGISTER_SUCCESS]: (state, { payload: { message } }) => ({
+      ...state,
+      message,
+      authError: null,
+    }),
+    [REGISTER_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      authError: error,
+    }),
+    [SET_CURRENTADVERTISEACCESS]: (state, { payload: isCheckValue }) =>
+      produce(state, draft => {
+        draft.register.is_receive_email = isCheckValue;
+      }),
+    [INITIALIZE_DUPLICATIONINFO]: (state, action) =>
+      produce(state, draft => {
+        draft.register.isDuplicationCheckSuccess = "";
+        draft.authError = null;
+      }),
+    [DUPLICATIONCHECK_SUCCESS]: (state, { payload: { message } }) =>
+      produce(state, draft => {
+        draft.register.isDuplicationCheckSuccess = message;
+      }),
+    [DUPLICATIONCHECK_FAILURE]: (state, { payload: { response } }) => ({
+      ...state,
+      authError: response.data.message,
+    }),
+    [VERIFICATIONCODESEND_SUCCESS]: (state, { payload: { auth_number } }) =>
+      produce(state, draft => {
+        draft.register.verificationCode = auth_number;
+      }),
+    [LOGIN_SUCCESS]: (state, { payload: { ACCESS_TOKEN } }) => ({
+      ...state,
+      message: "SUCCESS",
+      token: ACCESS_TOKEN,
+      authError: null,
+    }),
+    [LOGIN_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      authError: error,
+    }),
+    [SET_AUTHMODALVISIBLE]: (state, { payload: form }) =>
+      produce(state, draft => {
+        draft[form].isVisibleAuthModal = !state[form].isVisibleAuthModal;
+      }),
+  },
+  initialState
+);
+
+export default auth;

@@ -1,51 +1,45 @@
-import { checkInputValue } from "../../modules/auth";
 import client from "./client";
+import { API } from "../../config";
 
-export const login = ({ email, password }) =>
-  client.post("/api/auth/login", { email, password });
+export const login = ({ email, password }) => {
+  return client.post("http://15.164.210.185:8000/users/signin", {
+    email,
+    password,
+  });
+};
 
 export const register = ({
   email,
   password,
   re_password,
-  phone_number,
   nickname,
+  is_receive_email,
+  nation,
 }) => {
-  return client.post("http://172.30.1.45:8000/users/signup", {
+  return client.post("http://15.164.210.185:8000/users/signup", {
     email,
+    nickname,
     password,
     re_password,
-    phone_number,
-    nickname,
+    is_receive_email,
+    nation,
   });
 };
 
 export const check = () => client.get("/api/auth/check");
 
-export const phoneNumber = phoneNumber => {
-  const phone_number = phoneNumber;
-  client
-    .post("http://172.30.1.58:8000/users/sendsms", {
-      phone_number,
-    })
-    .then(res => console.log(res));
+export const checkInput = ({
+  currentCheckInputAPI,
+  currentCheckKey,
+  currentCheckInputValue,
+}) => {
+  return client.post(`${API.baseUrl}users/${currentCheckInputAPI}`, {
+    [currentCheckKey]: currentCheckInputValue,
+  });
 };
 
-//중복체크
-export const checkInput = checkInputValue => {
-  const regExp =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  let checkType;
-  let currentKey;
-  if (regExp.test(checkInputValue)) {
-    checkType = "emailcheck";
-    currentKey = "email";
-  } else {
-    checkType = "nicknamecheck";
-    currentKey = "nickname";
-  }
-
-  return client.post(`http://221.154.228.231:8000/users/${checkType}`, {
-    [currentKey]: checkInputValue,
+export const verificationCodeSend = email => {
+  return client.post("http://15.164.210.185:8000/users/signupemail", {
+    email,
   });
 };
