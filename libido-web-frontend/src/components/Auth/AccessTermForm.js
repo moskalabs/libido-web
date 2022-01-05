@@ -7,11 +7,6 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
     privateInfoCheck: false,
     advertiseCheck: false,
   });
-  const [detailInfo, setDetailInfo] = useState({
-    webAccessDetail: false,
-    privateInfoDetail: false,
-    advertiseDetail: false,
-  });
 
   const { advertiseCheck } = checkInfo;
 
@@ -60,12 +55,6 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
           [currentButtonName]: !checkInfo[currentButtonName],
         });
       }
-    else if (currentTargetedState === "detailInfo") {
-      setDetailInfo({
-        ...detailInfo,
-        [currentButtonName]: !detailInfo[currentButtonName],
-      });
-    }
   };
 
   const checkClickSort = event => {
@@ -74,29 +63,20 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
       className: event.target.className,
     };
 
-    if (
-      currentTargetElementInfo.nodeName !== "BUTTON" &&
-      currentTargetElementInfo.className !== "detailInfo"
-    )
-      return;
+    if (currentTargetElementInfo.nodeName !== "BUTTON") return;
 
     const currentTargetButtonSort = event.target.dataset.buttonsort;
-    const currentButtonName = event.target.name
-      ? event.target.name
-      : event.target.nextSibling.name;
+    const currentButtonName = event.target.name;
 
     switch (currentTargetButtonSort) {
       case "checkButton":
         setCheckValue("checkInfo", currentButtonName);
         break;
-      case "arrowButton":
-        setCheckValue("detailInfo", currentButtonName);
-        break;
       case "nextButton":
         goToRegisterForm();
         break;
       default:
-        setCheckValue("detailInfo", currentButtonName);
+        break;
     }
   };
 
@@ -125,10 +105,6 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             <AccessInfo>
               리비도 이용약관 동의 <span className="necessary">(필수)</span>
             </AccessInfo>
-            <MoreInfoContainer>
-              <div className="detailInfo">자세히</div>
-              <ArrowIcon name="webAccessDetail" data-buttonsort="arrowButton" />
-            </MoreInfoContainer>
           </LeftInfoContainer>
           <CheckIcon
             active={isCheckActive("webAccessCheck")}
@@ -136,19 +112,20 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
+        <MoreInfo rows="4" disabled>
+          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+          수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
+          개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
+          이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
+        </MoreInfo>
         <RegisterAccessTerm>
           <LeftInfoContainer>
             <AccessInfo>
               개인정보 수집 및 이용에 대한 안내{" "}
               <span className="necessary">(필수)</span>
             </AccessInfo>
-            <MoreInfoContainer>
-              <div className="detailInfo">자세히</div>
-              <ArrowIcon
-                name="privateInfoDetail"
-                data-buttonsort="arrowButton"
-              />
-            </MoreInfoContainer>
           </LeftInfoContainer>
           <CheckIcon
             active={isCheckActive("privateInfoCheck")}
@@ -156,13 +133,17 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
+        <MoreInfo rows="4" disabled>
+          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+          수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
+          개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
+          이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
+        </MoreInfo>
         <RegisterAccessTerm>
           <LeftInfoContainer>
             <AccessInfo>이벤트 및 마케팅 수신 동의</AccessInfo>
-            <MoreInfoContainer>
-              <div className="detailInfo">자세히</div>
-              <ArrowIcon name="advertiseDetail" data-buttonsort="arrowButton" />
-            </MoreInfoContainer>
           </LeftInfoContainer>
           <CheckIcon
             active={isCheckActive("advertiseCheck")}
@@ -170,6 +151,14 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
+        <MoreInfo rows="4" disabled>
+          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+          수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
+          개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
+          이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
+        </MoreInfo>
       </RegisterAccessTermContainer>
       <Footer>
         <NextButton
@@ -200,9 +189,12 @@ const RegisterAccessTerm = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #d5d5d5;
+
+  &:nth-child(1) {
+    border-bottom: 1px solid #d5d5d5;
+    margin-bottom: 40px;
+  }
 `;
 
 const LeftInfoContainer = styled.div`
@@ -220,25 +212,16 @@ const AccessInfo = styled.div`
   }
 `;
 
-const MoreInfoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  & .info {
-    font-size: 14px;
-    color: #262f6a;
-  }
-`;
-
-const ArrowIcon = styled.button`
-  width: 20px;
-  height: 20px;
-  background: url(./images/icon_spread.png) no-repeat;
-  background-position: center;
-  background-size: contain;
-  border: none;
-  cursor: pointer;
+const MoreInfo = styled.textarea`
+  width: 650px;
+  margin: 2px 0 20px;
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #d5d5d5;
+  background-color: #fff;
+  color: #8d8d8d;
+  resize: none;
 `;
 
 const CheckIcon = styled.button`

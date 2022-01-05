@@ -96,14 +96,10 @@ const RegisterFormContainer = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (message === "SUCCESS") {
+    if (message === "SUCCESS" || isVisibleAuthModal) {
       dispatch(initializeForm("register"));
     }
-  }, [message]);
-
-  useEffect(() => {
-    if (!isVisibleAuthModal) dispatch(initializeForm("register"));
-  }, [isVisibleAuthModal]);
+  }, [message, isVisibleAuthModal]);
 
   if (isVisibleAuthModal) {
     return (
