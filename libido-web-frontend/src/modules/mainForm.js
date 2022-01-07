@@ -92,7 +92,9 @@ const mainForm = handleActions(
     }),
     [FRIENDLIST_SUCCESS]: (state, { payload: { message } }) =>
       produce(state, draft => {
-        draft.recommendFriendList = state.recommendFriendList.concat(message);
+        draft.recommendFriendList = state.recommendFriendList.concat(
+          Array(message)
+        );
         draft.recommendFriendListError = null;
       }),
     [FRIENDLIST_FAILURE]: (state, { payload: error }) => ({

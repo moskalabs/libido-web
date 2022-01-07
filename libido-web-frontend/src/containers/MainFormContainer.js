@@ -15,7 +15,6 @@ import MainForm from "../pages/Main/MainForm";
 
 const MainFormContainer = () => {
   const dispatch = useDispatch();
-  const [isIntersect, setIntersect] = useState(false);
 
   const sort = useSelector(({ category }) => category.sort);
 
@@ -24,7 +23,6 @@ const MainFormContainer = () => {
     roomList,
     recommendFriendList,
     friendsContentList,
-    currentOffset,
     currentIsLoaded,
   } = useSelector(
     ({ mainForm }) => ({
@@ -32,11 +30,13 @@ const MainFormContainer = () => {
       roomList: mainForm.roomList,
       recommendFriendList: mainForm.recommendFriendList,
       friendsContentList: mainForm.friendsContentList,
-      currentOffset: mainForm.currentOffset,
       currentIsLoaded: mainForm.isLoaded,
     }),
     shallowEqual
   );
+
+  const currentOffset = useSelector(({ mainForm }) => mainForm.currentOffset);
+  const [isIntersect, setIntersect] = useState(false);
 
   useEffect(() => {
     async function getMoreContents() {
@@ -94,7 +94,12 @@ const MainFormContainer = () => {
   const completeContentsNum = 16;
 
   if (sort === "friends") {
-    curContentsNum = recommendFriendList.length + friendsContentList.length;
+    const curRecommendFriendListNum = recommendFriendList[0]
+      ? recommendFriendList[0].length
+      : 0;
+    const curFriendsContentListNum = friendsContentList.length;
+
+    curContentsNum = curRecommendFriendListNum + curFriendsContentListNum;
     completeContents = [recommendFriendList, friendsContentList];
 
     if (curContentsNum >= completeContentsNum) {
@@ -109,7 +114,10 @@ const MainFormContainer = () => {
       );
     } else return null;
   } else if (sort === "libido" || sort === "trending") {
-    curContentsNum = contentList.length + roomList.length;
+    const curContentListNum = contentList.length;
+    const curRoomListNum = roomList.length;
+
+    curContentsNum = curContentListNum + curRoomListNum;
 
     if (curContentsNum >= completeContentsNum) {
       completeContents = bindingCategoryToContents(sort, contentList, roomList);

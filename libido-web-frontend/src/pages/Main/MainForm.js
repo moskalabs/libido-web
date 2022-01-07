@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
+import CarouselSlider, { Slide } from "../../lib/CarouselSlider";
 import Loader from "../../lib/Loader";
 import ContentForm from "../ContentForm";
 import FriendFigure from "../../components/common/FrinedFigure";
@@ -23,7 +24,7 @@ const MainForm = ({
 
     return () => observer && observer.disconnect();
   }, [target.current, isIntersect, isLoaded]);
-
+  console.log(completeContents);
   return (
     <Container>
       {currentCategorySort === "libido" ||
@@ -59,20 +60,28 @@ const MainForm = ({
         <>
           <FriendsContainer>
             <Name>맞춤친구 추천</Name>
-            <FriendList>
-              {completeContents[0].map(
-                ({ id, nickname, image_url, follows }, index) => {
-                  return (
-                    <FriendFigure
-                      nickname={nickname}
-                      image_url={image_url}
-                      follows={follows}
-                      key={index}
-                    />
-                  );
-                }
-              )}
-            </FriendList>
+            <CarouselSlider>
+              {completeContents[0].map((friendList, index) => {
+                return (
+                  <Slide key={index}>
+                    <FriendList>
+                      {friendList.map(
+                        ({ id, nickname, image_url, follows }, index) => {
+                          return (
+                            <FriendFigure
+                              key={index}
+                              nickname={nickname}
+                              image_url={image_url}
+                              follows={follows}
+                            />
+                          );
+                        }
+                      )}
+                    </FriendList>
+                  </Slide>
+                );
+              })}
+            </CarouselSlider>
           </FriendsContainer>
           <ContentsContainer>
             <CategoryBox>
@@ -132,11 +141,10 @@ const FriendsContainer = styled.div`
 
 const FriendList = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   padding: 20px 25px;
   border-radius: 8px;
-  overflow: scroll;
-  background-color: #fff;
 `;
 
 const CategoryBox = styled.div`

@@ -112,14 +112,16 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
-        <MoreInfo rows="4" disabled>
-          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+        <MoreInfo
+          defaultValue="이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
           수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
           동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
           개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
           이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
-          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
-        </MoreInfo>
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다"
+          rows="4"
+          disabled
+        />
         <RegisterAccessTerm>
           <LeftInfoContainer>
             <AccessInfo>
@@ -133,14 +135,16 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
-        <MoreInfo rows="4" disabled>
-          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+        <MoreInfo
+          defaultValue="이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
           수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
           동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
           개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
           이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
-          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
-        </MoreInfo>
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다"
+          rows="4"
+          disabled
+        />
         <RegisterAccessTerm>
           <LeftInfoContainer>
             <AccessInfo>이벤트 및 마케팅 수신 동의</AccessInfo>
@@ -151,14 +155,16 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
             data-buttonsort="checkButton"
           />
         </RegisterAccessTerm>
-        <MoreInfo rows="4" disabled>
-          이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
+        <MoreInfo
+          defaultValue="이용약관, 개인정보 수집 및 이용에 모두 동의합니다. 이용약관, 개인정보
           수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
           동의합니다 이용약관, 개인정보 수집 및 이용에 모두 동의합니다 이용약관,
           개인정보 수집 및 이용에 모두 동의합니다 이용약관, 개인정보 수집 및
           이용에 모두 동의합니다 이용약관, 개인정보 수집 및 이용에 모두
-          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다
-        </MoreInfo>
+          동의합니다이용약관, 개인정보 수집 및 이용에 모두 동의합니다"
+          rows="4"
+          disabled
+        />
       </RegisterAccessTermContainer>
       <Footer>
         <NextButton
