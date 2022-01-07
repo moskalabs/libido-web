@@ -31,7 +31,6 @@ const CarouselSlider = ({ children }) => {
     },
     slidesPerView: 1,
     onSwiper: setSwiper,
-    // onSlideChange: () => console.log(swiper.activeIndex),
   };
 
   const test = () => {
