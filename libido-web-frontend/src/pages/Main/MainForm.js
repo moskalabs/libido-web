@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
-import CarouselSlider, { Slide } from "../../lib/CarouselSlider";
+import { SwiperSlide } from "swiper/react";
+import CarouselSlider from "../../lib/CarouselSlider";
 import Loader from "../../lib/Loader";
 import ContentForm from "../ContentForm";
 import FriendFigure from "../../components/common/FrinedFigure";
@@ -24,7 +25,7 @@ const MainForm = ({
 
     return () => observer && observer.disconnect();
   }, [target.current, isIntersect, isLoaded]);
-  console.log(completeContents);
+
   return (
     <Container>
       {currentCategorySort === "libido" ||
@@ -61,9 +62,18 @@ const MainForm = ({
           <FriendsContainer>
             <Name>맞춤친구 추천</Name>
             <CarouselSlider>
+              {/* <SwiperSlide>
+                <FriendList>Slide 1</FriendList>
+              </SwiperSlide>
+              <SwiperSlide>
+                <FriendList>Slide 2</FriendList>
+              </SwiperSlide>
+              <SwiperSlide>
+                <FriendList>Slide 3</FriendList>
+              </SwiperSlide> */}
               {completeContents[0].map((friendList, index) => {
                 return (
-                  <Slide key={index}>
+                  <SwiperSlide key={index}>
                     <FriendList>
                       {friendList.map(
                         ({ id, nickname, image_url, follows }, index) => {
@@ -78,7 +88,7 @@ const MainForm = ({
                         }
                       )}
                     </FriendList>
-                  </Slide>
+                  </SwiperSlide>
                 );
               })}
             </CarouselSlider>

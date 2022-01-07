@@ -1,17 +1,23 @@
-import { useState, useRef, memo } from "react";
+import { useState, useRef, memo, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css";
-
 import SwiperCore, { Navigation } from "swiper";
 
-SwiperCore.use([Navigation]);
+import { useDispatch } from "react-redux";
+import { friendList } from "../modules/mainForm";
 
 const CarouselSlider = ({ children }) => {
+  const dispatch = useDispatch();
+
+  SwiperCore.use([Navigation]);
+
   const [swiper, setSwiper] = useState(null);
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
+
+  let isPrev = false;
 
   const swiperParams = {
     navigation: {
@@ -25,24 +31,43 @@ const CarouselSlider = ({ children }) => {
     },
     slidesPerView: 1,
     onSwiper: setSwiper,
-    onSlideChange: event => console.log(event.target),
+    // onSlideChange: () => console.log(swiper.activeIndex),
   };
+
+  const test = () => {
+    if (isPrev) {
+      if (swiper.isEnd) isPrev = false;
+      return;
+    }
+
+    dispatch(friendList());
+  };
+
+  useLayoutEffect(() => {
+    if (swiper) swiper.slideNext();
+  }, [children]);
 
   return (
     <StyledSwiper {...swiperParams} ref={setSwiper}>
       {children}
-      <SlideButton className="prevButton" ref={navigationPrevRef}>
+      <SlideButton
+        onClick={() => {
+          isPrev = true;
+        }}
+        className="prevButton"
+        ref={navigationPrevRef}
+      >
         <img alt="prevButton" src="./images/icon_prev_button.png" />
       </SlideButton>
-      <SlideButton className="nextButton" ref={navigationNextRef}>
+      <SlideButton
+        onClick={test}
+        className="nextButton"
+        ref={navigationNextRef}
+      >
         <img alt="nextButton" src="./images/icon_next_button.png" />
       </SlideButton>
     </StyledSwiper>
   );
-};
-
-export const Slide = ({ children }) => {
-  return <SwiperSlide>{children}</SwiperSlide>;
 };
 
 const StyledSwiper = styled(Swiper)`
@@ -59,6 +84,7 @@ const SlideButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 2;
   &.prevButton {
     left: 0;
   }
@@ -70,4 +96,4 @@ const SlideButton = styled.button`
   }
 `;
 
-export default memo(CarouselSlider);
+export default CarouselSlider;

@@ -18,6 +18,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 40px;
+  &:nth-child(1) {
+    margin-left: 20px;
+  }
 `;
 
 const UserFigure = styled.div`
