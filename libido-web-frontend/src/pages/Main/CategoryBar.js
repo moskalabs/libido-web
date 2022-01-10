@@ -54,15 +54,15 @@ const MoveCategoryButton = styled.button`
   background: none;
   font-size: 20px;
   font-weight: 600;
-  color: #606770;
+  color: #a8a8a8;
   cursor: pointer;
 
   ${({ active }) =>
     active &&
     css`
       font-weight: 700;
-      border-bottom: 4px solid #262f6a;
-      color: #262f6a;
+      border-bottom: 4px solid #3848a5;
+      color: #3848a5;
     `}
 `;
 

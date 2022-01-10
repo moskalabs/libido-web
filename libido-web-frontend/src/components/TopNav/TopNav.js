@@ -10,9 +10,9 @@ const TopNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const accessToken = localStorage.getItem("access_token");
+  const accessToken = "123";
 
-  const goToMain = e => {
+  const goToMain = () => {
     navigate("/");
   };
 
@@ -33,9 +33,10 @@ const TopNav = () => {
           <LogoImg />
         </LogoContainer>
         <SearchBarContainer>
+          <div className="searchInfo">컨텐츠 검색</div>
           <SearchContainer
             topNav
-            placeholder="검색어를 입력해주세요. (ex. 컨텐츠 제목, 스트리머 등)"
+            placeholder="나의 플레이리스트에 담을 컨텐츠를 검색하세요 !"
           />
           <div className="searchIcon" />
           <div className="searchLine" />
@@ -44,20 +45,26 @@ const TopNav = () => {
           <div className="rightSubMenuLine" />
           {accessToken ? (
             <UserInfoContainer>
-              <UserFigure />
-              <UserSettingContainer>
+              <UserProfileContainer>
+                <UserFigure />
                 <UserName>
-                  Hello, <span className="userName">Choi</span>
+                  <span className="userName">Choi95</span> 님
+                  <br />
+                  안녕하세요 :)
                 </UserName>
-                <MessageContainer>
-                  <MessageLink to="/">Messages</MessageLink>
-                  <MessageLogo />
-                </MessageContainer>
-                <UserAccountContainer>
-                  <span>Your account</span>
-                  <div className="dropdownButton" />
-                </UserAccountContainer>
-              </UserSettingContainer>
+              </UserProfileContainer>
+              <UserCountContainer>
+                <p>
+                  VIEWED
+                  <br />
+                  <span className="info">522</span>시간
+                </p>
+                <p>
+                  FRIENDS
+                  <br />
+                  <span className="info">95</span>명
+                </p>
+              </UserCountContainer>
             </UserInfoContainer>
           ) : (
             <TopNavButtonContainer onClick={visibleModal}>
@@ -94,28 +101,34 @@ const TopNavHeader = styled.header`
 `;
 
 const LogoContainer = styled.div`
-  margin: 0 170px 0 20px;
+  margin: 0 70px 0 20px;
   cursor: pointer;
 `;
 
 const LogoImg = styled.div`
   width: 200px;
   height: 120px;
-  background: url(./images/LIBIDO_LOGO.png) no-repeat;
+  background: url(./images/libido_logo_new.png) no-repeat;
   background-position: center center;
-  background-size: 200px 120px;
+  background-size: 200px 90px;
 `;
 
 const SearchBarContainer = styled.div`
   position: relative;
 
+  .searchInfo {
+    position: absolute;
+    top: 23px;
+    left: 25px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #3848a5;
+  }
+
   .searchIcon {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     top: 13px;
-    right: 140px;
+    right: 80px;
     width: 30px;
     height: 30px;
     background: url(./images/icon_search.png) no-repeat;
@@ -125,21 +138,20 @@ const SearchBarContainer = styled.div`
   .searchLine {
     position: absolute;
     top: 0;
-    right: 190px;
-    border-left: 1px solid #262f6a;
+    right: 120px;
+    border-left: 1px solid #3848a5;
     height: 58px;
   }
 `;
 const RightSubMenu = styled.div`
   position: relative;
-  margin-left: 85px;
 
   .rightSubMenuLine {
     position: absolute;
-    top: -26px;
-    right: 350px;
+    top: -20px;
+    right: 295px;
     border-left: 1px solid #d9d9d9;
-    height: 125px;
+    height: 126px;
   }
 `;
 
@@ -156,7 +168,12 @@ const ButtonMarginTop = styled(Button)`
 const UserInfoContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 120px;
+`;
+
+const UserProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 35px;
 `;
 
 const UserFigure = styled.div`
@@ -165,49 +182,37 @@ const UserFigure = styled.div`
   width: 60px;
   height: 60px;
   margin-right: 25px;
-  /* background-color: red; */
   background: url(./images/profile_test.jpeg) no-repeat;
   background-size: 60px 60px;
   background-position: center center;
 `;
 
-const UserSettingContainer = styled.div`
-  margin-left: 20px;
-`;
-
 const UserName = styled.div`
   font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #707070;
 
   .userName {
     font-size: 20px;
     font-weight: 700;
-    color: #262f6a;
+    color: #3848a5;
   }
 `;
 
-const MessageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-`;
+const UserCountContainer = styled.div`
+  color: #747474;
+  text-align: center;
 
-const MessageLink = styled(Link)`
-  text-decoration: none;
-  color: #262f6a;
-  letter-spacing: 0.5px;
-`;
-
-const MessageLogo = styled.div`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-  background: url(./images/message.svg) no-repeat;
-  background-position: center center;
-  background-size: 20px 20px;
-`;
-
-const UserAccountContainer = styled.div`
-  font-size: 17px;
+  & p:nth-child(1) {
+    margin-bottom: 4px;
+  }
+  & .info {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #3848a5;
+  }
 `;
 
 export default TopNav;
