@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
+import FriendsListTemplate from "../Main/FriendsListTemplate";
 import Loader from "../../lib/Loader";
 import ContentForm from "../ContentForm";
-import FriendFigure from "../../components/common/FrinedFigure";
 
 const MainForm = ({
   isLoaded,
@@ -57,23 +57,7 @@ const MainForm = ({
         </ContentsContainer>
       ) : (
         <>
-          <FriendsContainer>
-            <Name>맞춤친구 추천</Name>
-            <FriendList>
-              {completeContents[0].map(
-                ({ id, nickname, image_url, follows }, index) => {
-                  return (
-                    <FriendFigure
-                      nickname={nickname}
-                      image_url={image_url}
-                      follows={follows}
-                      key={index}
-                    />
-                  );
-                }
-              )}
-            </FriendList>
-          </FriendsContainer>
+          <FriendsListTemplate completeContents={completeContents} />
           <ContentsContainer>
             <CategoryBox>
               <Name>친구 스트리밍</Name>
@@ -96,7 +80,6 @@ const MainForm = ({
           </ContentsContainer>
         </>
       )}
-
       <div ref={target} className="targetElement">
         {isLoaded && <Loader />}
       </div>
@@ -123,20 +106,6 @@ const ContentsContainer = styled.div`
       display: flex;
       justify-content: space-between;
     `}
-`;
-
-const FriendsContainer = styled.div`
-  margin-bottom: 80px;
-  padding-right: 50px;
-`;
-
-const FriendList = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 20px 25px;
-  border-radius: 8px;
-  overflow: scroll;
-  background-color: #fff;
 `;
 
 const CategoryBox = styled.div`
