@@ -1,6 +1,6 @@
-import { useState, useRef, memo, useLayoutEffect } from "react";
+import React, { useState, useRef, memo, useLayoutEffect } from "react";
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import SwiperCore, { Navigation } from "swiper";
@@ -95,4 +95,4 @@ const SlideButton = styled.button`
   }
 `;
 
-export default CarouselSlider;
+export default memo(CarouselSlider);
