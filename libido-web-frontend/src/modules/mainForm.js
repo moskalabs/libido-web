@@ -10,19 +10,13 @@ const INITIALIZE_MAINFORM = "mainForm/INITIALIZE_MAINFORM";
 
 const ISLOADED = "mainForm/ISLOADED";
 
-const INCREASEOFFSET = "mainForm/INCREASEOFFSET";
+const INCREASE_OFFSET = "mainForm/INCREASEOFFSET";
 
 const [CONTENT, CONTENT_SUCCESS, CONTENT_FAILURE] =
   createRequestActionTypes("mainForm/CONTENT");
 
 const [ROOMS, ROOMS_SUCCESS, ROOMS_FAILURE] =
   createRequestActionTypes("mainForm/ROOMS");
-
-const [FRIENDLIST, FRIENDLIST_SUCCESS, FRIENDLIST_FAILURE] =
-  createRequestActionTypes("mainForm/FRIENDLIST");
-
-const [FRIENDS, FRIENDS_SUCCESS, FRIENDS_FAILURE] =
-  createRequestActionTypes("mainForm/FRIENDS");
 
 export const initializeMainForm = createAction(INITIALIZE_MAINFORM);
 
@@ -36,35 +30,23 @@ export const rooms = createAction(ROOMS, ({ sort, currentOffset }) => ({
   currentOffset,
 }));
 
-export const friendList = createAction(FRIENDLIST);
-
-export const friends = createAction(FRIENDS, currentOffset => currentOffset);
-
 export const isLoaded = createAction(ISLOADED);
 
-export const increaseOffset = createAction(INCREASEOFFSET);
+export const increaseOffset = createAction(INCREASE_OFFSET);
 
 const contentSaga = createRequestSaga(CONTENT, mainFormAPI.content);
 const roomsSaga = createRequestSaga(ROOMS, mainFormAPI.rooms);
-const friendListSaga = createRequestSaga(FRIENDLIST, mainFormAPI.friendList);
-const friendsSaga = createRequestSaga(FRIENDS, mainFormAPI.friends);
 
 export function* mainFormSaga() {
   yield takeEvery(CONTENT, contentSaga);
   yield takeEvery(ROOMS, roomsSaga);
-  yield takeEvery(FRIENDLIST, friendListSaga);
-  yield takeEvery(FRIENDS, friendsSaga);
 }
 
 const initialState = {
   contentList: [],
   roomList: [],
-  recommendFriendList: [],
-  friendsContentList: [],
   contentListError: null,
   roomListError: null,
-  recommendFriendListError: null,
-  friendsContentListError: null,
   currentOffset: 1,
   isLoaded: false,
 };
@@ -90,31 +72,11 @@ const mainForm = handleActions(
       ...state,
       roomListError: error,
     }),
-    [FRIENDLIST_SUCCESS]: (state, { payload: { message } }) =>
-      produce(state, draft => {
-        draft.recommendFriendList = state.recommendFriendList.concat(
-          Array(message)
-        );
-        draft.recommendFriendListError = null;
-      }),
-    [FRIENDLIST_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      recommendFriendListError: error,
-    }),
-    [FRIENDS_SUCCESS]: (state, { payload: { message } }) =>
-      produce(state, draft => {
-        draft.friendsContentList = state.friendsContentList.concat(message);
-        draft.friendsContentListError = null;
-      }),
-    [FRIENDS_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      friendsContentListError: error,
-    }),
     [ISLOADED]: (state, action) => ({
       ...state,
       isLoaded: !state.isLoaded,
     }),
-    [INCREASEOFFSET]: (state, action) => ({
+    [INCREASE_OFFSET]: (state, action) => ({
       ...state,
       currentOffset: state.currentOffset + 1,
     }),

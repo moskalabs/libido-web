@@ -33,29 +33,3 @@ export const rooms = ({ sort, currentOffset = 1 }) => {
     }
   );
 };
-
-export const friendList = () => {
-  return client.get("http://localhost:3000/data/followFriends.json");
-};
-
-export const friends = () => {
-  return client.get("http://localhost:3000/data/friendsRoom.json");
-};
-// export const friendList = () => {
-//   return client.get(`${API.baseUrl}users/follows`, {
-//     headers: {
-//       Authorization: accessToken,
-//     },
-//   });
-// };
-
-// export const friends = (currentOffset = 1) => {
-//   return client.get(
-//     `${API.baseUrl}rooms/friends?offset=${Math.abs(currentOffset - 1) * 8}`,
-//     {
-//       headers: {
-//         Authorization: accessToken,
-//       },
-//     }
-//   );
-// };

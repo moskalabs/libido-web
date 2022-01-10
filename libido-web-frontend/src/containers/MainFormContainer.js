@@ -4,11 +4,15 @@ import {
   initializeMainForm,
   content,
   rooms,
-  friendList,
-  friends,
   isLoaded,
   increaseOffset,
 } from "../modules/mainForm";
+import {
+  initializeFriends,
+  friendList,
+  friendsContent,
+  increaseFriendsOffset,
+} from "../modules/friends";
 import { bindingCategoryToContents } from "../lib/bindingCategoryToContents";
 import { resetPageScroll } from "../lib/resetPageScroll";
 import MainForm from "../pages/Main/MainForm";
@@ -18,24 +22,24 @@ const MainFormContainer = () => {
 
   const sort = useSelector(({ category }) => category.sort);
 
-  const {
-    contentList,
-    roomList,
-    recommendFriendList,
-    friendsContentList,
-    currentIsLoaded,
-  } = useSelector(
+  const { contentList, roomList } = useSelector(
     ({ mainForm }) => ({
       contentList: mainForm.contentList,
       roomList: mainForm.roomList,
-      recommendFriendList: mainForm.recommendFriendList,
-      friendsContentList: mainForm.friendsContentList,
-      currentIsLoaded: mainForm.isLoaded,
     }),
     shallowEqual
   );
 
+  const { recommendFriendList, friendsContentList } = useSelector(
+    ({ friends }) => ({
+      recommendFriendList: friends.recommendFriendList,
+      friendsContentList: friends.friendsContentList,
+    })
+  );
+
   const currentOffset = useSelector(({ mainForm }) => mainForm.currentOffset);
+  const currentIsLoaded = useSelector(({ mainForm }) => mainForm.isLoaded);
+
   const [isIntersect, setIntersect] = useState(false);
 
   useEffect(() => {
@@ -47,8 +51,9 @@ const MainFormContainer = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       if (sort === "friends") {
+        const { currentOffset } = friendsContentList;
         batch(() => {
-          dispatch(friends(currentOffset));
+          dispatch(friendsContent(currentOffset));
         });
       } else {
         batch(() => {
@@ -66,21 +71,24 @@ const MainFormContainer = () => {
   const onIntersect = async ([{ isIntersecting, target }], observer) => {
     if (isIntersecting) {
       observer.unobserve(target);
+      if (sort === "friends") {
+        dispatch(increaseFriendsOffset("friendsContentList"));
+      }
       dispatch(increaseOffset());
       setIntersect(true);
     }
   };
 
   useEffect(() => {
-    dispatch(initializeMainForm());
-
     if (sort === "friends") {
       batch(() => {
+        dispatch(initializeFriends());
         dispatch(friendList());
-        dispatch(friends());
+        dispatch(friendsContent());
       });
     } else {
       batch(() => {
+        dispatch(initializeMainForm());
         dispatch(content({ sort }));
         dispatch(rooms({ sort }));
       });
@@ -94,13 +102,13 @@ const MainFormContainer = () => {
   const completeContentsNum = 16;
 
   if (sort === "friends") {
-    const curRecommendFriendListNum = recommendFriendList[0]
-      ? recommendFriendList[0].length
+    const curRecommendFriendListNum = recommendFriendList.list[0]
+      ? recommendFriendList.list[0].length
       : 0;
-    const curFriendsContentListNum = friendsContentList.length;
+    const curFriendsContentListNum = friendsContentList.list.length;
 
     curContentsNum = curRecommendFriendListNum + curFriendsContentListNum;
-    completeContents = [recommendFriendList, friendsContentList];
+    completeContents = [recommendFriendList.list, friendsContentList.list];
 
     if (curContentsNum >= completeContentsNum) {
       return (

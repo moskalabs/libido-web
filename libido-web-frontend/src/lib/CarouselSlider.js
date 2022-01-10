@@ -5,8 +5,8 @@ import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import SwiperCore, { Navigation } from "swiper";
 
-import { useDispatch } from "react-redux";
-import { friendList } from "../modules/mainForm";
+import { useDispatch, batch } from "react-redux";
+import { friendList, increaseFriendsOffset } from "../modules/friends";
 
 const CarouselSlider = ({ children }) => {
   const dispatch = useDispatch();
@@ -33,13 +33,16 @@ const CarouselSlider = ({ children }) => {
     onSwiper: setSwiper,
   };
 
-  const test = () => {
+  const nextSlide = () => {
     if (isPrev) {
       if (swiper.isEnd) isPrev = false;
       return;
     }
 
-    dispatch(friendList());
+    batch(() => {
+      dispatch(increaseFriendsOffset("recommendFriendList"));
+      dispatch(friendList());
+    });
   };
 
   useLayoutEffect(() => {
@@ -59,7 +62,7 @@ const CarouselSlider = ({ children }) => {
         <img alt="prevButton" src="./images/icon_prev_button.png" />
       </SlideButton>
       <SlideButton
-        onClick={test}
+        onClick={nextSlide}
         className="nextButton"
         ref={navigationNextRef}
       >
