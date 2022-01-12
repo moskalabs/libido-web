@@ -1,14 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setAuthModalVisible } from "../../modules/auth";
+import LoginFormContainer from "../../containers/Auth/LoginFormContainer";
+import RegisterFormContainer from "../../containers/Auth/RegisterFormContainer";
+import Modal from "../../components/common/Modal";
+import useModal from "../../hooks/useModal";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
 const TopNav = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const { isShowing, modalInfo, setModalVisible } = useModal();
+  const [modalSort] = modalInfo;
 
   const accessToken = "";
 
@@ -16,18 +20,25 @@ const TopNav = () => {
     navigate("/");
   };
 
-  const visibleModal = event => {
+  const verifiyShowModal = event => {
     const currentTargetElement = event.target.nodeName;
 
     if (currentTargetElement !== "BUTTON") return;
 
     const authSort = event.target.dataset.authsort;
 
-    dispatch(setAuthModalVisible(authSort));
+    setModalVisible(authSort);
   };
 
   return (
     <Container>
+      <Modal isShowing={isShowing} hide={setModalVisible}>
+        {modalSort === "login" ? (
+          <LoginFormContainer />
+        ) : (
+          <RegisterFormContainer />
+        )}
+      </Modal>
       <TopNavHeader>
         <LogoContainer onClick={goToMain}>
           <LogoImg />
@@ -68,7 +79,7 @@ const TopNav = () => {
               </UserCountContainer>
             </UserInfoContainer>
           ) : (
-            <TopNavButtonContainer onClick={visibleModal}>
+            <TopNavButtonContainer onClick={verifiyShowModal}>
               <ButtonMarginTop data-authsort="login" main>
                 로그인
               </ButtonMarginTop>

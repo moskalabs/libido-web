@@ -24,7 +24,7 @@ const Inner = styled.div`
   padding: 2rem;
   border: 1px #c4c3c2 solid;
   border-radius: 2px;
-  z-index: 1011;
+  z-index: 1300;
   background-color: #fff;
 `;
 

@@ -15,7 +15,7 @@ const MainForm = ({
   completeContents,
   currentCategorySort,
 }) => {
-  const [isShowing, modalInfo, setModalVisible] = useModal();
+  const { isShowing, modalInfo, setModalVisible } = useModal();
   const target = useRef(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const MainForm = ({
 
   return (
     <Container>
-      <Modal isShowimg={isShowing} hide={setModalVisible}>
+      <Modal isShowing={isShowing} hide={setModalVisible}>
         <ModalTemplate>
           <MakeRoomInfoModal modalInfo={modalInfo} hide={setModalVisible} />
         </ModalTemplate>

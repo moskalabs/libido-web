@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
-const Modal = ({ isShowimg, hide, children }) => {
-  if (isShowimg) {
+const Modal = ({ isShowing, hide, children }) => {
+  if (isShowing) {
     document.body.style.setProperty("overflow", "hidden");
     return ReactDOM.createPortal(
       <Fragment>
@@ -23,7 +23,7 @@ const BodyBlackoutStyle = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.65);
   cursor: pointer;
-  z-index: 1010;
+  z-index: 1100;
 `;
 
 export default Modal;

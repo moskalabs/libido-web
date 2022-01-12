@@ -7,25 +7,20 @@ import {
   initializeDuplicationInfo,
   checkInputValue,
   verificationCodeSend,
-  setAuthModalVisible,
   setCurrentAdvertiseAccess,
 } from "../../modules/auth";
-import RegisterForm from "../../components/Auth/RegisterForm";
 import ModalTemplate from "../../components/common/ModalTemplate";
-import BodyBlackout from "../../components/common/BodyBlackout";
+import RegisterForm from "../../components/Auth/RegisterForm";
 import {
   checkPasswordPattern,
   sortCheckInputValue,
 } from "../../lib/checkAuthPattern";
 
-const RegisterFormContainer = () => {
+const RegisterFormContainer = ({ isShowing }) => {
   const dispatch = useDispatch();
 
   const form = useSelector(({ auth }) => auth.register);
   const message = useSelector(({ auth }) => auth.message);
-  const isVisibleAuthModal = useSelector(
-    ({ auth }) => auth.register.isVisibleAuthModal
-  );
 
   const authError = useSelector(({ auth }) => auth.authError);
 
@@ -93,37 +88,28 @@ const RegisterFormContainer = () => {
 
   useEffect(() => {
     dispatch(initializeForm("register"));
-  }, [dispatch]);
 
-  useEffect(() => {
-    if (message === "SUCCESS" || !isVisibleAuthModal) {
+    message === "SUCCESS" && dispatch(initializeForm("register"));
+
+    return () => {
       dispatch(initializeForm("register"));
-    }
-  }, [message, isVisibleAuthModal]);
+    };
+  }, [dispatch, message]);
 
-  if (isVisibleAuthModal) {
-    return (
-      <>
-        <BodyBlackout
-          modalSort="register"
-          setAuthModalVisible={setAuthModalVisible}
-          isVisibleAuthModal={isVisibleAuthModal}
-        />
-        <ModalTemplate>
-          <RegisterForm
-            form={form}
-            checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
-            isCorrectPasswordPattern={isCorrectPasswordPattern}
-            authError={authError}
-            changeRegisterInputValue={changeRegisterInputValue}
-            inputValueDuplicationCheck={inputValueDuplicationCheck}
-            sendToEmailForVerificationCode={sendToEmailForVerificationCode}
-            signup={signup}
-          />
-        </ModalTemplate>
-      </>
-    );
-  } else return null;
+  return (
+    <ModalTemplate>
+      <RegisterForm
+        form={form}
+        checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
+        isCorrectPasswordPattern={isCorrectPasswordPattern}
+        authError={authError}
+        changeRegisterInputValue={changeRegisterInputValue}
+        inputValueDuplicationCheck={inputValueDuplicationCheck}
+        sendToEmailForVerificationCode={sendToEmailForVerificationCode}
+        signup={signup}
+      />
+    </ModalTemplate>
+  );
 };
 
 export default RegisterFormContainer;
