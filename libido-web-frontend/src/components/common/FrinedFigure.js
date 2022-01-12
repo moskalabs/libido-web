@@ -27,7 +27,6 @@ const UserFigure = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  /* background-color: red; */
   background: url(./images/profile_test.jpeg) no-repeat;
   background-size: 150px 150px;
   background-position: center center;
@@ -43,7 +42,8 @@ const UserFollower = styled.div`
   font-size: 18px;
 
   & .followerNumber {
-    color: #262f6a;
+    color: #3848a5;
+    font-size: 20px;
     font-weight: 700;
   }
 `;

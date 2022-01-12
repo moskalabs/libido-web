@@ -36,7 +36,7 @@ const Container = styled.div`
   height: 100%;
   padding: 0 33px 0;
   border: none;
-  background-color: #262f6a;
+  background-color: #3848a5;
   z-index: 30;
 `;
 
@@ -53,7 +53,7 @@ const MenuButton = styled.button`
   border: none;
   cursor: pointer;
   background: url(./images/icon_menu.png) no-repeat;
-  background-size: 45px 45px;
+  background-size: 42px 42px;
   background-position: center center;
 `;
 

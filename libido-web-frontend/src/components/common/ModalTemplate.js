@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-const AuthTemplate = ({ children }) => {
+const ModalTemplate = ({ children }) => {
   return (
-    <StyledAuthTemplate>
+    <StyledModalTemplate>
       <Inner>{children}</Inner>
-    </StyledAuthTemplate>
+    </StyledModalTemplate>
   );
 };
 
-const StyledAuthTemplate = styled.div`
+const StyledModalTemplate = styled.div`
   position: absolute;
   left: 0;
   top: 0;
@@ -28,4 +28,4 @@ const Inner = styled.div`
   background-color: #fff;
 `;
 
-export default AuthTemplate;
+export default ModalTemplate;

@@ -6,7 +6,7 @@ import {
   login,
   setAuthModalVisible,
 } from "../../modules/auth";
-import AuthTemplate from "../../components/Auth/AuthTemplate";
+import ModalTemplate from "../../components/common/ModalTemplate";
 import LoginForm from "../../components/Auth/LoginForm";
 import BodyBlackout from "../../components/common/BodyBlackout";
 
@@ -54,13 +54,13 @@ const LoginFormContainer = () => {
           modalSort="login"
           setAuthModalVisible={setAuthModalVisible}
         />
-        <AuthTemplate>
+        <ModalTemplate>
           <LoginForm
             form={form}
             changeLoginInputValue={changeLoginInputValue}
             signin={signin}
           />
-        </AuthTemplate>
+        </ModalTemplate>
       </>
     );
   } else return null;

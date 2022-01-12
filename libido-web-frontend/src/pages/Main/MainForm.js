@@ -117,7 +117,7 @@ const Name = styled.div`
   margin-bottom: 15px;
   font-size: 28px;
   font-weight: 600;
-  color: #262f6a;
+  color: #161616;
 `;
 
 const ContentList = styled.div`

@@ -15,9 +15,9 @@ const StyledButton = styled.button`
     css`
       width: 220px;
       line-height: 30px;
-      background: #262f6a;
+      background: #3848a5;
       &:hover {
-        background: #1d2452;
+        background: #344397;
       }
     `}
 `;

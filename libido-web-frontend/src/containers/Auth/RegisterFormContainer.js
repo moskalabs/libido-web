@@ -11,7 +11,7 @@ import {
   setCurrentAdvertiseAccess,
 } from "../../modules/auth";
 import RegisterForm from "../../components/Auth/RegisterForm";
-import AuthTemplate from "../../components/Auth/AuthTemplate";
+import ModalTemplate from "../../components/common/ModalTemplate";
 import BodyBlackout from "../../components/common/BodyBlackout";
 import {
   checkPasswordPattern,
@@ -109,7 +109,7 @@ const RegisterFormContainer = () => {
           setAuthModalVisible={setAuthModalVisible}
           isVisibleAuthModal={isVisibleAuthModal}
         />
-        <AuthTemplate>
+        <ModalTemplate>
           <RegisterForm
             form={form}
             checkCurrentAdvertiseAccess={checkCurrentAdvertiseAccess}
@@ -120,7 +120,7 @@ const RegisterFormContainer = () => {
             sendToEmailForVerificationCode={sendToEmailForVerificationCode}
             signup={signup}
           />
-        </AuthTemplate>
+        </ModalTemplate>
       </>
     );
   } else return null;

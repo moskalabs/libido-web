@@ -38,8 +38,8 @@ const ContentForm = ({
           currentCategory === "맞춤 스트리밍" ||
           currentCategory === "인기 STREAMING"
         ) {
-          entryContentRoom();
-        } else goToContentUrl(link_url);
+          goToContentUrl(link_url);
+        } else entryContentRoom();
       }}
     >
       {currentCategory === "맟춤형 추천 영상" ||
@@ -75,7 +75,10 @@ const ContentForm = ({
           currentCategory === "검색 영상" ? (
             <span>3시간 전 ・ 조회수 24만회</span>
           ) : (
-            <span>Ji Sun Lee ・ 3시간 전 ・ 25명 시청중</span>
+            <span>
+              Ji Sun Lee ・ 3시간 전 ・ <span className="viewCount">25</span>명
+              시청중
+            </span>
           )}
         </ContentSubInfo>
       </ContentInfoContainer>
@@ -84,7 +87,7 @@ const ContentForm = ({
 };
 
 const Container = styled.div`
-  max-height: 350px;
+  max-height: 335px;
   margin-bottom: 30px;
   background-color: #fff;
   border: 1px solid #d5d5d5;
@@ -102,14 +105,15 @@ const Thumbnail = styled.div`
 `;
 
 const ContentInfoContainer = styled.div`
-  max-width: 320px;
+  max-width: 380px;
   position: relative;
-  padding: 15px 40px 45px;
+  padding: 15px 0px 45px 40px;
 `;
 
 const ContentTitle = styled.div`
   margin-bottom: 8px;
   font-size: 20px;
+  font-weight: 600;
   color: #383838;
 `;
 
@@ -147,6 +151,12 @@ const LiveIntroduction = styled.div`
 
 const ContentSubInfo = styled.div`
   color: #848484;
+
+  & .viewCount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3848a5;
+  }
 `;
 
 export default ContentForm;
