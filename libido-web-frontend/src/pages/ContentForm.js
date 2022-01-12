@@ -38,8 +38,8 @@ const ContentForm = ({
           currentCategory === "맞춤 스트리밍" ||
           currentCategory === "인기 STREAMING"
         ) {
-          entryContentRoom();
-        } else goToContentUrl(link_url);
+          goToContentUrl(link_url);
+        } else entryContentRoom();
       }}
     >
       {currentCategory === "맟춤형 추천 영상" ||

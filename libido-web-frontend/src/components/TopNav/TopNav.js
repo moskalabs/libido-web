@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setAuthModalVisible } from "../../modules/auth";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
@@ -10,7 +10,7 @@ const TopNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const accessToken = "123";
+  const accessToken = "";
 
   const goToMain = () => {
     navigate("/");
@@ -54,6 +54,7 @@ const TopNav = () => {
                 </UserName>
               </UserProfileContainer>
               <UserCountContainer>
+                <div className="userCountLine" />
                 <p>
                   VIEWED
                   <br />
@@ -149,7 +150,7 @@ const RightSubMenu = styled.div`
   .rightSubMenuLine {
     position: absolute;
     top: -20px;
-    right: 295px;
+    left: -15px;
     border-left: 1px solid #d9d9d9;
     height: 126px;
   }
@@ -159,6 +160,7 @@ const TopNavButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 80px;
+  padding-left: 30px;
 `;
 
 const ButtonMarginTop = styled(Button)`
@@ -201,8 +203,16 @@ const UserName = styled.div`
 `;
 
 const UserCountContainer = styled.div`
+  position: relative;
   color: #747474;
   text-align: center;
+
+  & .userCountLine {
+    position: absolute;
+    left: -18px;
+    border-left: 1px solid #d9d9d9;
+    height: 90px;
+  }
 
   & p:nth-child(1) {
     margin-bottom: 4px;
