@@ -6,6 +6,7 @@ const StyledButton = styled.button`
   border-radius: 16px;
   font-size: 1rem;
   padding: 0.25rem 1rem;
+  background: #3848a5;
   color: #fff;
   outline: none;
   cursor: pointer;
@@ -15,10 +16,27 @@ const StyledButton = styled.button`
     css`
       width: 220px;
       line-height: 30px;
-      background: #3848a5;
+
       &:hover {
         background: #344397;
       }
+    `}
+
+  ${props =>
+    props.makeRoomModal &&
+    css`
+      width: 150px;
+      line-height: 50px;
+      font-size: 1.2rem;
+      border-radius: 5px;
+    `}
+
+    ${props =>
+    props.makeRoomClose &&
+    css`
+      background: #fff;
+      color: #1c1c1c;
+      border: 1px solid #a8a8a8;
     `}
 `;
 
