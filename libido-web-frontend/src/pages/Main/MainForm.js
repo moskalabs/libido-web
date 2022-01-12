@@ -3,6 +3,10 @@ import styled, { css } from "styled-components";
 import FriendsListTemplate from "../Main/FriendsListTemplate";
 import Loader from "../../lib/Loader";
 import ContentForm from "../ContentForm";
+import Modal from "../../components/common/Modal";
+import useModal from "../../hooks/useModal";
+import ModalTemplate from "../../components/common/ModalTemplate";
+import MakeRoomInfoModal from "../../components/common/MakeRoomInfoModal";
 
 const MainForm = ({
   isLoaded,
@@ -11,6 +15,7 @@ const MainForm = ({
   completeContents,
   currentCategorySort,
 }) => {
+  const [isShowing, modalInfo, setModalVisible] = useModal();
   const target = useRef(null);
 
   useEffect(() => {
@@ -26,6 +31,11 @@ const MainForm = ({
 
   return (
     <Container>
+      <Modal isShowimg={isShowing} hide={setModalVisible}>
+        <ModalTemplate>
+          <MakeRoomInfoModal modalInfo={modalInfo} hide={setModalVisible} />
+        </ModalTemplate>
+      </Modal>
       {currentCategorySort === "libido" ||
       currentCategorySort === "trending" ? (
         <ContentsContainer sort={currentCategorySort}>
@@ -46,6 +56,7 @@ const MainForm = ({
                           title={title}
                           image_url={image_url}
                           link_url={link_url}
+                          setModalVisible={setModalVisible}
                         />
                       );
                     }
@@ -71,6 +82,7 @@ const MainForm = ({
                         title={title}
                         image_url={image_url}
                         link_url={link_url}
+                        setModalVisible={setModalVisible}
                       />
                     );
                   }

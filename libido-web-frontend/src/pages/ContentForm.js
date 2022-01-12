@@ -8,12 +8,8 @@ const ContentForm = ({
   category,
   title,
   image_url,
-  link_url,
+  setModalVisible,
 }) => {
-  const goToContentUrl = link => {
-    window.open(link, "_blank");
-  };
-
   const entryContentRoom = () => {
     //개인방에 들어가기 전에 서버와 통신하는 함수입니다. 실제 방은 만들어져 있지 않아, UI 관련 기능을 구현하지 못했습니다.
     const accessToken = localStorage.getItem("access_token");
@@ -38,8 +34,8 @@ const ContentForm = ({
           currentCategory === "맞춤 스트리밍" ||
           currentCategory === "인기 STREAMING"
         ) {
-          goToContentUrl(link_url);
-        } else entryContentRoom();
+          setModalVisible(room_id, title, image_url);
+        } else setModalVisible(room_id, title, image_url);
       }}
     >
       {currentCategory === "맟춤형 추천 영상" ||
