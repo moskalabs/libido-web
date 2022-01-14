@@ -4,28 +4,22 @@ import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
-import LoginFormContainer from "../../containers/Auth/LoginFormContainer";
-import RegisterFormContainer from "../../containers/Auth/RegisterFormContainer";
 
 const MainPage = () => {
   return (
-    <>
-      <LoginFormContainer />
-      <RegisterFormContainer />
-      <Container>
-        <SideNavContainer>
-          <SideNav />
-        </SideNavContainer>
-        <Inner>
-          <CategoryBarWrapper>
-            <CategoryBarContainer />
-          </CategoryBarWrapper>
-          <MainTemplate>
-            <MainFormContainer />
-          </MainTemplate>
-        </Inner>
-      </Container>
-    </>
+    <Container>
+      <SideNavContainer>
+        <SideNav />
+      </SideNavContainer>
+      <Inner>
+        <CategoryBarWrapper>
+          <CategoryBarContainer />
+        </CategoryBarWrapper>
+        <MainTemplate>
+          <MainFormContainer />
+        </MainTemplate>
+      </Inner>
+    </Container>
   );
 };
 

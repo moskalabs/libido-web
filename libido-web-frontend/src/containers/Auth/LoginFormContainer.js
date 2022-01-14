@@ -1,22 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeField,
-  initializeForm,
-  login,
-  setAuthModalVisible,
-} from "../../modules/auth";
+import { changeField, initializeForm, login } from "../../modules/auth";
 import ModalTemplate from "../../components/common/ModalTemplate";
 import LoginForm from "../../components/Auth/LoginForm";
-import BodyBlackout from "../../components/common/BodyBlackout";
 
-const LoginFormContainer = () => {
+const LoginFormContainer = ({ isShowing }) => {
   const dispatch = useDispatch();
 
   const form = useSelector(({ auth }) => auth.login);
-  const isVisibleAuthModal = useSelector(
-    ({ auth }) => auth.login.isVisibleAuthModal
-  );
   const message = useSelector(({ auth }) => auth.message);
 
   const changeLoginInputValue = event => {
@@ -39,31 +30,23 @@ const LoginFormContainer = () => {
 
   useEffect(() => {
     dispatch(initializeForm("login"));
-  }, [dispatch]);
 
-  useEffect(() => {
-    if (message === "SUCCESS" || !isVisibleAuthModal) {
+    message === "SUCCESS" && dispatch(initializeForm("login"));
+
+    return () => {
       dispatch(initializeForm("login"));
-    }
-  }, [message, isVisibleAuthModal]);
+    };
+  }, [dispatch, message]);
 
-  if (isVisibleAuthModal) {
-    return (
-      <>
-        <BodyBlackout
-          modalSort="login"
-          setAuthModalVisible={setAuthModalVisible}
-        />
-        <ModalTemplate>
-          <LoginForm
-            form={form}
-            changeLoginInputValue={changeLoginInputValue}
-            signin={signin}
-          />
-        </ModalTemplate>
-      </>
-    );
-  } else return null;
+  return (
+    <ModalTemplate>
+      <LoginForm
+        form={form}
+        changeLoginInputValue={changeLoginInputValue}
+        signin={signin}
+      />
+    </ModalTemplate>
+  );
 };
 
 export default LoginFormContainer;
