@@ -1,24 +1,38 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocation, matchPath } from "react-router-dom";
 import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
 
 const MainPage = () => {
+  const location = useLocation();
+
+  const isCheckMainListView = () => {
+    const currentPathName = location.pathname;
+
+    if (matchPath("/", currentPathName)) return true;
+    else return false;
+  };
+
   return (
     <Container>
       <SideNavContainer>
         <SideNav />
       </SideNavContainer>
-      <Inner>
-        <CategoryBarWrapper>
-          <CategoryBarContainer />
-        </CategoryBarWrapper>
-        <MainTemplate>
-          <MainFormContainer />
-        </MainTemplate>
-      </Inner>
+      {isCheckMainListView() ? (
+        <Inner>
+          <CategoryBarWrapper>
+            <CategoryBarContainer />
+          </CategoryBarWrapper>
+          <MainTemplate mainList>
+            <MainFormContainer />
+          </MainTemplate>
+        </Inner>
+      ) : (
+        <MainTemplate />
+      )}
     </Container>
   );
 };

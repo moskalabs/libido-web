@@ -1,26 +1,57 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const SideNav = () => {
+  const navigate = useNavigate();
+
+  const linkToPage = linkUrl => {
+    navigate(`/${linkUrl}`);
+  };
+
+  const checkButtonSort = event => {
+    const targetElement = event.target.className;
+
+    if (targetElement === "BUTTON") return;
+
+    const buttonSort = event.target.dataset.buttonsort;
+
+    switch (buttonSort) {
+      case "home":
+        linkToPage();
+        break;
+      case "room":
+        linkToPage("makeRoom");
+        break;
+      case "live":
+        linkToPage();
+        break;
+      case "setting":
+        linkToPage();
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <Container>
       <SideNavHeader>
-        <MenuButton />
-        <IconContainer>
+        <IconContainer onClick={checkButtonSort}>
           <IconBox>
-            <Icon className="home" data-button="home" />
+            <Icon className="home" data-buttonsort="home" />
             <p>홈</p>
           </IconBox>
           <IconBox>
-            <Icon className="room" data-button="room" />
+            <Icon className="room" data-buttonsort="room" />
             <p>방만들기</p>
           </IconBox>
           <IconBox>
-            <Icon className="live" data-button="live" />
+            <Icon className="live" data-buttonsort="live" />
             <p>검색</p>
           </IconBox>
           <IconBox>
-            <Icon className="setting" data-button="setting" />
+            <Icon className="setting" data-buttonsort="setting" />
             <p>설정</p>
           </IconBox>
         </IconContainer>
@@ -44,17 +75,7 @@ const SideNavHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 25px;
-`;
-
-const MenuButton = styled.button`
-  width: 50px;
-  height: 50px;
-  border: none;
-  cursor: pointer;
-  background: url(./images/icon_menu.png) no-repeat;
-  background-size: 42px 42px;
-  background-position: center center;
+  padding-top: 75px;
 `;
 
 const IconContainer = styled.div`
@@ -66,6 +87,7 @@ const IconContainer = styled.div`
 const IconBox = styled.div`
   margin-bottom: 50px;
   text-align: center;
+  cursor: pointer;
 
   p {
     font-size: 14px;
@@ -78,6 +100,7 @@ const Icon = styled.button`
   border: none;
   width: 50px;
   height: 50px;
+  cursor: pointer;
 
   &.home {
     background: url(./images/icon_home.png) no-repeat;
