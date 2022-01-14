@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, matchPath } from "react-router-dom";
 import LoginFormContainer from "../../containers/Auth/LoginFormContainer";
 import RegisterFormContainer from "../../containers/Auth/RegisterFormContainer";
 import Modal from "../../components/common/Modal";
@@ -10,6 +10,7 @@ import Button from "../common/Button";
 
 const TopNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { isShowing, modalInfo, setModalVisible } = useModal();
   const [modalSort] = modalInfo;
@@ -30,6 +31,13 @@ const TopNav = () => {
     setModalVisible(authSort);
   };
 
+  const isCheckMainListView = () => {
+    const currentPathName = location.pathname;
+
+    if (matchPath("/", currentPathName)) return true;
+    else return false;
+  };
+
   return (
     <Container>
       <Modal isShowing={isShowing} hide={setModalVisible}>
@@ -43,52 +51,58 @@ const TopNav = () => {
         <LogoContainer onClick={goToMain}>
           <LogoImg />
         </LogoContainer>
-        <SearchBarContainer>
-          <div className="searchInfo">컨텐츠 검색</div>
-          <SearchContainer
-            topNav
-            placeholder="나의 플레이리스트에 담을 컨텐츠를 검색하세요 !"
-          />
-          <div className="searchIcon" />
-          <div className="searchLine" />
-        </SearchBarContainer>
-        <RightSubMenu>
-          <div className="rightSubMenuLine" />
-          {accessToken ? (
-            <UserInfoContainer>
-              <UserProfileContainer>
-                <UserFigure />
-                <UserName>
-                  <span className="userName">Choi95</span> 님
-                  <br />
-                  안녕하세요 :)
-                </UserName>
-              </UserProfileContainer>
-              <UserCountContainer>
-                <div className="userCountLine" />
-                <p>
-                  VIEWED
-                  <br />
-                  <span className="info">522</span>시간
-                </p>
-                <p>
-                  FRIENDS
-                  <br />
-                  <span className="info">95</span>명
-                </p>
-              </UserCountContainer>
-            </UserInfoContainer>
-          ) : (
-            <TopNavButtonContainer onClick={verifiyShowModal}>
-              <ButtonMarginTop data-authsort="login" main>
-                로그인
-              </ButtonMarginTop>
-              <Button data-authsort="register" main>
-                회원가입
-              </Button>
-            </TopNavButtonContainer>
-          )}
-        </RightSubMenu>
+        {isCheckMainListView() ? (
+          <>
+            <SearchBarContainer>
+              <div className="searchInfo">컨텐츠 검색</div>
+              <SearchContainer
+                topNav
+                placeholder="나의 플레이리스트에 담을 컨텐츠를 검색하세요 !"
+              />
+              <div className="searchIcon" />
+              <div className="searchLine" />
+            </SearchBarContainer>
+            <RightSubMenu>
+              <div className="rightSubMenuLine" />
+              {accessToken ? (
+                <UserInfoContainer>
+                  <UserProfileContainer>
+                    <UserFigure />
+                    <UserName>
+                      <span className="userName">Choi95</span> 님
+                      <br />
+                      안녕하세요 :)
+                    </UserName>
+                  </UserProfileContainer>
+                  <UserCountContainer>
+                    <div className="userCountLine" />
+                    <p>
+                      VIEWED
+                      <br />
+                      <span className="info">522</span>시간
+                    </p>
+                    <p>
+                      FRIENDS
+                      <br />
+                      <span className="info">95</span>명
+                    </p>
+                  </UserCountContainer>
+                </UserInfoContainer>
+              ) : (
+                <TopNavButtonContainer onClick={verifiyShowModal}>
+                  <ButtonMarginTop data-authsort="login" main>
+                    로그인
+                  </ButtonMarginTop>
+                  <Button data-authsort="register" main>
+                    회원가입
+                  </Button>
+                </TopNavButtonContainer>
+              )}
+            </RightSubMenu>
+          </>
+        ) : (
+          <TopNavInfo>나의 방 만들기</TopNavInfo>
+        )}
       </TopNavHeader>
     </Container>
   );
@@ -234,6 +248,12 @@ const UserCountContainer = styled.div`
     line-height: 1.4;
     color: #3848a5;
   }
+`;
+
+const TopNavInfo = styled.div`
+  margin-left: 550px;
+  font-size: 30px;
+  font-weight: 600;
 `;
 
 export default TopNav;
