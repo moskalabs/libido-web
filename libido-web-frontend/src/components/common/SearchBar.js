@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const SearchBar = ({
-  topNav,
+  sort,
   placeholder,
   changeKeyword,
   searchKeyword,
@@ -10,7 +10,7 @@ const SearchBar = ({
 }) => {
   return (
     <StyledSearchBar
-      topNav={topNav}
+      sort={sort}
       placeholder={placeholder}
       onChange={changeKeyword}
       onKeyPress={searchKeyword}
@@ -33,13 +33,24 @@ const StyledSearchBar = styled.input`
     color: #d3d1d1;
   }
 
-  ${props =>
-    props.topNav &&
+  ${({ sort }) =>
+    sort === "topNav" &&
     css`
       width: 1100px;
-      height: 60px;
+      line-height: 60px;
       margin-right: 60px;
       padding: 0 120px;
+    `}
+
+  ${({ sort }) =>
+    sort === "makeRoom" &&
+    css`
+      width: 1200px;
+      padding: 2px 125px;
+      font-weight: 400;
+      line-height: 45px;
+      border: 1.3px solid #d0d0d0;
+      border-radius: 5px;
     `}
 `;
 

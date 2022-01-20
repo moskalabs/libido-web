@@ -5,6 +5,8 @@ import SideNav from "../../components/SideNav/SideNav";
 import CategoryBarContainer from "../../containers/CategoryBarContainer";
 import MainTemplate from "./MainTemplate";
 import MainFormContainer from "../../containers/MainFormContainer";
+import MakeRoomTemplate from "../MakeRoom/MakeRoomTemplate";
+import MakeRoomForm from "../MakeRoom/MakeRoomForm";
 
 const MainPage = () => {
   const location = useLocation();
@@ -31,7 +33,11 @@ const MainPage = () => {
           </MainTemplate>
         </Inner>
       ) : (
-        <MainTemplate />
+        <MainTemplate>
+          <MakeRoomTemplate>
+            <MakeRoomForm />
+          </MakeRoomTemplate>
+        </MainTemplate>
       )}
     </Container>
   );

@@ -56,7 +56,6 @@ const AccessTermForm = ({ checkCurrentAdvertiseAccess, goToRegisterForm }) => {
         });
       }
   };
-
   const checkClickSort = event => {
     const currentTargetElementInfo = {
       nodeName: event.target.nodeName,

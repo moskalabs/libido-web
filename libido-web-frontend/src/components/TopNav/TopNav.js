@@ -56,7 +56,7 @@ const TopNav = () => {
             <SearchBarContainer>
               <div className="searchInfo">컨텐츠 검색</div>
               <SearchContainer
-                topNav
+                sort="topNav"
                 placeholder="나의 플레이리스트에 담을 컨텐츠를 검색하세요 !"
               />
               <div className="searchIcon" />
@@ -251,7 +251,7 @@ const UserCountContainer = styled.div`
 `;
 
 const TopNavInfo = styled.div`
-  margin-left: 550px;
+  margin-left: 450px;
   font-size: 30px;
   font-weight: 600;
 `;
