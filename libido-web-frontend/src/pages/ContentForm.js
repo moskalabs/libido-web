@@ -26,7 +26,9 @@ const ContentForm = ({
       )
       .then(res => console.log(res));
   };
-
+  console.log(currentCategory);
+  if (currentCategory === "인기영상") console.log("d");
+  else console.log("r");
   return (
     <Container
       onClick={e => {

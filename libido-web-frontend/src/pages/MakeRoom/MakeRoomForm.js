@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SearchContainer from "../../containers/SearchContainer";
 import ContentForm from "../ContentForm";
+import client from "../../lib/api/client";
 
 const MakeRoomForm = () => {
+  const [test, setTest] = useState([]);
+  useEffect(() => {
+    const testFunc = () => {
+      client
+        .get("http://localhost:3000/data/contentPopular.json")
+        .then(res => setTest(test.concat(res.data.message)));
+    };
+    testFunc();
+  }, []);
+  console.log(test);
   return (
     <Container>
       <SearchBarContainer>
@@ -14,7 +25,18 @@ const MakeRoomForm = () => {
         <SearchContainer sort="makeRoom" />
         <div className="searchIcon" />
       </SearchBarContainer>
-      <ContentList>{/* <ContentForm /> */}</ContentList>
+      <ContentList>
+        {test.map(({ id, title, image_url }, index) => {
+          return (
+            <ContentForm
+              key={index}
+              currentCategory="인기영상"
+              title={title}
+              image_url={image_url}
+            />
+          );
+        })}
+      </ContentList>
     </Container>
   );
 };
@@ -70,10 +92,6 @@ const SortBox = styled.div`
   }
 `;
 
-const ContentList = styled.ul`
-  width: 1200px;
-  height: 2000px;
-  background-color: red;
-`;
+const ContentList = styled.ul``;
 
 export default MakeRoomForm;

@@ -78,7 +78,7 @@ const MainForm = ({
                     return (
                       <ContentForm
                         key={index}
-                        category={category}
+                        currentCategory={category}
                         title={title}
                         image_url={image_url}
                         link_url={link_url}
