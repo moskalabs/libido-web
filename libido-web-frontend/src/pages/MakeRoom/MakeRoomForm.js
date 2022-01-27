@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import SearchContainer from "../../containers/SearchContainer";
 import ContentForm from "../ContentForm";
+import Button from "../../components/common/Button";
 import client from "../../lib/api/client";
 
 const MakeRoomForm = () => {
@@ -33,7 +34,7 @@ const MakeRoomForm = () => {
       setDelta(delta + 300);
     } else {
       const lastSlide = playTrack.length;
-      console.log(currentSlide, lastSlide);
+
       if (currentSlide === lastSlide) return;
 
       setCurrentSlide(currentSlide + 1);
@@ -105,6 +106,7 @@ const MakeRoomForm = () => {
             onClick={moveSlide}
           />
         </SlideButton>
+        <Button playTrack>적용</Button>
       </PlayTrackContainer>
     </Container>
   );

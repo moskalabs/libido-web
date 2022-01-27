@@ -38,6 +38,17 @@ const StyledButton = styled.button`
       color: #1c1c1c;
       border: 1px solid #a8a8a8;
     `}
+
+    ${props =>
+    props.playTrack &&
+    css`
+      position: absolute;
+      right: 300px;
+      width: 130px;
+      margin-top: 30px;
+      line-height: 35px;
+      border-radius: 4px;
+    `}
 `;
 
 const Button = props => <StyledButton {...props} />;
