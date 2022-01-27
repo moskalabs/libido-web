@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import client from "../lib/api/client";
 
 const ContentForm = ({
@@ -9,6 +9,8 @@ const ContentForm = ({
   title,
   image_url,
   setModalVisible,
+  sort,
+  pickContentForm,
 }) => {
   const entryContentRoom = () => {
     //개인방에 들어가기 전에 서버와 통신하는 함수입니다. 실제 방은 만들어져 있지 않아, UI 관련 기능을 구현하지 못했습니다.
@@ -26,17 +28,19 @@ const ContentForm = ({
       )
       .then(res => console.log(res));
   };
-  console.log(currentCategory);
-  if (currentCategory === "인기영상") console.log("d");
-  else console.log("r");
+
   return (
     <Container
-      onClick={e => {
+      className="contentForm"
+      onClick={event => {
+        //별도 모듈 함수 분리 필요
         if (
           currentCategory === "맞춤 스트리밍" ||
-          currentCategory === "인기 STREAMING"
+          currentCategory === "인기 STREAMING" ||
+          sort === "makeRoom"
         ) {
-          setModalVisible(room_id, title, image_url);
+          pickContentForm(event);
+          // setModalVisible(room_id, title, image_url);
         } else setModalVisible(room_id, title, image_url);
       }}
     >
@@ -46,8 +50,14 @@ const ContentForm = ({
             <span className="rumTime" />
           </ContentRunTimeContainer>
         ))}
-      <Thumbnail url={image_url} />
-      <ContentInfoContainer>
+      <Thumbnail
+        alt="source"
+        src={image_url}
+        data-img={image_url}
+        sort={sort}
+        className="thumbnail"
+      />
+      <ContentInfoContainer sort={sort}>
         {(currentCategory === "맞춤 스트리밍" ||
           currentCategory === "인기 STREAMING" ||
           !currentCategory) && <LiveIcon className="live" />}
@@ -88,24 +98,37 @@ const Container = styled.div`
   max-height: 335px;
   margin-bottom: 30px;
   background-color: #fff;
-  border: 1px solid #d5d5d5;
   cursor: pointer;
 `;
 
 const ContentRunTimeContainer = styled.div``;
 
-const Thumbnail = styled.div`
+const Thumbnail = styled.img`
   width: 400px;
   height: 200px;
-  background-image: url(${props => props.url && props.url});
+  /* background-image: url(${props => props.url && props.url}); */
   background-size: 400px 200px;
   background-repeat: no-repeat;
+
+  ${({ sort }) =>
+    sort === "makeRoom" &&
+    css`
+      width: 380px;
+      height: 200px;
+      background-size: 380px 200px;
+    `}
 `;
 
 const ContentInfoContainer = styled.div`
   max-width: 380px;
   position: relative;
   padding: 15px 0px 45px 40px;
+
+  ${({ sort }) =>
+    sort === "makeRoom" &&
+    css`
+      padding: 15px 32px 45px 40px;
+    `}
 `;
 
 const ContentTitle = styled.div`
