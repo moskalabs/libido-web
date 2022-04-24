@@ -3,86 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import client from "../../lib/api/client";
 
-const StyledPasswordForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .condition {
-    font-size: 0.8rem;
-    color: gray;
-  }
-`;
-
-const ResetPw = styled.div`
-  font-size: 16px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  font-weight: bolder;
-  color: #525252;
-  letter-spacing: 1px;
-`;
-const FindPw = styled.div`
-  margin-bottom: 30px;
-  font-weight: bolder;
-  color: #525252;
-  letter-spacing: 1px;
-`;
-const StyledInput = styled.input`
-  width: 315px;
-  padding: 10px 20px;
-  margin-right: 5px;
-  margin-bottom: 30px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px rgba(38, 47, 106, 0.5) solid;
-  border-radius: 4px;
-`;
-
-const EmailInput = styled.input`
-  width: 210px;
-  padding: 10px 20px;
-  /* margin-top: 10px; */
-  margin-right: 10px;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px rgba(38, 47, 106, 0.5) solid;
-  border-radius: 4px;
-`;
-const PasswordInput = styled.input`
-  width: 315px;
-  padding: 10px 20px;
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px rgba(38, 47, 106, 0.5) solid;
-  border-radius: 4px;
-`;
-
-const OverlayButton = styled.button`
-  padding: 10px 10px;
-  background: white;
-  border: #e8eaed solid 1px;
-  border-radius: 4px;
-  box-shadow: 1px 1px 1px #e8eaed;
-`;
-const Footer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-const Button = styled.button`
-  margin-top: 30px;
-  padding: 12px 18px;
-  border-radius: 3px;
-  background: #262f6a;
-  border-style: none;
-  cursor: pointer;
-  color: white;
-`;
 function FindPasswordForm() {
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -108,17 +28,12 @@ function FindPasswordForm() {
       })
       .then(res => {
         const { auth_number } = res.data;
-        console.log(auth_number);
         setAuthNumber(auth_number);
       })
-      .catch(error => {
-        console.log("없는 이메일입니다.");
-      });
+      .catch(error => {});
   };
 
   const confirmVerificationCode = e => {
-    console.log(verificationCode);
-    console.log(authNumber);
     if (authNumber === verificationCode) setIsRegistered(true);
   };
 
@@ -126,7 +41,6 @@ function FindPasswordForm() {
     const passwordRegex =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     const passwordCurrent = e.target.value;
-    console.log(passwordRegex.test(e.target.value));
     setPassword(passwordCurrent);
     if (!passwordRegex.test(passwordCurrent)) {
       setIsPassword(false);
@@ -215,4 +129,73 @@ function FindPasswordForm() {
   );
 }
 
+const StyledPasswordForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .condition {
+    font-size: 0.8rem;
+    color: gray;
+  }
+`;
+
+const ResetPw = styled.div`
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: bolder;
+  color: #525252;
+  letter-spacing: 1px;
+`;
+const FindPw = styled.div`
+  margin-bottom: 30px;
+  font-weight: bolder;
+  color: #525252;
+  letter-spacing: 1px;
+`;
+
+const EmailInput = styled.input`
+  width: 210px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px rgba(38, 47, 106, 0.5) solid;
+  border-radius: 4px;
+`;
+const PasswordInput = styled.input`
+  width: 315px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px rgba(38, 47, 106, 0.5) solid;
+  border-radius: 4px;
+`;
+
+const OverlayButton = styled.button`
+  padding: 10px 10px;
+  background: white;
+  border: #e8eaed solid 1px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px #e8eaed;
+`;
+const Footer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const Button = styled.button`
+  margin-top: 30px;
+  padding: 12px 18px;
+  border-radius: 3px;
+  background: #262f6a;
+  border-style: none;
+  cursor: pointer;
+  color: white;
+`;
 export default FindPasswordForm;

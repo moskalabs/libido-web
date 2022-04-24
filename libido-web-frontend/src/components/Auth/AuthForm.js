@@ -1,90 +1,12 @@
-import React, { useEffect, setUserData } from "react";
+import React from "react";
 import styled from "styled-components";
 
-const StyledAuthForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .guide {
-    font-family: "Readex Pro", sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-  h3 {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  .forgetPassword {
-    font-size: 0.8rem;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .condition {
-    font-size: 0.8rem;
-    color: gray;
-    margin-bottom: 20px;
-  }
-`;
-const LoginContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 140px;
-  height: 40px;
-  margin: 0 auto;
-`;
-
-const StyledInput = styled.input`
-  padding: 10px 20px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px lightgray solid;
-  border-radius: 4px;
-`;
-
-const OverlayButton = styled.button`
-  padding: 10px 10px;
-  background: white;
-  border: #e8eaed solid 1px;
-  border-radius: 4px;
-  box-shadow: 1px 1px 1px #e8eaed;
-`;
-
-const TelForm = styled.div`
-  margin-top: 30px;
-  text-align: center;
-`;
-
-const Footer = styled.div`
-  display: flex;
-`;
-const Button = styled.button`
-  padding: 12px 18px;
-  border-radius: 3px;
-  background: #262f6a;
-  border-style: none;
-  cursor: pointer;
-  color: white;
-`;
 const textMap = {
   login: "로그인",
   register: "회원가입",
 };
 
-const AuthForm = ({
-  type,
-  form,
-  inputValueCheck,
-  onChange,
-  onSubmit,
-  submitPhoneNumber,
-  isAvailable,
-}) => {
+const AuthForm = ({ type, form, inputValueCheck, onChange, isAvailable }) => {
   const text = textMap[type];
 
   return (
@@ -92,19 +14,6 @@ const AuthForm = ({
       <div className="guide">CREATE LIBIDO ID</div>
       <h3>{text}</h3>
       <form>
-        {/* <StyledInput
-          name="userName"
-          placeholder="이름"
-          onChange={onChange}
-          value={form.userName}
-        />
-        <StyledInput
-          name="birth"
-          placeholder="생년월일(6자리)"
-          onChange={onChange}
-          value={form.birth}
-        /> */}
-
         <StyledInput
           name="nickname"
           placeholder="닉네임"
@@ -174,27 +83,7 @@ const AuthForm = ({
           <div />
         )}
       </form>
-      {type === "register" && (
-        <TelForm>
-          {/* <StyledInput
-            id="phoneNumberInput"
-            autoComplete="tel"
-            name="phone_number"
-            placeholder="휴대폰"
-            type="tel"
-            onChange={onChange}
-            value={form.phone_number}
-          />
-          <StyledInput
-            name="verificationCode"
-            placeholder="인증번호"
-            onChange={onChange}
-            value={form.verificationCode}
-          /> */}
-          {/* <Button onClick={submitPhoneNumber}>인증번호</Button>
-          <Button onClick={submitPhoneNumber}>확인하기</Button> */}
-        </TelForm>
-      )}
+
       <Footer>
         {type === "login" ? (
           <>
@@ -209,4 +98,71 @@ const AuthForm = ({
   );
 };
 
+const StyledAuthForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .guide {
+    font-family: "Readex Pro", sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .forgetPassword {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .condition {
+    font-size: 0.8rem;
+    color: gray;
+    margin-bottom: 20px;
+  }
+`;
+
+const LoginContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  height: 40px;
+  margin: 0 auto;
+`;
+
+const StyledInput = styled.input`
+  padding: 10px 20px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px lightgray solid;
+  border-radius: 4px;
+`;
+
+const OverlayButton = styled.button`
+  padding: 10px 10px;
+  background: white;
+  border: #e8eaed solid 1px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px #e8eaed;
+`;
+
+const Footer = styled.div`
+  display: flex;
+`;
+
+const Button = styled.button`
+  padding: 12px 18px;
+  border-radius: 3px;
+  background: #262f6a;
+  border-style: none;
+  cursor: pointer;
+  color: white;
+`;
 export default AuthForm;

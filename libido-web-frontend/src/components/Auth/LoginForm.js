@@ -5,99 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import client from "../../lib/api/client";
 
-const StyledLoginForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .login {
-    font-family: "Readex Pro", sans-serif;
-    font-weight: bold;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-  }
-  div {
-    margin-bottom: 5px;
-  }
-  .newService {
-    margin-bottom: 30px;
-  }
-`;
-
-const StyledInput = styled.input`
-  width: 330px;
-  padding: 10px 18px;
-  margin-bottom: 7px;
-  font-size: 0.9rem;
-  outline: none;
-  border: 1px rgba(38, 47, 106, 0.5) solid;
-  border-radius: 4px;
-`;
-
-const ForgetPassword = styled.div`
-  margin-bottom: 50px;
-  font-family: "Readex Pro", sans-serif;
-  font-weight: bold;
-  color: #262f6a;
-`;
-const SocialButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-const SocialButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 15px;
-  margin-left: 10px;
-  background: white;
-  color: rgba(0, 0, 0, 0.54);
-  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-weight: 100;
-  border-radius: 2px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
-  img {
-    margin-right: 15px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 40px;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-`;
-
-const SignupButton = styled.button`
-  display: inline;
-  padding: 10px 18px;
-  border-radius: 4px;
-  background: white;
-  border: 1px lightgray solid;
-  cursor: pointer;
-`;
-
-const NextButton = styled.button`
-  display: inline;
-  padding: 12px 18px;
-  border-radius: 3px;
-  background: #262f6a;
-  border-style: none;
-  cursor: pointer;
-  color: white;
-`;
-
 function LoginForm() {
   const [googleToken, setGoogleToken] = useState("");
   const [email, setEmail] = useState("");
@@ -111,7 +18,9 @@ function LoginForm() {
   const onPasswordHandler = e => {
     setPassword(e.target.value);
   };
+
   const { naver } = window;
+
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "D6LeoiC8EqM1qxbMl3rP",
@@ -210,7 +119,6 @@ function LoginForm() {
         />
         <ForgetPassword>· FORGET PASSWORD?</ForgetPassword>
 
-        {/* <div onClick="onSignIn" class="g-signin2" data-onsuccess="onSignIn" /> */}
         <SocialButtonContainer>
           <GoogleLogin
             onSuccess={onSuccessGoogle}
@@ -233,5 +141,101 @@ function LoginForm() {
     </>
   );
 }
+
+const StyledLoginForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .login {
+    font-family: "Readex Pro", sans-serif;
+    font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  div {
+    margin-bottom: 5px;
+  }
+  .newService {
+    margin-bottom: 30px;
+  }
+`;
+
+const StyledInput = styled.input`
+  width: 330px;
+  padding: 10px 18px;
+  margin-bottom: 7px;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px rgba(38, 47, 106, 0.5) solid;
+  border-radius: 4px;
+`;
+
+const ForgetPassword = styled.div`
+  margin-bottom: 50px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: bold;
+  color: #262f6a;
+`;
+
+const SocialButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const SocialButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px;
+  margin-left: 10px;
+  background: white;
+  color: rgba(0, 0, 0, 0.54);
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 100;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+
+  img {
+    margin-right: 15px;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const SignupButton = styled.button`
+  display: inline;
+  padding: 10px 18px;
+  border-radius: 4px;
+  background: white;
+  border: 1px lightgray solid;
+  cursor: pointer;
+`;
+
+const NextButton = styled.button`
+  display: inline;
+  padding: 12px 18px;
+  border-radius: 3px;
+  background: #262f6a;
+  border-style: none;
+  cursor: pointer;
+  color: white;
+`;
 
 export default LoginForm;

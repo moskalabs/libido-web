@@ -9,7 +9,7 @@ import FindPasswordPage from "./pages/Auth/FindPasswordPage";
 const Router = () => {
   return (
     <BrowserRouter>
-      <TopNav />
+      {/* <TopNav /> */}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/?/*" element={<MainPage />} />

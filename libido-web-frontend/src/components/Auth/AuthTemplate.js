@@ -1,6 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
+const AuthTemplate = ({ children }) => {
+  return (
+    <StyledAuthTemplate>
+      <LoginBox>
+        <div>{children}</div>
+      </LoginBox>
+    </StyledAuthTemplate>
+  );
+};
+
 const StyledAuthTemplate = styled.div`
   position: absoulte;
   left: 0;
@@ -19,14 +29,4 @@ const LoginBox = styled.div`
   border: 1px #c4c3c2 solid;
   border-radius: 2px;
 `;
-const AuthTemplate = ({ children }) => {
-  return (
-    <StyledAuthTemplate>
-      <LoginBox>
-        <div>{children}</div>
-      </LoginBox>
-    </StyledAuthTemplate>
-  );
-};
-
 export default AuthTemplate;

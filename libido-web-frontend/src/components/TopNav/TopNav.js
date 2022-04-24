@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, matchPath } from "react-router-dom";
 import SearchContainer from "../../containers/SearchContainer";
 import Button from "../common/Button";
 
@@ -10,6 +10,8 @@ const TopNav = () => {
   const goToMain = e => {
     navigate("/");
   };
+
+  matchPath();
 
   return (
     <Container>
